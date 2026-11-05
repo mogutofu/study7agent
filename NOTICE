@@ -1,0 +1,15 @@
+第三方资源与许可摘要
+====================
+
+本仓库根目录的 MIT 许可（见 LICENSE）只覆盖**自己写的代码**。
+随包内置的第三方资源不适用 MIT，各按自己的许可证分发，来源与授权逐条列在：
+
+  docs/third-party-licenses.md          convert-units（MIT）、JSME（BSD-3-Clause）
+  webui/ui/vendor/README.txt            第三方前端库总说明
+  webui/ui/vendor/phet/README.txt       PhET 三个仿真：CC BY-NC 4.0（署名—非商业性使用）
+  webui/ui/vendor/bio/README.txt        生物插图：Wikimedia Commons，多为 CC BY / CC BY-SA / 公有领域
+
+因此**含内置资源的整个程序不能用于商业用途**：PhET 的许可是非商业的，
+CC BY-SA 的插图再分发时也要保持同样的许可。
+只想拿代码去做商业项目的话，先把 webui/ui/vendor/phet/ 和 webui/ui/vendor/bio/ 两个目录删掉，
+剩下的代码按 MIT 使用即可。

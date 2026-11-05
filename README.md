@@ -1136,7 +1136,8 @@ core.AgentRun.run()
 ## 12. 许可证
 
 - 本仓库里**自己写的代码**（`webui\`、`skills\`、`scripts\`、`launcher\`、`internal\`、`cmd\`、
-  `vscode-extension\` 等）用 **MIT**，全文见仓库根目录 [`LICENSE`](LICENSE)。
+  `vscode-extension\` 等）用 **MIT**，全文见仓库根目录 [`LICENSE`](LICENSE)；
+  第三方资源的摘要另见根目录 [`NOTICE`](NOTICE)。
 - **随包内置的第三方资源不适用 MIT**，各按自己的许可证；来源与授权逐条列在
   [`docs\third-party-licenses.md`](docs/third-party-licenses.md) 和
   [`webui\ui\vendor\README.txt`](webui/ui/vendor/README.txt)。要特别注意：

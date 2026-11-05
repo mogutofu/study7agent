@@ -19,15 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
---------------------------------------------------------------------------
-
-注意：以上 MIT 许可只覆盖本仓库里**自己写的代码**。
-随包内置的第三方资源各按自己的许可证分发，详见：
-  - docs/third-party-licenses.md
-  - webui/ui/vendor/README.txt
-  - webui/ui/vendor/phet/README.txt   （PhET 仿真为 CC BY-NC 4.0，禁止商业使用）
-  - webui/ui/vendor/bio/README.txt    （Wikimedia Commons，多为 CC BY / CC BY-SA / 公有领域）
-
-因此**含内置资源的整个程序不能用于商业用途**；只想要代码做商业项目的话，
-请先删除 webui/ui/vendor/phet/ 与 webui/ui/vendor/bio/ 两个目录。
