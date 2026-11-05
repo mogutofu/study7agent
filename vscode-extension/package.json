@@ -4,7 +4,7 @@
   "description": "Offline-friendly OpenAI-compatible intranet agent for Windows 7 VS Code 1.70.x.",
   "version": "0.4.4",
   "publisher": "win7-agent",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.70.0"
   },

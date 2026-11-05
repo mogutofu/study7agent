@@ -71,8 +71,8 @@ exe 由 `scripts\make-exe.py` 打（程序树打成 tar.gz 追加在 exe 尾部�
    `webui\test_webui.py`（期望 500+ OK，1–5 项环境性跳过）；
    验收单文件 exe 本身用 `powershell -File scripts\vm-acceptance.ps1 -Exe`；
 3. 需要时上真 Win7 虚拟机再跑一遍（**见第 5 节：别再每次都跑全量**）；
-4. 同步镜像：`webui`、`docs`、`scripts`、`skills`、`README.md`、`AGENTS.md`、
-   `agent.ico`、`agent-icon.png`、`start-webui.cmd`；
+4. 同步镜像：`webui`、`docs`、`scripts`、`skills`、`README.md`、`README.en.md`、`AGENTS.md`、
+   `LICENSE`、`agent.ico`、`agent-icon.png`、`start-webui.cmd`；
    镜像目录 `study7agent-src\study7agent-main` 同时是 **GitHub 仓库**
    （<https://github.com/mogutofu/study7agent>，私有）：同步完在**那个目录**里
    `git add -A && git commit -m "..." && git push origin main`。推之前先 `git status`

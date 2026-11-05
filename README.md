@@ -1130,3 +1130,21 @@ core.AgentRun.run()
 - **`.ps1` 改完必须确认还是 UTF-8 带 BOM**（见 §8 坑 16）；`uia_worker.ps1` 反过来——
   必须**纯 ASCII 不带 BOM**（§2.3）；`.cmd` 必须纯 ASCII + CRLF。
 - 交付时说明：改了哪些文件、怎么验的、**哪些没验**、以及遗留问题。
+
+---
+
+## 12. 许可证
+
+- 本仓库里**自己写的代码**（`webui\`、`skills\`、`scripts\`、`launcher\`、`internal\`、`cmd\`、
+  `vscode-extension\` 等）用 **MIT**，全文见仓库根目录 [`LICENSE`](LICENSE)。
+- **随包内置的第三方资源不适用 MIT**，各按自己的许可证；来源与授权逐条列在
+  [`docs\third-party-licenses.md`](docs/third-party-licenses.md) 和
+  [`webui\ui\vendor\README.txt`](webui/ui/vendor/README.txt)。要特别注意：
+  - `webui\ui\vendor\phet\` 里三个 PhET 仿真（电路组建实验 / 分子形状 / pH）是
+    **CC BY-NC 4.0（署名—非商业性使用）**，只能用于课堂教学等非商业用途；
+  - `webui\ui\vendor\bio\` 里的生物插图来自 Wikimedia Commons，多为
+    CC BY / CC BY-SA / 公有领域（CC BY-SA 的再分发要保持同样许可）；
+  - `webui\ui\vendor\jsme\` 是 BSD-3-Clause。
+- 因为内置了 CC BY-NC 的 PhET 资源，**整个仓库/整个程序不能用于商业用途**；
+  只想拿代码去做商业项目的话，先把 `webui\ui\vendor\phet\` 和 `webui\ui\vendor\bio\` 删掉，
+  剩下的代码按 MIT 用。
