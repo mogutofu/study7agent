@@ -1,0 +1,3136 @@
+{
+  "_note": "化学引擎的规则表（数据驱动，运行期离线）。只放事实与教材口径的规则，不放'反应'——反应由 webui\\chem.py 按规则现场推。改这个文件就能扩覆盖面，不用改代码。",
+  "source": "溶解性/活动性/电极电势均为教材与 NIST/CRC 口径的事实性数据（事实不受版权保护），来源与口径见 docs\\third-party-licenses.md",
+  "solubility": {
+    "_note": "按阴离子分类。_default 是该阴离子的通例；没列到的阴离子一律'未知'，引擎遇到未知必须说'资料未收录'，不许猜。",
+    "NO3": {
+      "_default": "溶"
+    },
+    "Cl": {
+      "_default": "溶",
+      "Ag": "不溶",
+      "Pb": "微溶"
+    },
+    "SO4": {
+      "_default": "溶",
+      "Ba": "不溶",
+      "Pb": "不溶",
+      "Ca": "微溶",
+      "Ag": "微溶"
+    },
+    "CO3": {
+      "_default": "不溶",
+      "K": "溶",
+      "Na": "溶",
+      "NH4": "溶",
+      "Mg": "微溶"
+    },
+    "HCO3": {
+      "_default": "溶"
+    },
+    "SO3": {
+      "_default": "不溶",
+      "K": "溶",
+      "Na": "溶",
+      "NH4": "溶"
+    },
+    "S": {
+      "_default": "不溶",
+      "K": "溶",
+      "Na": "溶",
+      "NH4": "溶",
+      "Mg": "微溶",
+      "Ca": "微溶"
+    },
+    "SiO3": {
+      "_default": "不溶",
+      "K": "溶",
+      "Na": "溶"
+    },
+    "CH3COO": {
+      "_default": "溶"
+    },
+    "ClO3": {
+      "_default": "溶"
+    },
+    "MnO4": {
+      "_default": "溶"
+    },
+    "F": {
+      "_default": "不溶",
+      "K": "溶",
+      "Na": "溶",
+      "NH4": "溶",
+      "Ag": "溶",
+      "Mg": "微溶",
+      "Fe2": "溶",
+      "Fe3": "溶",
+      "Cu": "溶",
+      "Zn": "溶"
+    },
+    "OH": {
+      "_default": "不溶",
+      "K": "溶",
+      "Na": "溶",
+      "Ba": "溶",
+      "Ca": "微溶"
+    }
+  },
+  "activity": {
+    "_note": "金属活动性顺序，从强到弱。氢排在中间：在它前面的金属能置换出酸里的氢。",
+    "order": [
+      "K",
+      "Ca",
+      "Na",
+      "Mg",
+      "Al",
+      "Zn",
+      "Fe",
+      "Sn",
+      "Pb",
+      "H",
+      "Cu",
+      "Hg",
+      "Ag",
+      "Pt",
+      "Au"
+    ]
+  },
+  "acids": {
+    "_note": "强酸完全电离；弱酸按分子处理（第一版只用来判中和与复分解）。",
+    "strong": [
+      "HCl",
+      "H2SO4",
+      "HNO3"
+    ],
+    "weak": [
+      "H2CO3",
+      "CH3COOH",
+      "H2S",
+      "H2SO3"
+    ]
+  },
+  "gases": {
+    "_note": "溶液中生成就跑掉的气体（复分解能发生的三个理由之一）。",
+    "CO2": "CO2",
+    "NH3": "NH3",
+    "H2S": "H2S"
+  },
+  "acid_gas": {
+    "_note": "酸 + 某阴离子 -> 气体（复分解里'生成气体'这一条）。键是'阳离子|阴离子'。",
+    "H|CO3": {
+      "products": [
+        "H2O",
+        "CO2"
+      ],
+      "phenomenon": "有气泡冒出（CO2）"
+    },
+    "H|HCO3": {
+      "products": [
+        "H2O",
+        "CO2"
+      ],
+      "phenomenon": "有气泡冒出（CO2）"
+    },
+    "H|SO3": {
+      "products": [
+        "H2O",
+        "SO2"
+      ],
+      "phenomenon": "有刺激性气味的气体冒出（SO2）"
+    },
+    "H|S": {
+      "products": [
+        "H2S"
+      ],
+      "phenomenon": "有臭鸡蛋气味的气体冒出（H2S）"
+    },
+    "NH4|OH": {
+      "products": [
+        "H2O",
+        "NH3"
+      ],
+      "phenomenon": "有刺激性气味的气体冒出（NH3）"
+    }
+  },
+  "aliases": {
+    "_note": "同一种东西在架子上的两种写法（浓硫酸、浓硝酸单独摆了瓶子）。算条件和反应时按右边那个式子认。",
+    "浓硫酸": "H2SO4",
+    "浓硝酸": "HNO3"
+  },
+  "special_reactions": {
+    "_note": "离子模型算不出来的高中经典反应（铝/硅/氯/氟/氮氧化物那几条），单独录。写法同 organic_reactions。",
+    "list": [
+      {
+        "key": "al_naoh",
+        "reactants": [
+          "Al",
+          "NaOH",
+          "H2O"
+        ],
+        "products": [
+          "NaAlO2",
+          "H2"
+        ],
+        "condition": "none",
+        "phenomenon": "铝片表面冒出气泡（H2）——铝也能和强碱溶液反应"
+      },
+      {
+        "key": "zn_naoh",
+        "reactants": [
+          "Zn",
+          "NaOH"
+        ],
+        "products": [
+          "Na2ZnO2",
+          "H2"
+        ],
+        "condition": "none",
+        "phenomenon": "缓慢冒出气泡（H2）——锌也能和强碱溶液反应"
+      },
+      {
+        "key": "sio2_naoh",
+        "reactants": [
+          "SiO2",
+          "NaOH"
+        ],
+        "products": [
+          "Na2SiO3",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "固体逐渐溶解——所以装碱的试剂瓶不能用玻璃塞"
+      },
+      {
+        "key": "al2o3_naoh",
+        "reactants": [
+          "Al2O3",
+          "NaOH"
+        ],
+        "products": [
+          "NaAlO2",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "两性氧化物溶于强碱"
+      },
+      {
+        "key": "cl2_naoh",
+        "reactants": [
+          "Cl2",
+          "NaOH"
+        ],
+        "products": [
+          "NaCl",
+          "NaClO",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "黄绿色褪去（氯气被碱吸收，制漂白液）"
+      },
+      {
+        "key": "fe3_fe",
+        "reactants": [
+          "FeCl3",
+          "Fe"
+        ],
+        "products": [
+          "FeCl2"
+        ],
+        "condition": "none",
+        "phenomenon": "溶液由黄色变为浅绿色（Fe3+ 被铁还原）"
+      },
+      {
+        "key": "fe3_cu",
+        "reactants": [
+          "FeCl3",
+          "Cu"
+        ],
+        "products": [
+          "FeCl2",
+          "CuCl2"
+        ],
+        "condition": "none",
+        "phenomenon": "铜片溶解，溶液变蓝绿（腐蚀铜板制电路板）"
+      },
+      {
+        "key": "cu_agno3",
+        "reactants": [
+          "Cu",
+          "AgNO3"
+        ],
+        "products": [
+          "Cu(NO3)2",
+          "Ag"
+        ],
+        "condition": "none",
+        "phenomenon": "铜片上析出银白色固体，溶液变蓝"
+      },
+      {
+        "key": "f2_h2",
+        "reactants": [
+          "F2",
+          "H2"
+        ],
+        "products": [
+          "HF"
+        ],
+        "condition": "ignite",
+        "phenomenon": "剧烈化合甚至爆炸（氟是最活泼的非金属）"
+      },
+      {
+        "key": "f2_na",
+        "reactants": [
+          "F2",
+          "Na"
+        ],
+        "products": [
+          "NaF"
+        ],
+        "condition": "none",
+        "phenomenon": "钠在氟气里剧烈燃烧，生成白色氟化钠"
+      },
+      {
+        "key": "f2_water",
+        "reactants": [
+          "F2",
+          "H2O"
+        ],
+        "products": [
+          "HF",
+          "O2"
+        ],
+        "condition": "none",
+        "phenomenon": "氟把水里的氧置换出来，冒气泡（O2）"
+      },
+      {
+        "key": "hf_glass",
+        "reactants": [
+          "HF",
+          "SiO2"
+        ],
+        "products": [
+          "SiF4",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "玻璃被腐蚀——所以氢氟酸要装在塑料瓶里，不能装玻璃瓶"
+      },
+      {
+        "key": "no_oxygen",
+        "reactants": [
+          "NO",
+          "O2"
+        ],
+        "products": [
+          "NO2"
+        ],
+        "condition": "none",
+        "phenomenon": "无色气体立刻变成红棕色（NO2）"
+      },
+      {
+        "key": "co_burn",
+        "reactants": [
+          "CO",
+          "O2"
+        ],
+        "products": [
+          "CO2"
+        ],
+        "condition": "ignite",
+        "phenomenon": "淡蓝色火焰，放出大量热"
+      },
+      {
+        "key": "ammonia_synthesis",
+        "reactants": [
+          "N2",
+          "H2"
+        ],
+        "products": [
+          "NH3"
+        ],
+        "condition": "high_pressure",
+        "catalyst": "Fe触媒",
+        "reversible": true,
+        "phenomenon": "合成氨：N2 与 H2 在铁触媒、高温高压下化合，是可逆反应；恒容密闭容器里才有平衡可言（加压平衡右移、升温平衡左移）"
+      },
+      {
+        "key": "so2_oxidize",
+        "reactants": [
+          "SO2",
+          "O2"
+        ],
+        "products": [
+          "SO3"
+        ],
+        "condition": "catalyst_heat",
+        "catalyst": "V2O5",
+        "reversible": true,
+        "phenomenon": "接触法制硫酸的第二步：V2O5 催化下 SO2 被氧化成 SO3（可逆、放热）"
+      },
+      {
+        "key": "ammonia_oxidize",
+        "reactants": [
+          "NH3",
+          "O2"
+        ],
+        "products": [
+          "NO",
+          "H2O"
+        ],
+        "condition": "catalyst_heat",
+        "catalyst": "Pt",
+        "phenomenon": "氨的催化氧化（铂丝红热）：4NH3+5O2 -> 4NO+6H2O，工业制硝酸的第一步"
+      },
+      {
+        "key": "benzene_hydrogen_nickel",
+        "reactants": [
+          "C6H6",
+          "H2"
+        ],
+        "products": [
+          "C6H12"
+        ],
+        "condition": "catalyst_heat",
+        "catalyst": "Ni",
+        "phenomenon": "镍催化加氢，苯环加成为环己烷"
+      },
+      {
+        "key": "fat_hydrogenate",
+        "reactants": [
+          "硬脂酸甘油酯",
+          "H2"
+        ],
+        "products": [],
+        "condition": "catalyst_heat",
+        "catalyst": "Ni",
+        "literal": "油脂 + H2 --镍催化加热--> 硬化油（人造奶油）",
+        "phenomenon": "液态油变成半固态的硬化油（油脂氢化）"
+      },
+      {
+        "key": "vinylchloride_polymerize",
+        "reactants": [
+          "C2H3Cl"
+        ],
+        "products": [],
+        "condition": "catalyst",
+        "catalyst": "过氧化苯甲酰",
+        "literal": "nCH2=CHCl --引发剂--> [-CH2-CHCl-]n（聚氯乙烯 PVC）",
+        "phenomenon": "气体逐渐减少，生成白色固体（聚氯乙烯）"
+      },
+      {
+        "key": "butadiene_polymerize",
+        "reactants": [
+          "C4H6"
+        ],
+        "products": [],
+        "condition": "catalyst",
+        "catalyst": "齐格勒纳塔",
+        "literal": "nCH2=CH-CH=CH2 --齐格勒-纳塔--> 顺丁橡胶",
+        "phenomenon": "生成有弹性的顺丁橡胶"
+      },
+      {
+        "key": "propene_polymerize",
+        "reactants": [
+          "C3H6"
+        ],
+        "products": [],
+        "condition": "catalyst",
+        "catalyst": "齐格勒纳塔",
+        "literal": "nCH2=CHCH3 --齐格勒-纳塔--> [-CH2-CH(CH3)-]n（聚丙烯）",
+        "phenomenon": "生成白色固体（聚丙烯）"
+      },
+      {
+        "key": "methylamine_from_methanol",
+        "reactants": [
+          "CH3OH",
+          "NH3"
+        ],
+        "products": [
+          "CH3NH2",
+          "H2O"
+        ],
+        "condition": "catalyst_heat",
+        "catalyst": "AlCl3",
+        "phenomenon": "甲醇与氨在催化剂下生成甲胺"
+      },
+      {
+        "key": "no2_dimer",
+        "reactants": [
+          "NO2"
+        ],
+        "products": [
+          "N2O4"
+        ],
+        "condition": "none",
+        "reversible": true,
+        "phenomenon": "红棕色变浅：2NO2 ⇌ N2O4（恒容时升温颜色变深、降温变浅，讲平衡移动的经典例子）"
+      }
+    ]
+  },
+  "nature_hint": {
+    "_note": "水溶液的酸碱性（教材口径）。强碱弱酸盐显碱性、强酸弱碱盐显酸性——指示剂要按这个变色。",
+    "Na2CO3": "base",
+    "K2CO3": "base",
+    "NaHCO3": "base",
+    "KHCO3": "base",
+    "CH3COONa": "base",
+    "Na2S": "base",
+    "NH4Cl": "acid",
+    "FeCl3": "acid",
+    "AlCl3": "acid",
+    "CuSO4": "acid",
+    "AgNO3": "acid"
+  },
+  "ion_symbol": {
+    "_note": "离子符号 -> 写进化学式的元素符号。铁用 Fe2/Fe3 区分电荷，但化学式里都写 Fe（Fe2 与 SO4 得 FeSO4，不是 Fe2SO4）。",
+    "Fe2": "Fe",
+    "Fe3": "Fe"
+  },
+  "anion_first": {
+    "_note": "教材里把酸根写在前面的那些（有机酸盐）：CH3COONa，不是 NaCH3COO。",
+    "list": [
+      "CH3COO"
+    ]
+  },
+  "ion_charge": {
+    "_note": "离子电荷。产物化学式靠它按'十字交叉'推出来（Ca 与 OH 得 Ca(OH)2）。铁分 Fe2/Fe3 两个符号，因为同一符号不能同时是 +2 和 +3。",
+    "Na": 1,
+    "K": 1,
+    "NH4": 1,
+    "Ca": 2,
+    "Ba": 2,
+    "Mg": 2,
+    "Al": 3,
+    "Zn": 2,
+    "Fe2": 2,
+    "Fe3": 3,
+    "Cu": 2,
+    "Ag": 1,
+    "H": 1,
+    "Cl": -1,
+    "F": -1,
+    "SO4": -2,
+    "CO3": -2,
+    "HCO3": -1,
+    "SO3": -2,
+    "S": -2,
+    "SiO3": -2,
+    "CH3COO": -1,
+    "ClO3": -1,
+    "MnO4": -1,
+    "OH": -1,
+    "NO3": -1
+  },
+  "reagent_grid": {
+    "_note": "试剂架的**成套**部分：阳离子 × 阴离子自动生成（不用手打一百多条）。skip 是'这个组合不存在/不该摆在架子上'的（双水解、遇水分解、没有这种物质），kind 里的 solid/liquid 按溶解性判，gas 单独列。",
+    "cations": [
+      "Na",
+      "K",
+      "NH4",
+      "Ca",
+      "Ba",
+      "Mg",
+      "Al",
+      "Zn",
+      "Fe2",
+      "Fe3",
+      "Cu",
+      "Ag"
+    ],
+    "anions": [
+      "Cl",
+      "F",
+      "NO3",
+      "SO4",
+      "CO3",
+      "HCO3",
+      "SO3",
+      "OH",
+      "S",
+      "SiO3",
+      "CH3COO"
+    ],
+    "skip": [
+      "Al|CO3",
+      "Al|HCO3",
+      "Al|SO3",
+      "Al|S",
+      "Al|SiO3",
+      "Fe3|CO3",
+      "Fe3|HCO3",
+      "Fe3|SO3",
+      "Fe3|S",
+      "Fe3|SiO3",
+      "Fe3|CH3COO",
+      "NH4|OH",
+      "NH4|CO3",
+      "NH4|HCO3",
+      "NH4|SO3",
+      "NH4|S",
+      "NH4|SiO3",
+      "Ag|OH",
+      "Ag|S",
+      "Ag|SiO3",
+      "Ag|CO3",
+      "Ag|SO3",
+      "Ba|SiO3",
+      "Ca|SiO3",
+      "Mg|SiO3",
+      "Cu|SiO3",
+      "Zn|SiO3",
+      "Fe2|SiO3",
+      "Fe3|F",
+      "Al|F",
+      "Ba|S",
+      "Ca|S",
+      "Mg|HCO3",
+      "Ba|HCO3",
+      "Ca|HCO3",
+      "Ag|HCO3"
+    ],
+    "cation_names": {
+      "Na": "钠",
+      "K": "钾",
+      "NH4": "铵",
+      "Ca": "钙",
+      "Ba": "钡",
+      "Mg": "镁",
+      "Al": "铝",
+      "Zn": "锌",
+      "Fe2": "亚铁",
+      "Fe3": "铁",
+      "Cu": "铜",
+      "Ag": "银",
+      "H": "氢"
+    },
+    "anion_names": {
+      "Cl": "氯化",
+      "F": "氟化",
+      "NO3": "硝酸",
+      "SO4": "硫酸",
+      "CO3": "碳酸",
+      "HCO3": "碳酸氢",
+      "SO3": "亚硫酸",
+      "OH": "氢氧化",
+      "S": "硫化",
+      "SiO3": "硅酸",
+      "CH3COO": "醋酸",
+      "ClO3": "氯酸",
+      "MnO4": "高锰酸"
+    },
+    "always_solid": [
+      "CaCO3",
+      "BaCO3",
+      "BaSO4",
+      "AgCl",
+      "CaSO4",
+      "Ag2SO4",
+      "MgCO3"
+    ],
+    "extra": [
+      {
+        "key": "浓硫酸",
+        "label": "浓硫酸",
+        "kind": "liquid",
+        "tag": "酸",
+        "catalyst_as": "H2SO4"
+      },
+      {
+        "key": "浓硝酸",
+        "label": "浓硝酸",
+        "kind": "liquid",
+        "tag": "酸"
+      },
+      {
+        "key": "CO2",
+        "label": "二氧化碳",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "NH3",
+        "label": "氨气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "H2",
+        "label": "氢气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "银氨溶液",
+        "label": "银氨溶液",
+        "kind": "liquid",
+        "tag": "特征试剂"
+      },
+      {
+        "key": "新制氢氧化铜",
+        "label": "新制氢氧化铜悬浊液",
+        "kind": "liquid",
+        "tag": "特征试剂"
+      }
+    ]
+  },
+  "salts": {
+    "_note": "常见物质 -> [阳离子, 阴离子]。引擎用它把化学式拆成离子；拆不开就说不认识，不硬猜。酸也在这里（阳离子是 H）。",
+    "NaCl": [
+      "Na",
+      "Cl"
+    ],
+    "KCl": [
+      "K",
+      "Cl"
+    ],
+    "NH4Cl": [
+      "NH4",
+      "Cl"
+    ],
+    "CaCl2": [
+      "Ca",
+      "Cl"
+    ],
+    "BaCl2": [
+      "Ba",
+      "Cl"
+    ],
+    "MgCl2": [
+      "Mg",
+      "Cl"
+    ],
+    "AlCl3": [
+      "Al",
+      "Cl"
+    ],
+    "FeCl2": [
+      "Fe2",
+      "Cl"
+    ],
+    "CuCl2": [
+      "Cu",
+      "Cl"
+    ],
+    "FeCl3": [
+      "Fe3",
+      "Cl"
+    ],
+    "HCl": [
+      "H",
+      "Cl"
+    ],
+    "AgNO3": [
+      "Ag",
+      "NO3"
+    ],
+    "NaNO3": [
+      "Na",
+      "NO3"
+    ],
+    "KNO3": [
+      "K",
+      "NO3"
+    ],
+    "Ca(NO3)2": [
+      "Ca",
+      "NO3"
+    ],
+    "Ba(NO3)2": [
+      "Ba",
+      "NO3"
+    ],
+    "Mg(NO3)2": [
+      "Mg",
+      "NO3"
+    ],
+    "Cu(NO3)2": [
+      "Cu",
+      "NO3"
+    ],
+    "Zn(NO3)2": [
+      "Zn",
+      "NO3"
+    ],
+    "Fe(NO3)3": [
+      "Fe3",
+      "NO3"
+    ],
+    "HNO3": [
+      "H",
+      "NO3"
+    ],
+    "CuSO4": [
+      "Cu",
+      "SO4"
+    ],
+    "FeSO4": [
+      "Fe2",
+      "SO4"
+    ],
+    "Fe2(SO4)3": [
+      "Fe3",
+      "SO4"
+    ],
+    "ZnSO4": [
+      "Zn",
+      "SO4"
+    ],
+    "MgSO4": [
+      "Mg",
+      "SO4"
+    ],
+    "Al2(SO4)3": [
+      "Al",
+      "SO4"
+    ],
+    "Na2SO4": [
+      "Na",
+      "SO4"
+    ],
+    "K2SO4": [
+      "K",
+      "SO4"
+    ],
+    "BaSO4": [
+      "Ba",
+      "SO4"
+    ],
+    "CaSO4": [
+      "Ca",
+      "SO4"
+    ],
+    "Ag2SO4": [
+      "Ag",
+      "SO4"
+    ],
+    "H2SO4": [
+      "H",
+      "SO4"
+    ],
+    "Na2CO3": [
+      "Na",
+      "CO3"
+    ],
+    "K2CO3": [
+      "K",
+      "CO3"
+    ],
+    "CaCO3": [
+      "Ca",
+      "CO3"
+    ],
+    "BaCO3": [
+      "Ba",
+      "CO3"
+    ],
+    "MgCO3": [
+      "Mg",
+      "CO3"
+    ],
+    "NaHCO3": [
+      "Na",
+      "HCO3"
+    ],
+    "KHCO3": [
+      "K",
+      "HCO3"
+    ],
+    "NaOH": [
+      "Na",
+      "OH"
+    ],
+    "KOH": [
+      "K",
+      "OH"
+    ],
+    "Ca(OH)2": [
+      "Ca",
+      "OH"
+    ],
+    "Ba(OH)2": [
+      "Ba",
+      "OH"
+    ],
+    "Cu(OH)2": [
+      "Cu",
+      "OH"
+    ],
+    "Fe(OH)3": [
+      "Fe3",
+      "OH"
+    ],
+    "Fe(OH)2": [
+      "Fe2",
+      "OH"
+    ],
+    "Al(OH)3": [
+      "Al",
+      "OH"
+    ],
+    "Mg(OH)2": [
+      "Mg",
+      "OH"
+    ]
+  },
+  "metal_ion": {
+    "_note": "金属单质置换时变成哪个离子。铁按亚铁算（Fe + CuSO4 -> FeSO4 + Cu 是教材口径）。",
+    "K": "K",
+    "Ca": "Ca",
+    "Na": "Na",
+    "Mg": "Mg",
+    "Al": "Al",
+    "Zn": "Zn",
+    "Fe": "Fe2",
+    "Cu": "Cu",
+    "Ag": "Ag"
+  },
+  "gas_species": {
+    "_note": "常温常压下是气体的物质（界面据此冒气泡；热化学按气相取）。",
+    "list": [
+      "H2",
+      "O2",
+      "N2",
+      "Cl2",
+      "F2",
+      "CO",
+      "CO2",
+      "NO",
+      "NO2",
+      "N2O4",
+      "SO2",
+      "SO3",
+      "H2S",
+      "NH3",
+      "CH4",
+      "C2H2",
+      "C2H4",
+      "C2H6",
+      "C3H6",
+      "C3H8",
+      "C4H10",
+      "He",
+      "Ne",
+      "Ar",
+      "Kr",
+      "Xe",
+      "HCl",
+      "HF",
+      "HBr",
+      "SiF4"
+    ]
+  },
+  "inert_gases": {
+    "_note": "稀有气体：化学性质很稳定，中学阶段一律不参与反应。界面上要**明说**这一点，不能只是「没反应」。",
+    "list": [
+      "He",
+      "Ne",
+      "Ar",
+      "Kr",
+      "Xe"
+    ],
+    "note": "稀有气体（He/Ne/Ar/Kr/Xe）最外层已达稳定结构，中学阶段不参与化学反应；工业上只利用它们的物理性质（保护气、电光源、飞艇）。"
+  },
+  "liquid_species": {
+    "_note": "常温常压下是液体的物种：查热力学数据时优先取液相那一行（氯化钠那种有固/液两行的，选错就差 25 kJ/mol）。",
+    "list": [
+      "H2O",
+      "C2H5OH",
+      "CH3COOH",
+      "C6H6",
+      "Hg",
+      "Br2",
+      "H2SO4",
+      "HNO3",
+      "C2H5OH"
+    ]
+  },
+  "zh_traditional": {
+    "_note": "繁体 -> 简体，只收化学范围真会用到的（简繁相同的字不列）。Wikidata 的中文标签会回退到繁体，实测碳酸钙给的是「碳酸鈣」。",
+    "鈣": "钙",
+    "鐵": "铁",
+    "氫": "氢",
+    "鈉": "钠",
+    "鉀": "钾",
+    "鎂": "镁",
+    "鋁": "铝",
+    "銅": "铜",
+    "銀": "银",
+    "鋇": "钡",
+    "錳": "锰",
+    "鋅": "锌",
+    "鉛": "铅",
+    "錫": "锡",
+    "鈾": "铀",
+    "鈦": "钛",
+    "釩": "钒",
+    "鉻": "铬",
+    "鎳": "镍",
+    "鈷": "钴",
+    "鉑": "铂",
+    "銨": "铵",
+    "鹼": "碱",
+    "鹽": "盐",
+    "離": "离",
+    "亞": "亚",
+    "價": "价",
+    "氣": "气",
+    "鏽": "锈",
+    "蘇": "苏",
+    "烴": "烃",
+    "醯": "酰",
+    "羥": "羟",
+    "鹼性": "碱性",
+    "氧氣": "氧气",
+    "氫氣": "氢气",
+    "氮氣": "氮气",
+    "氯氣": "氯气",
+    "二氧化碳": "二氧化碳"
+  },
+  "decompose": {
+    "_note": "受热/催化分解（教材口径）。condition：heat 加热、catalyst 催化剂、high 高温、none 常温即分解。",
+    "rules": [
+      {
+        "reactant": "KMnO4",
+        "condition": "heat",
+        "products": [
+          "K2MnO4",
+          "MnO2",
+          "O2"
+        ],
+        "phenomenon": "固体逐渐减少，产生能使带火星木条复燃的气体（O2）"
+      },
+      {
+        "reactant": "KClO3",
+        "condition": "catalyst",
+        "catalyst": "MnO2",
+        "products": [
+          "KCl",
+          "O2"
+        ],
+        "phenomenon": "产生大量气体（O2）"
+      },
+      {
+        "reactant": "H2O2",
+        "condition": "catalyst",
+        "catalyst": "MnO2",
+        "products": [
+          "H2O",
+          "O2"
+        ],
+        "phenomenon": "有大量气泡冒出（O2）"
+      },
+      {
+        "reactant": "CaCO3",
+        "condition": "high",
+        "products": [
+          "CaO",
+          "CO2"
+        ],
+        "phenomenon": "高温分解，生成生石灰和二氧化碳"
+      },
+      {
+        "reactant": "Cu(OH)2",
+        "condition": "heat",
+        "products": [
+          "CuO",
+          "H2O"
+        ],
+        "phenomenon": "蓝色固体变黑（CuO），试管口有水珠"
+      },
+      {
+        "reactant": "NaHCO3",
+        "condition": "heat",
+        "products": [
+          "Na2CO3",
+          "H2O",
+          "CO2"
+        ],
+        "phenomenon": "产生使澄清石灰水变浑浊的气体（CO2）"
+      },
+      {
+        "reactant": "H2CO3",
+        "condition": "none",
+        "products": [
+          "H2O",
+          "CO2"
+        ],
+        "phenomenon": "碳酸不稳定，常温下就分解"
+      }
+    ]
+  },
+  "reagents": {
+    "_note": "实验台试剂架：key 是化学式（有机的用教材简式，引擎按它推反应），label 是瓶子上写的中文，tag 是货架分组，kind 是 solid/liquid/gas。formula 只在 key 是简式时写（热化学按分子式查）。",
+    "list": [
+      {
+        "key": "HCl",
+        "label": "稀盐酸",
+        "kind": "liquid",
+        "tag": "酸"
+      },
+      {
+        "key": "H2SO4",
+        "label": "稀硫酸",
+        "kind": "liquid",
+        "tag": "酸"
+      },
+      {
+        "key": "HNO3",
+        "label": "稀硝酸",
+        "kind": "liquid",
+        "tag": "酸"
+      },
+      {
+        "key": "CH3COOH",
+        "label": "乙酸（醋酸）",
+        "kind": "liquid",
+        "tag": "酸",
+        "formula": "C2H4O2"
+      },
+      {
+        "key": "NaOH",
+        "label": "氢氧化钠溶液",
+        "kind": "liquid",
+        "tag": "碱"
+      },
+      {
+        "key": "KOH",
+        "label": "氢氧化钾溶液",
+        "kind": "liquid",
+        "tag": "碱"
+      },
+      {
+        "key": "Ca(OH)2",
+        "label": "澄清石灰水",
+        "kind": "liquid",
+        "tag": "碱"
+      },
+      {
+        "key": "Ba(OH)2",
+        "label": "氢氧化钡溶液",
+        "kind": "liquid",
+        "tag": "碱"
+      },
+      {
+        "key": "NH3H2O",
+        "label": "氨水",
+        "kind": "liquid",
+        "tag": "碱",
+        "formula": "H5NO"
+      },
+      {
+        "key": "NaCl",
+        "label": "氯化钠溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "KCl",
+        "label": "氯化钾溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "Na2CO3",
+        "label": "碳酸钠溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "NaHCO3",
+        "label": "碳酸氢钠溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "K2CO3",
+        "label": "碳酸钾溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "Na2SO4",
+        "label": "硫酸钠溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "MgCl2",
+        "label": "氯化镁溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "CaCl2",
+        "label": "氯化钙溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "BaCl2",
+        "label": "氯化钡溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "CuSO4",
+        "label": "硫酸铜溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "FeSO4",
+        "label": "硫酸亚铁溶液",
+        "kind": "liquid",
+        "tag": "盐",
+        "formula": "FeO4S"
+      },
+      {
+        "key": "FeCl3",
+        "label": "氯化铁溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "AgNO3",
+        "label": "硝酸银溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "NH4Cl",
+        "label": "氯化铵溶液",
+        "kind": "liquid",
+        "tag": "盐"
+      },
+      {
+        "key": "CuO",
+        "label": "氧化铜",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "Fe2O3",
+        "label": "氧化铁",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "CaO",
+        "label": "生石灰",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "MnO2",
+        "label": "二氧化锰",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "Al2O3",
+        "label": "氧化铝",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "SiO2",
+        "label": "二氧化硅",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "Fe3O4",
+        "label": "四氧化三铁",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "Cu2O",
+        "label": "氧化亚铜",
+        "kind": "solid",
+        "tag": "氧化物"
+      },
+      {
+        "key": "CaCO3",
+        "label": "大理石",
+        "kind": "solid",
+        "tag": "盐"
+      },
+      {
+        "key": "Cl2",
+        "label": "氯气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "F2",
+        "label": "氟气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "N2",
+        "label": "氮气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "O2",
+        "label": "氧气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "H2",
+        "label": "氢气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "CO",
+        "label": "一氧化碳",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "NO",
+        "label": "一氧化氮",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "NO2",
+        "label": "二氧化氮",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "SO2",
+        "label": "二氧化硫",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "H2S",
+        "label": "硫化氢",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "He",
+        "label": "氦气",
+        "kind": "gas",
+        "tag": "稀有气体"
+      },
+      {
+        "key": "Ne",
+        "label": "氖气",
+        "kind": "gas",
+        "tag": "稀有气体"
+      },
+      {
+        "key": "Ar",
+        "label": "氩气",
+        "kind": "gas",
+        "tag": "稀有气体"
+      },
+      {
+        "key": "Kr",
+        "label": "氪气",
+        "kind": "gas",
+        "tag": "稀有气体"
+      },
+      {
+        "key": "Xe",
+        "label": "氙气",
+        "kind": "gas",
+        "tag": "稀有气体"
+      },
+      {
+        "key": "HF",
+        "label": "氢氟酸",
+        "kind": "liquid",
+        "tag": "酸"
+      },
+      {
+        "key": "Na",
+        "label": "金属钠",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "K",
+        "label": "金属钾",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "Fe",
+        "label": "铁钉",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "Zn",
+        "label": "锌粒",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "Cu",
+        "label": "铜片",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "Mg",
+        "label": "镁条",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "Al",
+        "label": "铝片",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "C",
+        "label": "木炭",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "S",
+        "label": "硫粉",
+        "kind": "solid",
+        "tag": "单质"
+      },
+      {
+        "key": "KMnO4",
+        "label": "高锰酸钾",
+        "kind": "solid",
+        "tag": "固体试剂"
+      },
+      {
+        "key": "KClO3",
+        "label": "氯酸钾",
+        "kind": "solid",
+        "tag": "固体试剂"
+      },
+      {
+        "key": "H2O2",
+        "label": "过氧化氢溶液",
+        "kind": "liquid",
+        "tag": "液体试剂"
+      },
+      {
+        "key": "H2O",
+        "label": "蒸馏水",
+        "kind": "liquid",
+        "tag": "液体试剂"
+      },
+      {
+        "key": "Br2",
+        "label": "溴水",
+        "kind": "liquid",
+        "tag": "液体试剂"
+      },
+      {
+        "key": "I2",
+        "label": "碘水",
+        "kind": "liquid",
+        "tag": "液体试剂"
+      },
+      {
+        "key": "O2",
+        "label": "氧气",
+        "kind": "gas",
+        "tag": "气体"
+      },
+      {
+        "key": "CH4",
+        "label": "甲烷",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "C2H6",
+        "label": "乙烷",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "C3H8",
+        "label": "丙烷",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "C4H10",
+        "label": "丁烷",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "C2H4",
+        "label": "乙烯",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "C3H6",
+        "label": "丙烯",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "C2H2",
+        "label": "乙炔",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "CH3Cl",
+        "label": "一氯甲烷",
+        "kind": "gas",
+        "tag": "有机物",
+        "formula": "CH3Cl"
+      },
+      {
+        "key": "C2H3Cl",
+        "label": "氯乙烯",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "C4H6",
+        "label": "1,3-丁二烯",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "CH3NH2",
+        "label": "甲胺",
+        "kind": "gas",
+        "tag": "有机物",
+        "formula": "CH5N"
+      },
+      {
+        "key": "CH2O",
+        "label": "甲醛气体",
+        "kind": "gas",
+        "tag": "有机物"
+      },
+      {
+        "key": "CH3OH",
+        "label": "甲醇",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "CH4O"
+      },
+      {
+        "key": "C2H5OH",
+        "label": "乙醇",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C2H6O"
+      },
+      {
+        "key": "C2H4(OH)2",
+        "label": "乙二醇",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C2H6O2"
+      },
+      {
+        "key": "C3H5(OH)3",
+        "label": "丙三醇（甘油）",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C3H8O3"
+      },
+      {
+        "key": "C6H5CH2OH",
+        "label": "苯甲醇",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C7H8O"
+      },
+      {
+        "key": "CH3CHO",
+        "label": "乙醛",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C2H4O"
+      },
+      {
+        "key": "CH2O",
+        "label": "甲醛溶液",
+        "kind": "liquid",
+        "tag": "有机物"
+      },
+      {
+        "key": "HCOOH",
+        "label": "甲酸",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "CH2O2"
+      },
+      {
+        "key": "C2H2O4",
+        "label": "乙二酸（草酸）",
+        "kind": "solid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C6H5COOH",
+        "label": "苯甲酸",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C7H6O2"
+      },
+      {
+        "key": "C17H35COOH",
+        "label": "硬脂酸",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C18H36O2"
+      },
+      {
+        "key": "CH3COOC2H5",
+        "label": "乙酸乙酯",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C4H8O2"
+      },
+      {
+        "key": "C2H5Br",
+        "label": "溴乙烷",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C2H5Br"
+      },
+      {
+        "key": "CCl4",
+        "label": "四氯化碳",
+        "kind": "liquid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C6H6",
+        "label": "苯",
+        "kind": "liquid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C7H8",
+        "label": "甲苯",
+        "kind": "liquid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C6H5CH3",
+        "label": "二甲苯",
+        "kind": "liquid",
+        "tag": "有机物",
+        "formula": "C8H10"
+      },
+      {
+        "key": "C8H8",
+        "label": "苯乙烯",
+        "kind": "liquid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C6H5OH",
+        "label": "苯酚",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C6H6O"
+      },
+      {
+        "key": "C6H5NO2",
+        "label": "硝基苯",
+        "kind": "liquid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C6H12O6",
+        "label": "葡萄糖",
+        "kind": "solid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C6H12O6果糖",
+        "label": "果糖",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C6H12O6"
+      },
+      {
+        "key": "C12H22O11",
+        "label": "蔗糖",
+        "kind": "solid",
+        "tag": "有机物"
+      },
+      {
+        "key": "C12H22O11麦芽糖",
+        "label": "麦芽糖",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C12H22O11"
+      },
+      {
+        "key": "C6H10O5",
+        "label": "淀粉",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C6H10O5",
+        "note": "淀粉写成 (C6H10O5)n；方程式按一个葡萄糖单元写（教材里也是这么算的）"
+      },
+      {
+        "key": "C6H10O5纤维素",
+        "label": "纤维素",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C6H10O5"
+      },
+      {
+        "key": "C2H5NO2",
+        "label": "甘氨酸",
+        "kind": "solid",
+        "tag": "有机物"
+      },
+      {
+        "key": "CO(NH2)2",
+        "label": "尿素",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "CH4N2O"
+      },
+      {
+        "key": "硬脂酸甘油酯",
+        "label": "油脂（硬脂酸甘油酯）",
+        "kind": "solid",
+        "tag": "有机物",
+        "formula": "C57H110O6"
+      },
+      {
+        "key": "蛋白质",
+        "label": "蛋白质溶液",
+        "kind": "liquid",
+        "tag": "有机物"
+      },
+      {
+        "key": "litmus",
+        "label": "紫色石蕊试液",
+        "kind": "liquid",
+        "tag": "指示剂"
+      },
+      {
+        "key": "phenolphthalein",
+        "label": "无色酚酞试液",
+        "kind": "liquid",
+        "tag": "指示剂"
+      },
+      {
+        "key": "Fe触媒",
+        "label": "铁触媒（合成氨）",
+        "kind": "solid",
+        "tag": "催化剂",
+        "as_catalyst": "Fe",
+        "note": "教材上只说「催化剂」，工业生产用的是以铁为主的触媒"
+      },
+      {
+        "key": "V2O5",
+        "label": "五氧化二钒（制硫酸）",
+        "kind": "solid",
+        "tag": "催化剂",
+        "note": "接触法制硫酸：2SO2+O2 ⇌ 2SO3 用 V2O5 催化"
+      },
+      {
+        "key": "Pt",
+        "label": "铂催化剂（氨氧化）",
+        "kind": "solid",
+        "tag": "催化剂",
+        "note": "氨催化氧化制硝酸：4NH3+5O2 -> 4NO+6H2O"
+      },
+      {
+        "key": "Ni",
+        "label": "镍催化剂（加氢）",
+        "kind": "solid",
+        "tag": "催化剂",
+        "note": "油脂加氢、苯加氢都用镍"
+      },
+      {
+        "key": "AlCl3",
+        "label": "无水氯化铝（傅-克反应）",
+        "kind": "solid",
+        "tag": "催化剂"
+      },
+      {
+        "key": "FeBr3",
+        "label": "溴化铁（苯的溴代）",
+        "kind": "solid",
+        "tag": "催化剂"
+      },
+      {
+        "key": "齐格勒纳塔",
+        "label": "齐格勒-纳塔催化剂（加聚）",
+        "kind": "solid",
+        "tag": "催化剂",
+        "note": "乙烯/丙烯在齐格勒-纳塔催化剂下加聚成聚乙烯/聚丙烯"
+      },
+      {
+        "key": "过氧化苯甲酰",
+        "label": "过氧化苯甲酰（自由基引发剂）",
+        "kind": "solid",
+        "tag": "催化剂",
+        "note": "氯乙烯、苯乙烯等加聚常用自由基引发剂"
+      },
+      {
+        "key": "分子筛",
+        "label": "分子筛（裂化催化剂）",
+        "kind": "solid",
+        "tag": "催化剂"
+      },
+      {
+        "key": "HI",
+        "label": "碘化氢",
+        "kind": "solid",
+        "tag": "单质/可燃物"
+      },
+      {
+        "key": "P",
+        "label": "红磷",
+        "kind": "solid",
+        "tag": "单质/可燃物"
+      },
+      {
+        "key": "Ag",
+        "label": "银",
+        "kind": "solid",
+        "tag": "单质/可燃物"
+      },
+      {
+        "key": "FeO",
+        "label": "氧化亚铁",
+        "kind": "solid",
+        "tag": "单质/可燃物"
+      }
+    ]
+  },
+  "amounts": {
+    "_note": "一份试剂大约多少 mol（药匙/滴管口径，用来算反应限度）。这是**示意用量**，不是精确称量。",
+    "solid": 0.01,
+    "liquid": 0.05,
+    "gas": 0.01,
+    "_default": 0.02
+  },
+  "oxides": {
+    "_note": "金属氧化物：值是对应的金属离子（氧化物 + 酸 -> 盐 + 水，这条路径离子模型算不出来，得单独认）",
+    "CuO": "Cu",
+    "Cu2O": "Cu",
+    "Fe2O3": "Fe3",
+    "FeO": "Fe2",
+    "Fe3O4": "Fe3",
+    "CaO": "Ca",
+    "MgO": "Mg",
+    "ZnO": "Zn",
+    "Al2O3": "Al",
+    "Na2O": "Na",
+    "K2O": "K",
+    "BaO": "Ba"
+  },
+  "indicators": {
+    "_note": "酸碱指示剂（教材口径的颜色）：界面按溶液的酸碱性给整杯溶液换个色。",
+    "litmus": {
+      "acid": "#c0392b",
+      "neutral": "#7d5ba6",
+      "base": "#2f6fd0"
+    },
+    "phenolphthalein": {
+      "acid": "#f4f7fa",
+      "neutral": "#f4f7fa",
+      "base": "#e0518f"
+    }
+  },
+  "organic_reactions": {
+    "_note": "有机反应（教材口径）。reactants/products 写教材简式；condition 见下面的 conditions；reversible=true 表示可逆，限度就是这个反应的教学重点。literal=true 表示没有配平式（比如蛋白质变性），只给文字结论。",
+    "list": [
+      {
+        "key": "methane_burn",
+        "reactants": [
+          "CH4",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "安静的淡蓝色火焰，放出大量热"
+      },
+      {
+        "key": "ethylene_burn",
+        "reactants": [
+          "C2H4",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "火焰明亮、带黑烟"
+      },
+      {
+        "key": "acetylene_burn",
+        "reactants": [
+          "C2H2",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "火焰明亮、浓黑烟（氧炔焰温度很高）"
+      },
+      {
+        "key": "benzene_burn",
+        "reactants": [
+          "C6H6",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "火焰明亮、带浓黑烟（含碳量高，燃烧不充分）"
+      },
+      {
+        "key": "toluene_burn",
+        "reactants": [
+          "C6H5CH3",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "火焰明亮、带浓黑烟"
+      },
+      {
+        "key": "methanol_burn",
+        "reactants": [
+          "CH3OH",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "淡蓝色火焰，放出大量热"
+      },
+      {
+        "key": "ethane_burn",
+        "reactants": [
+          "C2H6",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "淡蓝色火焰，放出大量热"
+      },
+      {
+        "key": "propane_burn",
+        "reactants": [
+          "C3H8",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "淡蓝色火焰，放出大量热"
+      },
+      {
+        "key": "butane_burn",
+        "reactants": [
+          "C4H10",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "淡蓝色火焰，放出大量热"
+      },
+      {
+        "key": "h2s_burn",
+        "reactants": [
+          "H2S",
+          "O2"
+        ],
+        "products": [
+          "SO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "淡蓝色火焰，有刺激性气味的气体生成"
+      },
+      {
+        "key": "ethanol_burn",
+        "reactants": [
+          "C2H5OH",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "淡蓝色火焰，放出大量热"
+      },
+      {
+        "key": "sulfur_burn",
+        "reactants": [
+          "S",
+          "O2"
+        ],
+        "products": [
+          "SO2"
+        ],
+        "condition": "ignite",
+        "phenomenon": "明亮的蓝紫色火焰，有刺激性气味"
+      },
+      {
+        "key": "carbon_burn",
+        "reactants": [
+          "C",
+          "O2"
+        ],
+        "products": [
+          "CO2"
+        ],
+        "condition": "ignite",
+        "phenomenon": "剧烈燃烧、发出白光"
+      },
+      {
+        "key": "ethanol_oxidize",
+        "reactants": [
+          "C2H5OH",
+          "O2"
+        ],
+        "products": [
+          "CH3CHO",
+          "H2O"
+        ],
+        "condition": "cu_heat",
+        "catalyst": "Cu",
+        "phenomenon": "灼热的铜丝反复变黑又变亮，闻到刺激性气味（乙醛）"
+      },
+      {
+        "key": "esterify",
+        "reactants": [
+          "CH3COOH",
+          "C2H5OH"
+        ],
+        "products": [
+          "CH3COOC2H5",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "reversible": true,
+        "phenomenon": "有果香味的油状液体浮在上层（乙酸乙酯）"
+      },
+      {
+        "key": "acetic_acid_carbonate",
+        "reactants": [
+          "CH3COOH",
+          "Na2CO3"
+        ],
+        "products": [
+          "CH3COONa",
+          "H2O",
+          "CO2"
+        ],
+        "condition": "none",
+        "phenomenon": "大量气泡（CO2）——乙酸的酸性比碳酸强"
+      },
+      {
+        "key": "acetic_acid_base",
+        "reactants": [
+          "CH3COOH",
+          "NaOH"
+        ],
+        "products": [
+          "CH3COONa",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "放热，没有明显现象"
+      },
+      {
+        "key": "ethylene_bromine",
+        "reactants": [
+          "C2H4",
+          "Br2"
+        ],
+        "products": [
+          "C2H4Br2"
+        ],
+        "condition": "none",
+        "phenomenon": "溴水褪色（加成反应）"
+      },
+      {
+        "key": "acetylene_bromine",
+        "reactants": [
+          "C2H2",
+          "Br2"
+        ],
+        "products": [
+          "C2H2Br2"
+        ],
+        "condition": "none",
+        "phenomenon": "溴水褪色（加成反应）"
+      },
+      {
+        "key": "benzene_bromine",
+        "reactants": [
+          "C6H6",
+          "Br2"
+        ],
+        "products": [
+          "C6H5Br",
+          "HBr"
+        ],
+        "condition": "febr3",
+        "catalyst": "FeBr3",
+        "phenomenon": "导管口有白雾（HBr），生成溴苯（取代反应）"
+      },
+      {
+        "key": "phenol_bromine",
+        "reactants": [
+          "C6H5OH",
+          "Br2"
+        ],
+        "products": [
+          "C6H2Br3OH",
+          "HBr"
+        ],
+        "condition": "none",
+        "phenomenon": "立即产生白色沉淀（2,4,6-三溴苯酚）"
+      },
+      {
+        "key": "sucrose_hydrolysis",
+        "reactants": [
+          "C12H22O11",
+          "H2O"
+        ],
+        "products": [
+          "C6H12O6"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "phenomenon": "水解生成葡萄糖和果糖（都能发生银镜反应）"
+      },
+      {
+        "key": "starch_hydrolysis",
+        "reactants": [
+          "C6H10O5",
+          "H2O"
+        ],
+        "products": [
+          "C6H12O6"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "phenomenon": "水解最终得到葡萄糖；用碘水检验淀粉是否水解完全"
+      },
+      {
+        "key": "ester_hydrolysis",
+        "reactants": [
+          "CH3COOC2H5",
+          "H2O"
+        ],
+        "products": [
+          "CH3COOH",
+          "C2H5OH"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "reversible": true,
+        "phenomenon": "酯层逐渐减少（水解，可逆）"
+      },
+      {
+        "key": "fat_saponify",
+        "reactants": [
+          "硬脂酸甘油酯",
+          "NaOH"
+        ],
+        "products": [
+          "C17H35COONa",
+          "C3H8O3"
+        ],
+        "condition": "heat",
+        "phenomenon": "加热搅拌后不再分层（皂化反应，生成肥皂和甘油）"
+      },
+      {
+        "key": "protein_denature",
+        "reactants": [
+          "蛋白质"
+        ],
+        "products": [],
+        "condition": "heat",
+        "literal": "蛋白质 --加热/重金属盐--> 变性（凝结、失去生理活性）",
+        "phenomenon": "蛋白质凝结析出，加水也不再溶解"
+      },
+      {
+        "key": "ethanol_sodium",
+        "reactants": [
+          "C2H5OH",
+          "Na"
+        ],
+        "products": [
+          "C2H5ONa",
+          "H2"
+        ],
+        "condition": "none",
+        "phenomenon": "钠沉在乙醇底部慢慢冒气泡（H2），比与水反应平缓得多"
+      },
+      {
+        "key": "glycerol_sodium",
+        "reactants": [
+          "C3H5(OH)3",
+          "Na"
+        ],
+        "products": [
+          "C3H5(ONa)3",
+          "H2"
+        ],
+        "condition": "none",
+        "phenomenon": "缓慢冒出气泡（H2）"
+      },
+      {
+        "key": "formic_acid_oxidize",
+        "reactants": [
+          "HCOOH",
+          "O2"
+        ],
+        "products": [
+          "CO2",
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "燃烧，生成 CO2 和 H2O"
+      },
+      {
+        "key": "acetaldehyde_silver",
+        "reactants": [
+          "CH3CHO",
+          "银氨溶液"
+        ],
+        "products": [],
+        "condition": "heat",
+        "literal": "CH3CHO + 2Ag(NH3)2OH --水浴加热--> CH3COONH4 + 2Ag(银镜) + 3NH3 + H2O",
+        "phenomenon": "试管内壁出现光亮的银镜（醛基被氧化）"
+      },
+      {
+        "key": "acetaldehyde_fehling",
+        "reactants": [
+          "CH3CHO",
+          "新制氢氧化铜"
+        ],
+        "products": [],
+        "condition": "heat",
+        "literal": "CH3CHO + 2Cu(OH)2 --加热--> CH3COOH + Cu2O(砖红色) + 2H2O",
+        "phenomenon": "出现砖红色沉淀（Cu2O）"
+      },
+      {
+        "key": "glucose_silver",
+        "reactants": [
+          "C6H12O6",
+          "银氨溶液"
+        ],
+        "products": [],
+        "condition": "heat",
+        "literal": "葡萄糖 + 2Ag(NH3)2OH --水浴加热--> 葡萄糖酸铵 + 2Ag(银镜) + 3NH3 + H2O",
+        "phenomenon": "出现银镜——葡萄糖里有醛基"
+      },
+      {
+        "key": "glucose_fehling",
+        "reactants": [
+          "C6H12O6",
+          "新制氢氧化铜"
+        ],
+        "products": [],
+        "condition": "heat",
+        "literal": "葡萄糖 + 2Cu(OH)2 --加热--> 葡萄糖酸 + Cu2O(砖红色) + 2H2O",
+        "phenomenon": "出现砖红色沉淀（Cu2O）"
+      },
+      {
+        "key": "maltose_hydrolysis",
+        "reactants": [
+          "C12H22O11麦芽糖",
+          "H2O"
+        ],
+        "products": [
+          "C6H12O6"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "phenomenon": "水解只得到葡萄糖"
+      },
+      {
+        "key": "cellulose_hydrolysis",
+        "reactants": [
+          "C6H10O5纤维素",
+          "H2O"
+        ],
+        "products": [
+          "C6H12O6"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "phenomenon": "水解最终得到葡萄糖（比淀粉难）"
+      },
+      {
+        "key": "ethylene_polymerize",
+        "reactants": [
+          "C2H4"
+        ],
+        "products": [],
+        "condition": "catalyst",
+        "catalyst": "催化剂",
+        "literal": "nCH2=CH2 --催化剂--> [-CH2-CH2-]n（聚乙烯）",
+        "phenomenon": "气体逐渐减少，生成白色固体（聚乙烯）"
+      },
+      {
+        "key": "benzene_nitrate",
+        "reactants": [
+          "C6H6",
+          "HNO3"
+        ],
+        "products": [
+          "C6H5NO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "phenomenon": "有苦杏仁气味的油状液体（硝基苯），需要浓硫酸催化并控制在 55-60 ℃"
+      },
+      {
+        "reactants": [
+          "C",
+          "H2SO4"
+        ],
+        "products": [
+          "CO2",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "catalyst": "H2SO4",
+        "phenomenon": "加热后碳被浓硫酸氧化：剧烈反应、放出大量热，同时冒出 CO2 和 SO2（无色、有刺激性气味的气体），浓硫酸本身被还原"
+      },
+      {
+        "key": "benzene_hydrogen",
+        "reactants": [
+          "C6H6",
+          "H2"
+        ],
+        "products": [
+          "C6H12"
+        ],
+        "condition": "catalyst",
+        "catalyst": "催化剂",
+        "phenomenon": "苯环被加成，生成环己烷"
+      },
+      {
+        "key": "toluene_oxidize",
+        "reactants": [
+          "C7H8",
+          "KMnO4"
+        ],
+        "products": [
+          "C6H5COOH"
+        ],
+        "condition": "heat",
+        "phenomenon": "紫红色褪去，生成苯甲酸——苯的同系物能让酸性高锰酸钾褪色"
+      },
+      {
+        "key": "bromoethane_hydrolysis",
+        "reactants": [
+          "C2H5Br",
+          "NaOH"
+        ],
+        "products": [
+          "C2H5OH",
+          "NaBr"
+        ],
+        "condition": "heat",
+        "phenomenon": "溴乙烷水解（NaOH 水溶液）生成乙醇"
+      },
+      {
+        "key": "bromoethane_eliminate",
+        "reactants": [
+          "C2H5Br",
+          "NaOH"
+        ],
+        "products": [
+          "C2H4",
+          "NaBr",
+          "H2O"
+        ],
+        "condition": "heat",
+        "phenomenon": "溴乙烷消去（NaOH 醇溶液、加热）生成乙烯，能使溴水褪色"
+      },
+      {
+        "key": "phenol_base",
+        "reactants": [
+          "C6H5OH",
+          "NaOH"
+        ],
+        "products": [
+          "C6H5ONa",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "苯酚溶解（苯酚酸性比碳酸还弱，但能和强碱反应）"
+      },
+      {
+        "key": "stearic_acid_base",
+        "reactants": [
+          "C17H35COOH",
+          "NaOH"
+        ],
+        "products": [
+          "C17H35COONa",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "生成硬脂酸钠（肥皂的主要成分）"
+      },
+      {
+        "key": "oxalic_acid_oxidize",
+        "reactants": [
+          "C2H2O4",
+          "KMnO4"
+        ],
+        "products": [
+          "CO2"
+        ],
+        "condition": "heat",
+        "phenomenon": "紫红色褪去，放出 CO2——草酸有还原性"
+      }
+    ]
+  },
+  "reaction_conditions": {
+    "_note": "反应条件：界面上的「加热」把温度抬到 heat_temperature；ignite 是点燃（本模拟按加热到同样温度处理）。label 是显示给人看的。needs 是这条条件额外要求的物质（催化剂/浓硫酸）。",
+    "ignite": {
+      "label": "点燃",
+      "temperature": 873
+    },
+    "heat": {
+      "label": "加热",
+      "temperature": 673
+    },
+    "high": {
+      "label": "高温",
+      "temperature": 1273
+    },
+    "high_pressure": {
+      "label": "高温高压、催化剂",
+      "temperature": 773,
+      "needs": "Fe触媒"
+    },
+    "catalyst_heat": {
+      "label": "催化剂、加热",
+      "temperature": 673
+    },
+    "acid_heat": {
+      "label": "浓硫酸、加热",
+      "temperature": 443,
+      "needs": "H2SO4"
+    },
+    "cu_heat": {
+      "label": "铜或银催化并加热",
+      "temperature": 573,
+      "needs": "Cu"
+    },
+    "febr3": {
+      "label": "溴化铁催化",
+      "temperature": 298,
+      "needs": "FeBr3"
+    },
+    "catalyst": {
+      "label": "催化剂",
+      "temperature": 298
+    },
+    "none": {
+      "label": "常温",
+      "temperature": 298
+    }
+  },
+  "apparatus": {
+    "_note": "器材：ports 是接口点（界面按 ports 做吸附与连线），heatable 表示能不能直接加热。",
+    "list": [
+      {
+        "kind": "tube",
+        "label": "试管",
+        "ports": [
+          "口"
+        ],
+        "heatable": true
+      },
+      {
+        "kind": "beaker",
+        "label": "烧杯",
+        "ports": [
+          "口"
+        ],
+        "heatable": true
+      },
+      {
+        "kind": "flask",
+        "label": "锥形瓶",
+        "ports": [
+          "口"
+        ],
+        "heatable": true
+      },
+      {
+        "kind": "bottle",
+        "label": "集气瓶",
+        "ports": [
+          "口"
+        ],
+        "heatable": false
+      },
+      {
+        "kind": "trough",
+        "label": "水槽",
+        "ports": [
+          "水面"
+        ],
+        "heatable": false
+      },
+      {
+        "kind": "lamp",
+        "label": "酒精灯",
+        "ports": [],
+        "heatable": false
+      },
+      {
+        "kind": "stand",
+        "label": "铁架台",
+        "ports": [
+          "夹"
+        ],
+        "heatable": false
+      },
+      {
+        "kind": "pipe",
+        "label": "导管",
+        "ports": [
+          "两端"
+        ],
+        "heatable": false,
+        "connector": true
+      },
+      {
+        "kind": "autoclave",
+        "label": "恒容密闭反应釜",
+        "ports": [
+          "进气口"
+        ],
+        "heatable": true,
+        "sealed": true,
+        "volume": 1.0,
+        "note": "恒容密闭：气体不逸出，压强按 pV=nRT 算，可逆反应在这里才真的停在平衡上"
+      },
+      {
+        "key": "burner",
+        "label": "燃烧台（燃烧匙）",
+        "kind": "burner",
+        "tag": "加热/燃烧",
+        "note": "放可燃物 + 氧气/氯气，点「点燃」看燃烧现象",
+        "heatable": true,
+        "ports": [
+          {
+            "x": 69,
+            "y": 50,
+            "kind": "口"
+          }
+        ],
+        "flame_test": true
+      }
+    ]
+  },
+  "lab_presets": {
+    "_note": "预设实验：老师一键看到该摆哪些器材和试剂、怎么做。",
+    "list": [
+      {
+        "key": "o2",
+        "label": "加热高锰酸钾制氧气",
+        "apparatus": [
+          "stand",
+          "tube",
+          "lamp",
+          "trough",
+          "bottle"
+        ],
+        "reagents": [
+          "KMnO4"
+        ],
+        "steps": [
+          "把试管固定在铁架台上，管口略向下倾斜",
+          "加入高锰酸钾",
+          "集气瓶装满水倒扣在水槽里（排水法）",
+          "点燃酒精灯加热，用导管把气体引进集气瓶",
+          "带火星木条复燃说明是氧气"
+        ]
+      },
+      {
+        "key": "co2",
+        "label": "制取并检验二氧化碳",
+        "apparatus": [
+          "flask",
+          "tube"
+        ],
+        "reagents": [
+          "CaCO3",
+          "HCl"
+        ],
+        "steps": [
+          "锥形瓶里放大理石",
+          "加入稀盐酸（不用稀硫酸）",
+          "把气体通入澄清石灰水检验"
+        ]
+      },
+      {
+        "key": "ions",
+        "label": "常见离子的检验",
+        "apparatus": [
+          "tube",
+          "tube",
+          "tube"
+        ],
+        "reagents": [
+          "AgNO3",
+          "BaCl2",
+          "NaOH"
+        ],
+        "steps": [
+          "加硝酸银看白色沉淀（Cl-）",
+          "加氯化钡看白色沉淀（SO4）",
+          "加碱并加热，用湿润红色石蕊试纸检验（NH4+）"
+        ]
+      }
+    ]
+  },
+  "solution_color": {
+    "_note": "溶液颜色（教材口径）。界面按它给液体上色；没列到的一律按无色处理（不猜）。",
+    "CuSO4": "#2f8fd8",
+    "CuCl2": "#3aa0e0",
+    "Cu(NO3)2": "#3aa0e0",
+    "FeCl3": "#c8860d",
+    "Fe2(SO4)3": "#c8860d",
+    "Fe(NO3)3": "#c8860d",
+    "FeSO4": "#7fbf8f",
+    "FeCl2": "#7fbf8f",
+    "KMnO4": "#8e2f8e",
+    "K2MnO4": "#1f7a5a",
+    "Fe(SCN)3": "#a3121b",
+    "I2": "#7a4a12",
+    "溴水": "#c4762a",
+    "碘酒": "#6b4520",
+    "Br2": "#c4762a"
+  },
+  "solid_color": {
+    "_note": "固体/沉淀颜色（教材口径）。界面用它画固体和沉淀。",
+    "Cu": "#b45b3e",
+    "Fe": "#8d939b",
+    "Zn": "#a9b0b8",
+    "Mg": "#b9c0c7",
+    "Al": "#c3c8cd",
+    "MnO2": "#22262b",
+    "CuO": "#1f2429",
+    "Fe3O4": "#2b2f36",
+    "Fe2O3": "#a5442a",
+    "KMnO4": "#4a1f45",
+    "CaCO3": "#f2f4f7",
+    "Na2CO3": "#f2f4f7",
+    "NaHCO3": "#f2f4f7",
+    "AgCl": "#f7f9fb",
+    "BaSO4": "#f7f9fb",
+    "CaSO4": "#f2f4f7",
+    "Mg(OH)2": "#f7f9fb",
+    "Cu(OH)2": "#2f8fd8",
+    "Fe(OH)3": "#a5442a",
+    "Fe(OH)2": "#cfd6c9",
+    "CaO": "#f2f4f7",
+    "CuSO4": "#3aa0e0",
+    "S": "#e8d24a",
+    "P": "#c0392b",
+    "C": "#1b1f24",
+    "I2": "#4b2a6b",
+    "KClO3": "#f2f4f7",
+    "KCl": "#f7f9fb",
+    "NaCl": "#f7f9fb",
+    "NH4Cl": "#f7f9fb",
+    "Na2SO4": "#f7f9fb",
+    "K2CO3": "#f7f9fb",
+    "CH3COONa": "#f7f9fb",
+    "C6H12O6": "#f7f9fb",
+    "C12H22O11": "#f7f9fb",
+    "C6H10O5": "#f7f9fb",
+    "C6H5OH": "#f0d9e2",
+    "C6H5Br": "#e8e2d4",
+    "C6H2Br3OH": "#f7f9fb",
+    "C17H35COONa": "#f7f9fb",
+    "C3H8O3": "#eef3f7",
+    "AgBr": "#f2f2ea"
+  },
+  "organic_layer": {
+    "_note": "**不溶于水、会分层**的有机物：值是和水分层后在上面(up)还是下面(down)——按密度来的（苯 0.88 浮，四氯化碳 1.59 / 溴苯 1.50 / 硝基苯 1.20 沉）。没列进来的液态有机物一律按「与水互溶」处理（乙醇、乙酸、甘油…），不分层。",
+    "CH3COOC2H5": "up",
+    "C6H6": "up",
+    "C7H8": "up",
+    "C6H5CH3": "up",
+    "C8H8": "up",
+    "硬脂酸甘油酯": "up",
+    "C17H35COOCH3": "up",
+    "C17H35COOH": "up",
+    "CCl4": "down",
+    "C6H5NO2": "down",
+    "C6H5Br": "down",
+    "C2H5Br": "down",
+    "C6H5OH": "down",
+    "C6H12": "up",
+    "C6H14": "up"
+  },
+  "layer_color": {
+    "_note": "分层时那一层的颜色（教材口径，比溶液色浓一点——投影上要看得出来）。没列到的按淡黄处理。",
+    "CH3COOC2H5": "#eed98a",
+    "C6H6": "#e4dcae",
+    "C7H8": "#e4dcae",
+    "C6H5CH3": "#e4dcae",
+    "C8H8": "#e4dcae",
+    "硬脂酸甘油酯": "#f0e4b4",
+    "C6H5NO2": "#e8d264",
+    "C6H5Br": "#dcc79a",
+    "CCl4": "#cfe0e8",
+    "C2H5Br": "#d8e2e8",
+    "C6H12": "#e4dcae",
+    "C6H14": "#e4dcae",
+    "C17H35COOH": "#f2e8c0",
+    "C6H5OH": "#f0d8e0"
+  },
+  "setup_rules": {
+    "_note": "装置检查（教材口径）：key 是界面要判的几何条件，text 是没做到时给老师/学生看的话。界面只判几何，化学判断仍在引擎里。",
+    "rules": [
+      {
+        "key": "heated_tube_downward",
+        "text": "加热固体时试管口应略向下倾斜，防止冷凝水倒流炸裂试管"
+      },
+      {
+        "key": "gas_outlet_short",
+        "text": "导管伸入集气瓶不宜过长，否则空气不易排出"
+      },
+      {
+        "key": "flask_needs_stand_or_lamp",
+        "text": "加热烧瓶/锥形瓶时要垫石棉网或放在铁架台上，不能直接用酒精灯加热"
+      },
+      {
+        "key": "collect_connected",
+        "text": "制取气体时要用导管把发生装置和收集装置连起来，气体才收集得到"
+      }
+    ]
+  },
+  "ion_names": {
+    "Na": "钠离子",
+    "K": "钾离子",
+    "NH4": "铵根离子",
+    "Ca": "钙离子",
+    "Ba": "钡离子",
+    "Mg": "镁离子",
+    "Al": "铝离子",
+    "Zn": "锌离子",
+    "Fe2": "亚铁离子",
+    "Fe3": "铁离子",
+    "Cu": "铜离子",
+    "Ag": "银离子",
+    "Pb": "铅离子",
+    "H": "氢离子",
+    "Cl": "氯离子",
+    "SO4": "硫酸根离子",
+    "CO3": "碳酸根离子",
+    "OH": "氢氧根离子",
+    "NO3": "硝酸根离子"
+  },
+  "precipitate_color": {
+    "_note": "沉淀颜色：只写教材里明确的，其余按白色。",
+    "CuOH": "蓝色",
+    "CuCO3": "蓝色",
+    "Fe3OH": "红褐色",
+    "Fe2OH": "白色",
+    "AgCl": "白色"
+  },
+  "redox": {
+    "_note": "氧化还原/燃烧一类：按反应物集合匹配（顺序无关），condition 见 conditions；intensity 给界面用（violent 要画得剧烈）。",
+    "list": [
+      {
+        "key": "c_h2so4",
+        "reactants": [
+          "C",
+          "H2SO4"
+        ],
+        "products": [
+          "CO2",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热后碳被浓硫酸氧化：剧烈反应、放出大量热，冒出无色有刺激性气味的 SO2 和 CO2，浓硫酸本身被还原（硫由 +6 降到 +4）。常温下不反应",
+        "intensity": "violent"
+      },
+      {
+        "key": "cu_h2so4",
+        "reactants": [
+          "Cu",
+          "H2SO4"
+        ],
+        "products": [
+          "CuSO4",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热时铜逐渐溶解，溶液变蓝（CuSO4），同时放出有刺激性气味的 SO2 —— 浓硫酸的强氧化性，不能生成氢气",
+        "intensity": "normal"
+      },
+      {
+        "key": "zn_h2so4",
+        "reactants": [
+          "Zn",
+          "H2SO4"
+        ],
+        "products": [
+          "ZnSO4",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热下放出有刺激性气味的 SO2（不是氢气）；常温浓硫酸使铁铝钝化",
+        "intensity": "normal"
+      },
+      {
+        "key": "fe_h2so4",
+        "reactants": [
+          "Fe",
+          "H2SO4"
+        ],
+        "products": [
+          "Fe2(SO4)3",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热时铁被浓硫酸氧化成 Fe3+，放出有刺激性气味的 SO2（常温下钝化，不继续反应）",
+        "intensity": "normal"
+      },
+      {
+        "key": "ag_h2so4",
+        "reactants": [
+          "Ag",
+          "H2SO4"
+        ],
+        "products": [
+          "Ag2SO4",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热时银溶解，放出有刺激性气味的 SO2",
+        "intensity": "normal",
+        "balanced": "2Ag + 2H2SO4 = Ag2SO4 + SO2 + 2H2O"
+      },
+      {
+        "key": "s_h2so4",
+        "reactants": [
+          "S",
+          "H2SO4"
+        ],
+        "products": [
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热时硫被浓硫酸氧化，全部变成有刺激性气味的 SO2",
+        "intensity": "normal",
+        "balanced": "S + 2H2SO4 = 3SO2 + 2H2O"
+      },
+      {
+        "key": "p_h2so4",
+        "reactants": [
+          "P",
+          "H2SO4"
+        ],
+        "products": [
+          "H3PO4",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热时磷被氧化成磷酸，同时放出有刺激性气味的 SO2",
+        "intensity": "normal",
+        "balanced": "2P + 5H2SO4 = 2H3PO4 + 5SO2 + 2H2O"
+      },
+      {
+        "key": "h2s_h2so4",
+        "reactants": [
+          "H2S",
+          "H2SO4"
+        ],
+        "products": [
+          "S",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "常温就反应：出现淡黄色浑浊（单质硫），并放出有刺激性气味的 SO2 —— 浓硫酸能氧化 H2S，所以不能用浓硫酸干燥 H2S",
+        "intensity": "normal",
+        "balanced": "H2S + H2SO4 = S + SO2 + 2H2O"
+      },
+      {
+        "key": "hi_h2so4",
+        "reactants": [
+          "HI",
+          "H2SO4"
+        ],
+        "products": [
+          "I2",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "none",
+        "phenomenon": "常温就反应：溶液出现紫红色（碘单质），放出有刺激性气味的 SO2，不能用浓硫酸干燥 HI",
+        "intensity": "normal",
+        "balanced": "2HI + H2SO4 = I2 + SO2 + 2H2O"
+      },
+      {
+        "key": "feo_h2so4",
+        "reactants": [
+          "FeO",
+          "H2SO4"
+        ],
+        "products": [
+          "Fe2(SO4)3",
+          "SO2",
+          "H2O"
+        ],
+        "condition": "acid_heat",
+        "phenomenon": "加热时 Fe2+ 被浓硫酸进一步氧化成 Fe3+，放出有刺激性气味的 SO2",
+        "intensity": "normal",
+        "balanced": "2FeO + 4H2SO4 = Fe2(SO4)3 + SO2 + 4H2O"
+      },
+      {
+        "key": "c_o2",
+        "reactants": [
+          "C",
+          "O2"
+        ],
+        "products": [
+          "CO2"
+        ],
+        "condition": "ignite",
+        "phenomenon": "剧烈燃烧、发出白光，放出大量热，生成的气体使澄清石灰水变浑浊",
+        "intensity": "violent"
+      },
+      {
+        "key": "s_o2",
+        "reactants": [
+          "S",
+          "O2"
+        ],
+        "products": [
+          "SO2"
+        ],
+        "condition": "ignite",
+        "phenomenon": "在氧气里燃烧发出明亮的蓝紫色火焰，生成有刺激性气味的 SO2",
+        "intensity": "normal"
+      },
+      {
+        "key": "p_o2",
+        "reactants": [
+          "P",
+          "O2"
+        ],
+        "products": [
+          "P2O5"
+        ],
+        "condition": "ignite",
+        "phenomenon": "剧烈燃烧、产生大量白烟（五氧化二磷固体小颗粒）",
+        "intensity": "violent"
+      },
+      {
+        "key": "fe_o2",
+        "reactants": [
+          "Fe",
+          "O2"
+        ],
+        "products": [
+          "Fe3O4"
+        ],
+        "condition": "ignite",
+        "phenomenon": "剧烈燃烧、火星四射，生成黑色固体（四氧化三铁）——集气瓶底要留少量水或细沙",
+        "intensity": "violent"
+      },
+      {
+        "key": "mg_o2",
+        "reactants": [
+          "Mg",
+          "O2"
+        ],
+        "products": [
+          "MgO"
+        ],
+        "condition": "ignite",
+        "phenomenon": "剧烈燃烧、发出耀眼白光，生成白色固体（氧化镁）",
+        "intensity": "violent"
+      },
+      {
+        "key": "na_cl2",
+        "reactants": [
+          "Na",
+          "Cl2"
+        ],
+        "products": [
+          "NaCl"
+        ],
+        "condition": "ignite",
+        "phenomenon": "钠在氯气里剧烈燃烧、产生大量白烟（氯化钠），火焰呈黄色",
+        "intensity": "violent"
+      },
+      {
+        "key": "h2_cl2",
+        "reactants": [
+          "H2",
+          "Cl2"
+        ],
+        "products": [
+          "HCl"
+        ],
+        "condition": "ignite",
+        "phenomenon": "氢气在氯气里安静燃烧，发出苍白色火焰，瓶口出现白雾（HCl 溶于水汽）",
+        "intensity": "normal"
+      },
+      {
+        "key": "cu_cl2",
+        "reactants": [
+          "Cu",
+          "Cl2"
+        ],
+        "products": [
+          "CuCl2"
+        ],
+        "condition": "ignite",
+        "phenomenon": "铜在氯气里剧烈燃烧，产生棕黄色的烟（氯化铜）",
+        "intensity": "violent"
+      },
+      {
+        "key": "h2_o2",
+        "reactants": [
+          "H2",
+          "O2"
+        ],
+        "products": [
+          "H2O"
+        ],
+        "condition": "ignite",
+        "phenomenon": "点燃时剧烈反应甚至爆炸（氢气与氧气混合遇明火即爆），发出淡蓝色火焰",
+        "intensity": "violent"
+      },
+      {
+        "key": "ch4_cl2",
+        "reactants": [
+          "CH4",
+          "Cl2"
+        ],
+        "products": [
+          "CH3Cl",
+          "HCl"
+        ],
+        "condition": "ignite",
+        "phenomenon": "光照/点燃下发生取代反应，气体颜色变浅，生成油状液滴（一氯甲烷等混合物）",
+        "intensity": "normal"
+      }
+    ]
+  },
+  "gas_color": {
+    "Cl2": "黄绿色",
+    "NO2": "红棕色",
+    "Br2": "红棕色（蒸气）",
+    "F2": "淡黄绿色",
+    "SO2": "无色（有刺激性气味）",
+    "CO2": "无色",
+    "O2": "无色",
+    "H2": "无色",
+    "NH3": "无色（有刺激性气味）",
+    "HCl": "无色（瓶口有白雾）",
+    "H2S": "无色（臭鸡蛋气味）",
+    "CO": "无色",
+    "CH4": "无色",
+    "C2H4": "无色",
+    "N2": "无色",
+    "I2": "紫红色（蒸气）"
+  },
+  "flame_color": {
+    "_note": "焰色反应的颜色只由**金属元素**决定（钠黄、钾浅紫……），所以按元素查：任何盐、碱、氧化物、金属单质都自动覆盖，不用一条条列盐名。表里的顺序就是优先级（一种物质同时含两种金属时取靠前的）。burn 是**可燃物燃烧时的火焰颜色**（甲烷淡蓝、苯明亮带浓烟……），跟焰色反应是两回事，按物质查。",
+    "element": {
+      "Na": "黄色",
+      "K": "浅紫色（透过蓝色钴玻璃看）",
+      "Ca": "砖红色",
+      "Sr": "洋红色",
+      "Ba": "黄绿色",
+      "Cu": "绿色",
+      "Li": "紫红色",
+      "Rb": "紫色",
+      "Cs": "蓝色"
+    },
+    "burn": {
+      "CH4": "淡蓝色",
+      "C2H6": "淡蓝色",
+      "C3H8": "淡蓝色",
+      "C4H10": "淡蓝色",
+      "C2H4": "明亮（带黑烟）",
+      "C2H2": "明亮（浓黑烟）",
+      "C6H6": "明亮（浓黑烟）",
+      "C6H5CH3": "明亮（浓黑烟）",
+      "C2H5OH": "淡蓝色",
+      "CH3OH": "淡蓝色",
+      "H2": "淡蓝色",
+      "CO": "蓝色",
+      "H2S": "淡蓝色",
+      "S": "淡蓝色（在氧气中蓝紫色）",
+      "P": "黄白色（大量白烟）",
+      "Mg": "耀眼白光",
+      "Fe": "火星四射",
+      "C": "红热（无焰）"
+    }
+  }
+}

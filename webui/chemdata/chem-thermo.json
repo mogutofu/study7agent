@@ -1,0 +1,1267 @@
+{
+ "_note": "298.15 K 标准热力学数据，构建期从 NIST WebBook 导出（按 CAS 取）；运行期不联网。要更新就重跑 scripts\\fetch-chem-data.py --thermo。ΔfG° 不在这里，由 chem.py 用 ΔfH° 与 S°（含单质基准态）现算。",
+ "count": 157,
+ "rows": [
+  {
+   "S": 290.26,
+   "cas": "10043-52-4",
+   "dHf": -471.54,
+   "formula": "CaCl2",
+   "name": "氯化钙",
+   "phase": "gas"
+  },
+  {
+   "S": 123.87,
+   "cas": "10043-52-4",
+   "dHf": -774.09,
+   "formula": "CaCl2",
+   "name": "氯化钙",
+   "phase": "liquid"
+  },
+  {
+   "S": 104.62,
+   "cas": "10043-52-4",
+   "dHf": -795.8,
+   "formula": "CaCl2",
+   "name": "氯化钙",
+   "phase": "solid"
+  },
+  {
+   "S": 210.76,
+   "cas": "10102-43-9",
+   "dHf": 90.29,
+   "formula": "NO",
+   "name": "一氧化氮",
+   "phase": "gas"
+  },
+  {
+   "S": 240.04,
+   "cas": "10102-44-0",
+   "dHf": 33.1,
+   "formula": "NO2",
+   "name": "二氧化氮",
+   "phase": "gas"
+  },
+  {
+   "S": 325.73,
+   "cas": "10361-37-2",
+   "dHf": -498.73,
+   "formula": "BaCl2",
+   "name": "氯化钡",
+   "phase": "gas"
+  },
+  {
+   "S": 143.52,
+   "cas": "10361-37-2",
+   "dHf": -832.47,
+   "formula": "BaCl2",
+   "name": "氯化钡",
+   "phase": "liquid"
+  },
+  {
+   "S": 123.7,
+   "cas": "10361-37-2",
+   "dHf": -858.56,
+   "formula": "BaCl2",
+   "name": "氯化钡",
+   "phase": "solid"
+  },
+  {
+   "S": null,
+   "cas": "106-97-8",
+   "dHf": -125.6,
+   "formula": "C4H10",
+   "name": "丁烷",
+   "phase": "gas"
+  },
+  {
+   "S": 231.0,
+   "cas": "106-97-8",
+   "dHf": null,
+   "formula": "C4H10",
+   "name": "丁烷",
+   "phase": "liquid"
+  },
+  {
+   "S": null,
+   "cas": "108-88-3",
+   "dHf": 50.1,
+   "formula": "C7H8",
+   "name": "甲苯",
+   "phase": "gas"
+  },
+  {
+   "S": 220.96,
+   "cas": "108-88-3",
+   "dHf": 12.0,
+   "formula": "C7H8",
+   "name": "甲苯",
+   "phase": "liquid"
+  },
+  {
+   "S": null,
+   "cas": "108-95-2",
+   "dHf": -96.36,
+   "formula": "C6H6O",
+   "name": "苯酚",
+   "phase": "gas"
+  },
+  {
+   "S": 144.01,
+   "cas": "108-95-2",
+   "dHf": -165.0,
+   "formula": "C6H6O",
+   "name": "苯酚",
+   "phase": "solid"
+  },
+  {
+   "S": 94.85,
+   "cas": "12125-02-9",
+   "dHf": -314.55,
+   "formula": "NH4Cl",
+   "name": "氯化铵",
+   "phase": "solid"
+  },
+  {
+   "S": 213.785,
+   "cas": "124-38-9",
+   "dHf": -393.51,
+   "formula": "CO2",
+   "name": "二氧化碳",
+   "phase": "gas"
+  },
+  {
+   "S": 138.1,
+   "cas": "127-09-3",
+   "dHf": null,
+   "formula": "NaH3C2O2",
+   "name": "乙酸钠",
+   "phase": "solid"
+  },
+  {
+   "S": 285.62,
+   "cas": "1305-62-0",
+   "dHf": -610.76,
+   "formula": "Ca(OH)2",
+   "name": "氢氧化钙",
+   "phase": "gas"
+  },
+  {
+   "S": 83.36,
+   "cas": "1305-62-0",
+   "dHf": -986.09,
+   "formula": "Ca(OH)2",
+   "name": "氢氧化钙",
+   "phase": "solid"
+  },
+  {
+   "S": 219.71,
+   "cas": "1305-78-8",
+   "dHf": 43.93,
+   "formula": "CaO",
+   "name": "氧化钙",
+   "phase": "gas"
+  },
+  {
+   "S": 62.31,
+   "cas": "1305-78-8",
+   "dHf": -557.33,
+   "formula": "CaO",
+   "name": "氧化钙",
+   "phase": "liquid"
+  },
+  {
+   "S": 38.1,
+   "cas": "1305-78-8",
+   "dHf": -634.92,
+   "formula": "CaO",
+   "name": "氧化钙",
+   "phase": "solid"
+  },
+  {
+   "S": 104.56,
+   "cas": "1309-33-7",
+   "dHf": -832.62,
+   "formula": "Fe(OH)3",
+   "name": "iron(III) hydroxide",
+   "phase": "solid"
+  },
+  {
+   "S": 213.27,
+   "cas": "1309-48-4",
+   "dHf": 58.16,
+   "formula": "MgO",
+   "name": "氧化镁",
+   "phase": "gas"
+  },
+  {
+   "S": 48.34,
+   "cas": "1309-48-4",
+   "dHf": -532.61,
+   "formula": "MgO",
+   "name": "氧化镁",
+   "phase": "liquid"
+  },
+  {
+   "S": 26.95,
+   "cas": "1309-48-4",
+   "dHf": -601.6,
+   "formula": "MgO",
+   "name": "氧化镁",
+   "phase": "solid"
+  },
+  {
+   "S": 236.41,
+   "cas": "1310-58-3",
+   "dHf": -232.63,
+   "formula": "KOH",
+   "name": "氢氧化钾",
+   "phase": "gas"
+  },
+  {
+   "S": 96.62,
+   "cas": "1310-58-3",
+   "dHf": -412.71,
+   "formula": "KOH",
+   "name": "氢氧化钾",
+   "phase": "liquid"
+  },
+  {
+   "S": 78.9,
+   "cas": "1310-58-3",
+   "dHf": -424.72,
+   "formula": "KOH",
+   "name": "氢氧化钾",
+   "phase": "solid"
+  },
+  {
+   "S": 228.47,
+   "cas": "1310-73-2",
+   "dHf": -197.76,
+   "formula": "NaOH",
+   "name": "氢氧化钠",
+   "phase": "gas"
+  },
+  {
+   "S": 75.91,
+   "cas": "1310-73-2",
+   "dHf": -416.88,
+   "formula": "NaOH",
+   "name": "氢氧化钠",
+   "phase": "liquid"
+  },
+  {
+   "S": 64.46,
+   "cas": "1310-73-2",
+   "dHf": -425.93,
+   "formula": "NaOH",
+   "name": "氢氧化钠",
+   "phase": "solid"
+  },
+  {
+   "S": 234.62,
+   "cas": "1317-38-0",
+   "dHf": 306.27,
+   "formula": "CuO",
+   "name": "氧化铜",
+   "phase": "gas"
+  },
+  {
+   "S": 42.59,
+   "cas": "1317-38-0",
+   "dHf": -156.06,
+   "formula": "CuO",
+   "name": "氧化铜",
+   "phase": "solid"
+  },
+  {
+   "S": 130.68,
+   "cas": "1333-74-0",
+   "dHf": null,
+   "formula": "H2",
+   "name": "氢分子",
+   "phase": "gas"
+  },
+  {
+   "S": 67.24,
+   "cas": "1344-28-1",
+   "dHf": -1620.57,
+   "formula": "Al2O3",
+   "name": "氧化铝",
+   "phase": "liquid"
+  },
+  {
+   "S": 50.92,
+   "cas": "1344-28-1",
+   "dHf": -1675.7,
+   "formula": "Al2O3",
+   "name": "氧化铝",
+   "phase": "solid"
+  },
+  {
+   "S": 362.75,
+   "cas": "141-78-6",
+   "dHf": -445.43,
+   "formula": "C4H8O2",
+   "name": "乙酸乙酯",
+   "phase": "gas"
+  },
+  {
+   "S": 259.4,
+   "cas": "141-78-6",
+   "dHf": -480.57,
+   "formula": "C4H8O2",
+   "name": "乙酸乙酯",
+   "phase": "liquid"
+  },
+  {
+   "S": 315.06,
+   "cas": "17194-00-2",
+   "dHf": -626.56,
+   "formula": "Ba(OH)2",
+   "name": "氢氧化钡",
+   "phase": "gas"
+  },
+  {
+   "S": 123.35,
+   "cas": "17194-00-2",
+   "dHf": -934.12,
+   "formula": "Ba(OH)2",
+   "name": "氢氧化钡",
+   "phase": "liquid"
+  },
+  {
+   "S": null,
+   "cas": "17194-00-2",
+   "dHf": -946.3,
+   "formula": "Ba(OH)2",
+   "name": "氢氧化钡",
+   "phase": "solid"
+  },
+  {
+   "S": 108.43,
+   "cas": "20427-59-2",
+   "dHf": -450.37,
+   "formula": "Cu(OH)2",
+   "name": "氢氧化铜",
+   "phase": "solid"
+  },
+  {
+   "S": 156.41,
+   "cas": "497-19-8",
+   "dHf": -1108.51,
+   "formula": "Na2CO3",
+   "name": "碳酸钠",
+   "phase": "liquid"
+  },
+  {
+   "S": 138.79,
+   "cas": "497-19-8",
+   "dHf": -1130.77,
+   "formula": "Na2CO3",
+   "name": "碳酸钠",
+   "phase": "solid"
+  },
+  {
+   "S": 218.95,
+   "cas": "50-00-0",
+   "dHf": -115.9,
+   "formula": "CH2O",
+   "name": "甲醛",
+   "phase": "gas"
+  },
+  {
+   "S": null,
+   "cas": "56-40-6",
+   "dHf": -390.5,
+   "formula": "C2H5NO2",
+   "name": "glycine zwitterion",
+   "phase": "gas"
+  },
+  {
+   "S": 103.51,
+   "cas": "56-40-6",
+   "dHf": -527.5,
+   "formula": "C2H5NO2",
+   "name": "glycine zwitterion",
+   "phase": "solid"
+  },
+  {
+   "S": null,
+   "cas": "57-13-6",
+   "dHf": -235.5,
+   "formula": "CH4N2O",
+   "name": "脲",
+   "phase": "gas"
+  },
+  {
+   "S": 104.26,
+   "cas": "57-13-6",
+   "dHf": -333.11,
+   "formula": "CH4N2O",
+   "name": "脲",
+   "phase": "solid"
+  },
+  {
+   "S": 392.4,
+   "cas": "57-50-1",
+   "dHf": -2221.2,
+   "formula": "C12H22O11",
+   "name": "蔗糖",
+   "phase": "solid"
+  },
+  {
+   "S": 170.44,
+   "cas": "584-08-7",
+   "dHf": -1130.61,
+   "formula": "K2CO3",
+   "name": "碳酸钾",
+   "phase": "liquid"
+  },
+  {
+   "S": 155.44,
+   "cas": "584-08-7",
+   "dHf": -1150.18,
+   "formula": "K2CO3",
+   "name": "碳酸钾",
+   "phase": "solid"
+  },
+  {
+   "S": 197.66,
+   "cas": "630-08-0",
+   "dHf": -110.53,
+   "formula": "CO",
+   "name": "一氧化碳",
+   "phase": "gas"
+  },
+  {
+   "S": null,
+   "cas": "64-17-5",
+   "dHf": -234.0,
+   "formula": "C2H6O",
+   "name": "乙醇",
+   "phase": "gas"
+  },
+  {
+   "S": 159.86,
+   "cas": "64-17-5",
+   "dHf": -276.0,
+   "formula": "C2H6O",
+   "name": "乙醇",
+   "phase": "liquid"
+  },
+  {
+   "S": 282.84,
+   "cas": "64-19-7",
+   "dHf": -433.0,
+   "formula": "C2H4O2",
+   "name": "乙酸",
+   "phase": "gas"
+  },
+  {
+   "S": 158.0,
+   "cas": "64-19-7",
+   "dHf": -483.52,
+   "formula": "C2H4O2",
+   "name": "乙酸",
+   "phase": "liquid"
+  },
+  {
+   "S": null,
+   "cas": "67-56-1",
+   "dHf": -205.0,
+   "formula": "CH4O",
+   "name": "甲醇",
+   "phase": "gas"
+  },
+  {
+   "S": 127.19,
+   "cas": "67-56-1",
+   "dHf": -238.4,
+   "formula": "CH4O",
+   "name": "甲醇",
+   "phase": "liquid"
+  },
+  {
+   "S": 1.117,
+   "cas": "67-56-1",
+   "dHf": null,
+   "formula": "CH4O",
+   "name": "甲醇",
+   "phase": "solid"
+  },
+  {
+   "S": null,
+   "cas": "71-43-2",
+   "dHf": 82.9,
+   "formula": "C6H6",
+   "name": "苯",
+   "phase": "gas"
+  },
+  {
+   "S": 173.26,
+   "cas": "71-43-2",
+   "dHf": 49.0,
+   "formula": "C6H6",
+   "name": "苯",
+   "phase": "liquid"
+  },
+  {
+   "S": 45.56,
+   "cas": "71-43-2",
+   "dHf": null,
+   "formula": "C6H6",
+   "name": "苯",
+   "phase": "solid"
+  },
+  {
+   "S": 188.66,
+   "cas": "74-82-8",
+   "dHf": -74.87,
+   "formula": "CH4",
+   "name": "甲烷",
+   "phase": "gas"
+  },
+  {
+   "S": 219.32,
+   "cas": "74-85-1",
+   "dHf": 52.47,
+   "formula": "C2H4",
+   "name": "乙烯",
+   "phase": "gas"
+  },
+  {
+   "S": 117.8,
+   "cas": "74-85-1",
+   "dHf": null,
+   "formula": "C2H4",
+   "name": "乙烯",
+   "phase": "liquid"
+  },
+  {
+   "S": 200.93,
+   "cas": "74-86-2",
+   "dHf": 226.73,
+   "formula": "C2H2",
+   "name": "乙炔",
+   "phase": "gas"
+  },
+  {
+   "S": null,
+   "cas": "74-98-6",
+   "dHf": -104.7,
+   "formula": "C3H8",
+   "name": "丙烷",
+   "phase": "gas"
+  },
+  {
+   "S": 171.0,
+   "cas": "74-98-6",
+   "dHf": -119.8,
+   "formula": "C3H8",
+   "name": "丙烷",
+   "phase": "liquid"
+  },
+  {
+   "S": 164.554,
+   "cas": "7429-90-5",
+   "dHf": 330.0,
+   "formula": "",
+   "name": "铝",
+   "phase": "gas"
+  },
+  {
+   "S": 39.55,
+   "cas": "7429-90-5",
+   "dHf": 10.56,
+   "formula": "",
+   "name": "铝",
+   "phase": "liquid"
+  },
+  {
+   "S": 28.3,
+   "cas": "7429-90-5",
+   "dHf": null,
+   "formula": "",
+   "name": "铝",
+   "phase": "solid"
+  },
+  {
+   "S": 180.49,
+   "cas": "7439-89-6",
+   "dHf": 415.47,
+   "formula": "Fe",
+   "name": "铁",
+   "phase": "gas"
+  },
+  {
+   "S": 34.76,
+   "cas": "7439-89-6",
+   "dHf": 12.4,
+   "formula": "Fe",
+   "name": "铁",
+   "phase": "liquid"
+  },
+  {
+   "S": 148.648,
+   "cas": "7439-95-4",
+   "dHf": 147.1,
+   "formula": "Mg",
+   "name": "镁",
+   "phase": "gas"
+  },
+  {
+   "S": 34.46,
+   "cas": "7439-95-4",
+   "dHf": 4.79,
+   "formula": "Mg",
+   "name": "镁",
+   "phase": "liquid"
+  },
+  {
+   "S": 32.67,
+   "cas": "7439-95-4",
+   "dHf": null,
+   "formula": "Mg",
+   "name": "镁",
+   "phase": "solid"
+  },
+  {
+   "S": 174.971,
+   "cas": "7439-97-6",
+   "dHf": 61.38,
+   "formula": "Hg",
+   "name": "汞",
+   "phase": "gas"
+  },
+  {
+   "S": 75.9,
+   "cas": "7439-97-6",
+   "dHf": null,
+   "formula": "Hg",
+   "name": "汞",
+   "phase": "liquid"
+  },
+  {
+   "S": 160.341,
+   "cas": "7440-09-7",
+   "dHf": 89.0,
+   "formula": "K",
+   "name": "钾",
+   "phase": "gas"
+  },
+  {
+   "S": 71.4,
+   "cas": "7440-09-7",
+   "dHf": 2.27,
+   "formula": "K",
+   "name": "钾",
+   "phase": "liquid"
+  },
+  {
+   "S": 64.68,
+   "cas": "7440-09-7",
+   "dHf": null,
+   "formula": "K",
+   "name": "钾",
+   "phase": "solid"
+  },
+  {
+   "S": 167.981,
+   "cas": "7440-21-3",
+   "dHf": 450.0,
+   "formula": "Si",
+   "name": "硅",
+   "phase": "gas"
+  },
+  {
+   "S": 44.46,
+   "cas": "7440-21-3",
+   "dHf": 48.47,
+   "formula": "Si",
+   "name": "硅",
+   "phase": "liquid"
+  },
+  {
+   "S": 18.81,
+   "cas": "7440-21-3",
+   "dHf": null,
+   "formula": "Si",
+   "name": "硅",
+   "phase": "solid"
+  },
+  {
+   "S": 172.997,
+   "cas": "7440-22-4",
+   "dHf": 284.9,
+   "formula": "Ag",
+   "name": "银",
+   "phase": "gas"
+  },
+  {
+   "S": 42.55,
+   "cas": "7440-22-4",
+   "dHf": null,
+   "formula": "Ag",
+   "name": "银",
+   "phase": "solid"
+  },
+  {
+   "S": 153.718,
+   "cas": "7440-23-5",
+   "dHf": 107.5,
+   "formula": "Na",
+   "name": "钠",
+   "phase": "gas"
+  },
+  {
+   "S": 57.86,
+   "cas": "7440-23-5",
+   "dHf": 2.41,
+   "formula": "Na",
+   "name": "钠",
+   "phase": "liquid"
+  },
+  {
+   "S": 51.3,
+   "cas": "7440-23-5",
+   "dHf": null,
+   "formula": "Na",
+   "name": "钠",
+   "phase": "solid"
+  },
+  {
+   "S": 154.846,
+   "cas": "7440-37-1",
+   "dHf": null,
+   "formula": "Ar",
+   "name": "氩",
+   "phase": "gas"
+  },
+  {
+   "S": 170.25,
+   "cas": "7440-39-3",
+   "dHf": 179.08,
+   "formula": "Ba",
+   "name": "钡",
+   "phase": "gas"
+  },
+  {
+   "S": 66.33,
+   "cas": "7440-39-3",
+   "dHf": 4.99,
+   "formula": "Ba",
+   "name": "钡",
+   "phase": "liquid"
+  },
+  {
+   "S": 62.48,
+   "cas": "7440-39-3",
+   "dHf": null,
+   "formula": "Ba",
+   "name": "钡",
+   "phase": "solid"
+  },
+  {
+   "S": 166.398,
+   "cas": "7440-50-8",
+   "dHf": 337.4,
+   "formula": "Cu",
+   "name": "铜",
+   "phase": "gas"
+  },
+  {
+   "S": 41.62,
+   "cas": "7440-50-8",
+   "dHf": 11.86,
+   "formula": "Cu",
+   "name": "铜",
+   "phase": "liquid"
+  },
+  {
+   "S": 33.15,
+   "cas": "7440-50-8",
+   "dHf": null,
+   "formula": "Cu",
+   "name": "铜",
+   "phase": "solid"
+  },
+  {
+   "S": 126.153,
+   "cas": "7440-59-7",
+   "dHf": null,
+   "formula": "He",
+   "name": "氦",
+   "phase": "gas"
+  },
+  {
+   "S": 160.99,
+   "cas": "7440-66-6",
+   "dHf": 130.4,
+   "formula": "Zn",
+   "name": "锌",
+   "phase": "gas"
+  },
+  {
+   "S": 50.79,
+   "cas": "7440-66-6",
+   "dHf": 6.52,
+   "formula": "Zn",
+   "name": "锌",
+   "phase": "liquid"
+  },
+  {
+   "S": 41.63,
+   "cas": "7440-66-6",
+   "dHf": null,
+   "formula": "Zn",
+   "name": "锌",
+   "phase": "solid"
+  },
+  {
+   "S": 154.887,
+   "cas": "7440-70-2",
+   "dHf": 177.8,
+   "formula": "Ca",
+   "name": "钙",
+   "phase": "gas"
+  },
+  {
+   "S": 45.51,
+   "cas": "7440-70-2",
+   "dHf": 7.79,
+   "formula": "Ca",
+   "name": "钙",
+   "phase": "liquid"
+  },
+  {
+   "S": 41.59,
+   "cas": "7440-70-2",
+   "dHf": null,
+   "formula": "Ca",
+   "name": "钙",
+   "phase": "solid"
+  },
+  {
+   "S": 248.223,
+   "cas": "7446-09-5",
+   "dHf": -296.81,
+   "formula": "SO2",
+   "name": "二氧化硫",
+   "phase": "gas"
+  },
+  {
+   "S": 256.77,
+   "cas": "7446-11-9",
+   "dHf": -395.77,
+   "formula": "SO3",
+   "name": "三氧化硫",
+   "phase": "gas"
+  },
+  {
+   "S": 239.09,
+   "cas": "7447-40-7",
+   "dHf": -214.68,
+   "formula": "KCl",
+   "name": "氯化钾",
+   "phase": "gas"
+  },
+  {
+   "S": 86.66,
+   "cas": "7447-40-7",
+   "dHf": -421.79,
+   "formula": "KCl",
+   "name": "氯化钾",
+   "phase": "liquid"
+  },
+  {
+   "S": 82.56,
+   "cas": "7447-40-7",
+   "dHf": -436.68,
+   "formula": "KCl",
+   "name": "氯化钾",
+   "phase": "solid"
+  },
+  {
+   "S": 102.16,
+   "cas": "7487-88-9",
+   "dHf": -1246.59,
+   "formula": "MgSO4",
+   "name": "硫酸镁",
+   "phase": "liquid"
+  },
+  {
+   "S": 91.46,
+   "cas": "7487-88-9",
+   "dHf": -1261.79,
+   "formula": "MgSO4",
+   "name": "硫酸镁",
+   "phase": "solid"
+  },
+  {
+   "S": null,
+   "cas": "75-07-0",
+   "dHf": -170.7,
+   "formula": "C2H4O",
+   "name": "乙醛",
+   "phase": "gas"
+  },
+  {
+   "S": 117.3,
+   "cas": "75-07-0",
+   "dHf": -196.4,
+   "formula": "C2H4O",
+   "name": "乙醛",
+   "phase": "liquid"
+  },
+  {
+   "S": 260.687,
+   "cas": "7553-56-2",
+   "dHf": 62.42,
+   "formula": "I2",
+   "name": "碘分子",
+   "phase": "gas"
+  },
+  {
+   "S": 150.36,
+   "cas": "7553-56-2",
+   "dHf": 13.52,
+   "formula": "I2",
+   "name": "碘分子",
+   "phase": "liquid"
+  },
+  {
+   "S": 116.14,
+   "cas": "7553-56-2",
+   "dHf": null,
+   "formula": "I2",
+   "name": "碘分子",
+   "phase": "solid"
+  },
+  {
+   "S": 228.98,
+   "cas": "7631-86-9",
+   "dHf": -305.43,
+   "formula": "SiO2",
+   "name": "二氧化硅",
+   "phase": "gas"
+  },
+  {
+   "S": 47.92,
+   "cas": "7631-86-9",
+   "dHf": -902.66,
+   "formula": "SiO2",
+   "name": "二氧化硅",
+   "phase": "liquid"
+  },
+  {
+   "S": 186.902,
+   "cas": "7647-01-0",
+   "dHf": -92.31,
+   "formula": "HCl",
+   "name": "氯化氢",
+   "phase": "gas"
+  },
+  {
+   "S": 229.79,
+   "cas": "7647-14-5",
+   "dHf": -181.42,
+   "formula": "NaCl",
+   "name": "氯化钠",
+   "phase": "gas"
+  },
+  {
+   "S": 95.06,
+   "cas": "7647-14-5",
+   "dHf": -385.92,
+   "formula": "NaCl",
+   "name": "氯化钠",
+   "phase": "liquid"
+  },
+  {
+   "S": 72.11,
+   "cas": "7647-14-5",
+   "dHf": -411.12,
+   "formula": "NaCl",
+   "name": "氯化钠",
+   "phase": "solid"
+  },
+  {
+   "S": 150.77,
+   "cas": "7664-38-2",
+   "dHf": -1271.66,
+   "formula": "H3PO4",
+   "name": "磷酸",
+   "phase": "liquid"
+  },
+  {
+   "S": 110.54,
+   "cas": "7664-38-2",
+   "dHf": -1284.38,
+   "formula": "H3PO4",
+   "name": "磷酸",
+   "phase": "solid"
+  },
+  {
+   "S": 192.77,
+   "cas": "7664-41-7",
+   "dHf": -45.94,
+   "formula": "H3N",
+   "name": "氨",
+   "phase": "gas"
+  },
+  {
+   "S": 298.78,
+   "cas": "7664-93-9",
+   "dHf": -735.13,
+   "formula": "H2SO4",
+   "name": "硫酸",
+   "phase": "gas"
+  },
+  {
+   "S": 266.39,
+   "cas": "7697-37-2",
+   "dHf": -134.31,
+   "formula": "HNO3",
+   "name": "硝酸",
+   "phase": "gas"
+  },
+  {
+   "S": 167.829,
+   "cas": "7704-34-9",
+   "dHf": 277.17,
+   "formula": "S",
+   "name": "硫",
+   "phase": "gas"
+  },
+  {
+   "S": 36.85,
+   "cas": "7704-34-9",
+   "dHf": 1.85,
+   "formula": "S",
+   "name": "硫",
+   "phase": "liquid"
+  },
+  {
+   "S": 32.054,
+   "cas": "7704-34-9",
+   "dHf": null,
+   "formula": "S",
+   "name": "硫",
+   "phase": "solid"
+  },
+  {
+   "S": 120.93,
+   "cas": "7720-78-7",
+   "dHf": -928.85,
+   "formula": "FeSO4",
+   "name": "硫酸亚铁",
+   "phase": "solid"
+  },
+  {
+   "S": 232.95,
+   "cas": "7722-84-1",
+   "dHf": -136.11,
+   "formula": "H2O2",
+   "name": "过氧化氢",
+   "phase": "gas"
+  },
+  {
+   "S": 163.199,
+   "cas": "7723-14-0",
+   "dHf": 316.5,
+   "formula": "P",
+   "name": "红磷",
+   "phase": "gas"
+  },
+  {
+   "S": 43.01,
+   "cas": "7723-14-0",
+   "dHf": 0.62,
+   "formula": "P",
+   "name": "红磷",
+   "phase": "liquid"
+  },
+  {
+   "S": 41.09,
+   "cas": "7723-14-0",
+   "dHf": -17.46,
+   "formula": "P",
+   "name": "红磷",
+   "phase": "solid"
+  },
+  {
+   "S": 245.468,
+   "cas": "7726-95-6",
+   "dHf": 30.91,
+   "formula": "Br2",
+   "name": "溴分子",
+   "phase": "gas"
+  },
+  {
+   "S": 152.21,
+   "cas": "7726-95-6",
+   "dHf": null,
+   "formula": "Br2",
+   "name": "溴分子",
+   "phase": "liquid"
+  },
+  {
+   "S": 191.609,
+   "cas": "7727-37-9",
+   "dHf": null,
+   "formula": "N2",
+   "name": "氮分子",
+   "phase": "gas"
+  },
+  {
+   "S": 188.835,
+   "cas": "7732-18-5",
+   "dHf": -241.826,
+   "formula": "H2O",
+   "name": "水",
+   "phase": "gas"
+  },
+  {
+   "S": 69.95,
+   "cas": "7732-18-5",
+   "dHf": -285.83,
+   "formula": "H2O",
+   "name": "水",
+   "phase": "liquid"
+  },
+  {
+   "S": 110.54,
+   "cas": "7733-02-0",
+   "dHf": -980.14,
+   "formula": "ZnSO4",
+   "name": "硫酸锌",
+   "phase": "solid"
+  },
+  {
+   "S": 346.84,
+   "cas": "7757-82-6",
+   "dHf": -1033.62,
+   "formula": "Na2SO4",
+   "name": "硫酸钠",
+   "phase": "gas"
+  },
+  {
+   "S": 181.18,
+   "cas": "7757-82-6",
+   "dHf": -1356.38,
+   "formula": "Na2SO4",
+   "name": "硫酸钠",
+   "phase": "liquid"
+  },
+  {
+   "S": null,
+   "cas": "7757-82-6",
+   "dHf": -1387.56,
+   "formula": "Na2SO4",
+   "name": "硫酸钠",
+   "phase": "solid"
+  },
+  {
+   "S": 299.38,
+   "cas": "7758-94-3",
+   "dHf": -141.0,
+   "formula": "FeCl2",
+   "name": "氯化亚铁",
+   "phase": "gas"
+  },
+  {
+   "S": 139.88,
+   "cas": "7758-94-3",
+   "dHf": -311.34,
+   "formula": "FeCl2",
+   "name": "氯化亚铁",
+   "phase": "liquid"
+  },
+  {
+   "S": 117.95,
+   "cas": "7758-94-3",
+   "dHf": -341.83,
+   "formula": "FeCl2",
+   "name": "氯化亚铁",
+   "phase": "solid"
+  },
+  {
+   "S": 109.2,
+   "cas": "7758-98-7",
+   "dHf": -771.4,
+   "formula": "CuSO4",
+   "name": "硫酸铜",
+   "phase": "solid"
+  },
+  {
+   "S": 5.6,
+   "cas": "7782-42-5",
+   "dHf": null,
+   "formula": "C",
+   "name": "石墨",
+   "phase": "solid"
+  },
+  {
+   "S": 205.152,
+   "cas": "7782-44-7",
+   "dHf": null,
+   "formula": "O2",
+   "name": "氧分子",
+   "phase": "gas"
+  },
+  {
+   "S": 223.081,
+   "cas": "7782-50-5",
+   "dHf": null,
+   "formula": "Cl2",
+   "name": "氯气",
+   "phase": "gas"
+  },
+  {
+   "S": 205.81,
+   "cas": "7783-06-4",
+   "dHf": -20.6,
+   "formula": "H2S",
+   "name": "硫化氢",
+   "phase": "gas"
+  },
+  {
+   "S": 96.25,
+   "cas": "7783-90-6",
+   "dHf": -127.01,
+   "formula": "AgCl",
+   "name": "氯化银",
+   "phase": "solid"
+  },
+  {
+   "S": 277.0,
+   "cas": "7786-30-3",
+   "dHf": -392.46,
+   "formula": "MgCl2",
+   "name": "氯化镁",
+   "phase": "gas"
+  },
+  {
+   "S": 129.55,
+   "cas": "7786-30-3",
+   "dHf": -601.58,
+   "formula": "MgCl2",
+   "name": "氯化镁",
+   "phase": "liquid"
+  },
+  {
+   "S": 89.62,
+   "cas": "7786-30-3",
+   "dHf": -641.62,
+   "formula": "MgCl2",
+   "name": "氯化镁",
+   "phase": "solid"
+  }
+ ],
+ "source": "https://webbook.nist.gov/chemistry/ (NIST Chemistry WebBook, SRD 69)",
+ "units": {
+  "S": "J/(mol*K)",
+  "dHf": "kJ/mol"
+ }
+}

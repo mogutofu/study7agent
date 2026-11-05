@@ -1,0 +1,776 @@
+{
+ "_note": "构建期导出（运行期不联网）。要更新就重跑 scripts\\fetch-chem-data.py --seed / --export / --reformat",
+ "count": 96,
+ "formula_note": "formula 是原始值（Wikidata 的元素排序）；**显示用 formula_canonical**（教材写法：NaOH、NH4Cl）；name 已做繁简归一",
+ "source": "https://query.wikidata.org/ (CC0)，按 CAS 种子表点名",
+ "species": [
+  {
+   "cas": "10043-01-3",
+   "formula": "Al2O12S3",
+   "formula_canonical": "Al2S3O12",
+   "id": "Q421857",
+   "name": "硫酸铝",
+   "smiles": "O=S1(=O)O[Al]2OS(=O)(=O)O[Al](O1)OS(=O)(=O)O2"
+  },
+  {
+   "cas": "10043-52-4",
+   "formula": "CaCl2",
+   "formula_canonical": "CaCl2",
+   "id": "Q208451",
+   "name": "氯化钙",
+   "smiles": "[Cl-].[Cl-].[Ca+2]"
+  },
+  {
+   "cas": "10102-43-9",
+   "formula": "NO",
+   "formula_canonical": "NO",
+   "id": "Q207843",
+   "name": "一氧化氮",
+   "smiles": "[N]=O"
+  },
+  {
+   "cas": "10102-44-0",
+   "formula": "NO2",
+   "formula_canonical": "NO2",
+   "id": "Q207895",
+   "name": "二氧化氮",
+   "smiles": "N(=O)[O]"
+  },
+  {
+   "cas": "10361-37-2",
+   "formula": "BaCl2",
+   "formula_canonical": "BaCl2",
+   "id": "Q407270",
+   "name": "氯化钡",
+   "smiles": "[Cl-].[Cl-].[Ba+2]"
+  },
+  {
+   "cas": "106-97-8",
+   "formula": "C4H10",
+   "formula_canonical": "C4H10",
+   "id": "Q134192",
+   "name": "丁烷",
+   "smiles": "CCCC"
+  },
+  {
+   "cas": "108-88-3",
+   "formula": "C7H8",
+   "formula_canonical": "C7H8",
+   "id": "Q15779",
+   "name": "甲苯",
+   "smiles": "CC1=CC=CC=C1"
+  },
+  {
+   "cas": "108-95-2",
+   "formula": "C6H6O",
+   "formula_canonical": "C6H6O",
+   "id": "Q130336",
+   "name": "苯酚",
+   "smiles": "C1=CC=C(C=C1)O"
+  },
+  {
+   "cas": "12125-02-9",
+   "formula": "ClH4N",
+   "formula_canonical": "NH4Cl",
+   "id": "Q188543",
+   "name": "氯化铵",
+   "smiles": "[NH4+].[Cl-]"
+  },
+  {
+   "cas": "124-38-9",
+   "formula": "CO2",
+   "formula_canonical": "CO2",
+   "id": "Q1997",
+   "name": "二氧化碳",
+   "smiles": "C(=O)=O"
+  },
+  {
+   "cas": "127-09-3",
+   "formula": "C2H3NaO2",
+   "formula_canonical": "NaH3C2O2",
+   "id": "Q339940",
+   "name": "乙酸钠",
+   "smiles": "CC(=O)[O-].[Na+]"
+  },
+  {
+   "cas": "1305-62-0",
+   "formula": "CaH2O2",
+   "formula_canonical": "Ca(OH)2",
+   "id": "Q182849",
+   "name": "氢氧化钙",
+   "smiles": "[OH-].[OH-].[Ca+2]"
+  },
+  {
+   "cas": "1305-78-8",
+   "formula": "CaO",
+   "formula_canonical": "CaO",
+   "id": "Q185006",
+   "name": "氧化钙",
+   "smiles": "O=[Ca]"
+  },
+  {
+   "cas": "1309-33-7",
+   "formula": "FeH3O3",
+   "formula_canonical": "Fe(OH)3",
+   "id": "Q15491377",
+   "name": "iron(III) hydroxide",
+   "smiles": "[OH-].[OH-].[OH-].[Fe+3]"
+  },
+  {
+   "cas": "1309-37-1",
+   "formula": "Fe2O3",
+   "formula_canonical": "Fe2O3",
+   "id": "Q419170",
+   "name": "氧化铁",
+   "smiles": "[Fe+3].[Fe+3].[O-2].[O-2].[O-2]"
+  },
+  {
+   "cas": "1309-48-4",
+   "formula": "MgO",
+   "formula_canonical": "MgO",
+   "id": "Q214769",
+   "name": "氧化镁",
+   "smiles": "O=[Mg]"
+  },
+  {
+   "cas": "1310-58-3",
+   "formula": "KOH",
+   "formula_canonical": "KOH",
+   "id": "Q132298",
+   "name": "氢氧化钾",
+   "smiles": "[OH-].[K+]"
+  },
+  {
+   "cas": "1310-73-2",
+   "formula": "HNaO",
+   "formula_canonical": "NaOH",
+   "id": "Q102769",
+   "name": "氢氧化钠",
+   "smiles": "[OH-].[Na+]"
+  },
+  {
+   "cas": "13106-47-3",
+   "formula": "CBeO3",
+   "formula_canonical": "BeCO3",
+   "id": "Q2566421",
+   "name": "碳酸铍",
+   "smiles": "[Be+2].C(=O)([O-])[O-]"
+  },
+  {
+   "cas": "1317-38-0",
+   "formula": "CuO",
+   "formula_canonical": "CuO",
+   "id": "Q421787",
+   "name": "氧化铜",
+   "smiles": "O=[Cu]"
+  },
+  {
+   "cas": "1332-58-7",
+   "formula": "Al2H4O9Si2",
+   "formula_canonical": "Al2H4Si2O9",
+   "id": "Q20817222",
+   "name": "kaolin",
+   "smiles": ""
+  },
+  {
+   "cas": "1333-74-0",
+   "formula": "H2",
+   "formula_canonical": "H2",
+   "id": "Q3027893",
+   "name": "氢分子",
+   "smiles": "[H][H]"
+  },
+  {
+   "cas": "1344-28-1",
+   "formula": "Al2O3",
+   "formula_canonical": "Al2O3",
+   "id": "Q177342",
+   "name": "氧化铝",
+   "smiles": "[O-2].[O-2].[O-2].[Al+3].[Al+3]"
+  },
+  {
+   "cas": "141-78-6",
+   "formula": "C4H8O2",
+   "formula_canonical": "C4H8O2",
+   "id": "Q407153",
+   "name": "乙酸乙酯",
+   "smiles": "CCOC(=O)C"
+  },
+  {
+   "cas": "144-55-8",
+   "formula": "NaHCO3",
+   "formula_canonical": "NaHCO3",
+   "id": "Q179731",
+   "name": "碳酸氢钠",
+   "smiles": "C(=O)(O)[O-].[Na+]"
+  },
+  {
+   "cas": "17194-00-2",
+   "formula": "Ba(OH)2",
+   "formula_canonical": "Ba(OH)2",
+   "id": "Q407605",
+   "name": "氢氧化钡",
+   "smiles": "[OH-].[OH-].[Ba+2]"
+  },
+  {
+   "cas": "20427-59-2",
+   "formula": "CuH2O2",
+   "formula_canonical": "Cu(OH)2",
+   "id": "Q186357",
+   "name": "氢氧化铜",
+   "smiles": "[OH-].[OH-].[Cu+2]"
+  },
+  {
+   "cas": "21645-51-2",
+   "formula": "AlH3O3",
+   "formula_canonical": "Al(OH)3",
+   "id": "Q407125",
+   "name": "氢氧化铝",
+   "smiles": "[OH-].[OH-].[OH-].[Al+3]"
+  },
+  {
+   "cas": "3811-04-9",
+   "formula": "KCIO3",
+   "formula_canonical": "KCIO3",
+   "id": "Q309328",
+   "name": "氯酸钾",
+   "smiles": "[O-]Cl(=O)=O.[K+]"
+  },
+  {
+   "cas": "471-34-1",
+   "formula": "CaCO3",
+   "formula_canonical": "CaCO3",
+   "id": "Q23767",
+   "name": "碳酸钙",
+   "smiles": "C(=O)([O-])[O-].[Ca+2]"
+  },
+  {
+   "cas": "497-19-8",
+   "formula": "CNa2O3",
+   "formula_canonical": "Na2CO3",
+   "id": "Q190227",
+   "name": "碳酸钠",
+   "smiles": "C(=O)([O-])[O-].[Na+].[Na+]"
+  },
+  {
+   "cas": "50-00-0",
+   "formula": "CH2O",
+   "formula_canonical": "CH2O",
+   "id": "Q161210",
+   "name": "甲醛",
+   "smiles": "C=O"
+  },
+  {
+   "cas": "50-99-7",
+   "formula": "C6H12O6",
+   "formula_canonical": "C6H12O6",
+   "id": "Q21036645",
+   "name": "aldehydo-D-glucose",
+   "smiles": "C(C(C(C(C(C=O)O)O)O)O)O"
+  },
+  {
+   "cas": "56-40-6",
+   "formula": "C2H5NO2",
+   "formula_canonical": "C2H5NO2",
+   "id": "Q106345678",
+   "name": "glycine zwitterion",
+   "smiles": "[NH3+]CC([O-])=O"
+  },
+  {
+   "cas": "57-13-6",
+   "formula": "CH4N2O",
+   "formula_canonical": "CH4N2O",
+   "id": "Q48318",
+   "name": "脲",
+   "smiles": "C(=O)(N)N"
+  },
+  {
+   "cas": "57-50-1",
+   "formula": "C12H22O11",
+   "formula_canonical": "C12H22O11",
+   "id": "Q4027534",
+   "name": "蔗糖",
+   "smiles": "C(C1C(C(C(C(O1)OC2(C(C(C(O2)CO)O)O)CO)O)O)O)O"
+  },
+  {
+   "cas": "584-08-7",
+   "formula": "CK2O3",
+   "formula_canonical": "K2CO3",
+   "id": "Q379885",
+   "name": "碳酸钾",
+   "smiles": "C(=O)([O-])[O-].[K+].[K+]"
+  },
+  {
+   "cas": "630-08-0",
+   "formula": "CO",
+   "formula_canonical": "CO",
+   "id": "Q2025",
+   "name": "一氧化碳",
+   "smiles": "[C-]#[O+]"
+  },
+  {
+   "cas": "64-17-5",
+   "formula": "C2H6O",
+   "formula_canonical": "C2H6O",
+   "id": "Q153",
+   "name": "乙醇",
+   "smiles": "CCO"
+  },
+  {
+   "cas": "64-19-7",
+   "formula": "C2H4O2",
+   "formula_canonical": "C2H4O2",
+   "id": "Q47512",
+   "name": "乙酸",
+   "smiles": "CC(=O)O"
+  },
+  {
+   "cas": "67-56-1",
+   "formula": "CH4O",
+   "formula_canonical": "CH4O",
+   "id": "Q14982",
+   "name": "甲醇",
+   "smiles": "CO"
+  },
+  {
+   "cas": "71-43-2",
+   "formula": "C6H6",
+   "formula_canonical": "C6H6",
+   "id": "Q2270",
+   "name": "苯",
+   "smiles": "c1ccccc1"
+  },
+  {
+   "cas": "74-82-8",
+   "formula": "CH4",
+   "formula_canonical": "CH4",
+   "id": "Q37129",
+   "name": "甲烷",
+   "smiles": "C"
+  },
+  {
+   "cas": "74-85-1",
+   "formula": "C2H4",
+   "formula_canonical": "C2H4",
+   "id": "Q151313",
+   "name": "乙烯",
+   "smiles": "C=C"
+  },
+  {
+   "cas": "74-86-2",
+   "formula": "C2H2",
+   "formula_canonical": "C2H2",
+   "id": "Q133145",
+   "name": "乙炔",
+   "smiles": "C#C"
+  },
+  {
+   "cas": "74-98-6",
+   "formula": "C3H8",
+   "formula_canonical": "C3H8",
+   "id": "Q131189",
+   "name": "丙烷",
+   "smiles": "CCC"
+  },
+  {
+   "cas": "7429-90-5",
+   "formula": "",
+   "formula_canonical": "",
+   "id": "Q663",
+   "name": "铝",
+   "smiles": "[Al]"
+  },
+  {
+   "cas": "7439-89-6",
+   "formula": "Fe",
+   "formula_canonical": "Fe",
+   "id": "Q677",
+   "name": "铁",
+   "smiles": "[Fe]"
+  },
+  {
+   "cas": "7439-95-4",
+   "formula": "Mg",
+   "formula_canonical": "Mg",
+   "id": "Q660",
+   "name": "镁",
+   "smiles": "[Mg]"
+  },
+  {
+   "cas": "7439-97-6",
+   "formula": "Hg",
+   "formula_canonical": "Hg",
+   "id": "Q925",
+   "name": "汞",
+   "smiles": "[Hg]"
+  },
+  {
+   "cas": "7440-09-7",
+   "formula": "K",
+   "formula_canonical": "K",
+   "id": "Q703",
+   "name": "钾",
+   "smiles": "[K]"
+  },
+  {
+   "cas": "7440-21-3",
+   "formula": "Si",
+   "formula_canonical": "Si",
+   "id": "Q670",
+   "name": "硅",
+   "smiles": "[Si]"
+  },
+  {
+   "cas": "7440-22-4",
+   "formula": "Ag",
+   "formula_canonical": "Ag",
+   "id": "Q1090",
+   "name": "银",
+   "smiles": "[Ag]"
+  },
+  {
+   "cas": "7440-23-5",
+   "formula": "Na",
+   "formula_canonical": "Na",
+   "id": "Q658",
+   "name": "钠",
+   "smiles": "[Na]"
+  },
+  {
+   "cas": "7440-37-1",
+   "formula": "Ar",
+   "formula_canonical": "Ar",
+   "id": "Q696",
+   "name": "氩",
+   "smiles": "[Ar]"
+  },
+  {
+   "cas": "7440-39-3",
+   "formula": "Ba",
+   "formula_canonical": "Ba",
+   "id": "Q1112",
+   "name": "钡",
+   "smiles": "[Ba]"
+  },
+  {
+   "cas": "7440-50-8",
+   "formula": "Cu",
+   "formula_canonical": "Cu",
+   "id": "Q753",
+   "name": "铜",
+   "smiles": "[Cu]"
+  },
+  {
+   "cas": "7440-59-7",
+   "formula": "He",
+   "formula_canonical": "He",
+   "id": "Q560",
+   "name": "氦",
+   "smiles": "[He]"
+  },
+  {
+   "cas": "7440-66-6",
+   "formula": "Zn",
+   "formula_canonical": "Zn",
+   "id": "Q758",
+   "name": "锌",
+   "smiles": "[Zn]"
+  },
+  {
+   "cas": "7440-70-2",
+   "formula": "Ca",
+   "formula_canonical": "Ca",
+   "id": "Q706",
+   "name": "钙",
+   "smiles": "[Ca]"
+  },
+  {
+   "cas": "7446-09-5",
+   "formula": "SO2",
+   "formula_canonical": "SO2",
+   "id": "Q5282",
+   "name": "二氧化硫",
+   "smiles": "O=S=O"
+  },
+  {
+   "cas": "7446-11-9",
+   "formula": "O3S",
+   "formula_canonical": "SO3",
+   "id": "Q242715",
+   "name": "三氧化硫",
+   "smiles": "O=S(=O)=O"
+  },
+  {
+   "cas": "7447-40-7",
+   "formula": "KCl",
+   "formula_canonical": "KCl",
+   "id": "Q184630",
+   "name": "氯化钾",
+   "smiles": "[Cl-].[K+]"
+  },
+  {
+   "cas": "7487-88-9",
+   "formula": "MgSO4",
+   "formula_canonical": "MgSO4",
+   "id": "Q288266",
+   "name": "硫酸镁",
+   "smiles": "[O-]S(=O)(=O)[O-].[Mg+2]"
+  },
+  {
+   "cas": "75-07-0",
+   "formula": "C2H4O",
+   "formula_canonical": "C2H4O",
+   "id": "Q61457",
+   "name": "乙醛",
+   "smiles": "CC=O"
+  },
+  {
+   "cas": "7553-56-2",
+   "formula": "I2",
+   "formula_canonical": "I2",
+   "id": "Q2064483",
+   "name": "碘分子",
+   "smiles": "II"
+  },
+  {
+   "cas": "7631-86-9",
+   "formula": "SiO2",
+   "formula_canonical": "SiO2",
+   "id": "Q116269",
+   "name": "二氧化硅",
+   "smiles": "O=[Si]=O"
+  },
+  {
+   "cas": "7631-99-4",
+   "formula": "NaNO3",
+   "formula_canonical": "NaNO3",
+   "id": "Q184373",
+   "name": "硝酸钠",
+   "smiles": "[N+](=O)([O-])[O-].[Na+]"
+  },
+  {
+   "cas": "7647-01-0",
+   "formula": "HCl",
+   "formula_canonical": "HCl",
+   "id": "Q211086",
+   "name": "氯化氢",
+   "smiles": "Cl"
+  },
+  {
+   "cas": "7647-14-5",
+   "formula": "NaCl",
+   "formula_canonical": "NaCl",
+   "id": "Q2314",
+   "name": "氯化钠",
+   "smiles": "[Na+].[Cl-]"
+  },
+  {
+   "cas": "7664-38-2",
+   "formula": "H3PO4",
+   "formula_canonical": "H3PO4",
+   "id": "Q184782",
+   "name": "磷酸",
+   "smiles": "OP(=O)(O)O"
+  },
+  {
+   "cas": "7664-41-7",
+   "formula": "NH3",
+   "formula_canonical": "H3N",
+   "id": "Q4087",
+   "name": "氨",
+   "smiles": "N"
+  },
+  {
+   "cas": "7664-93-9",
+   "formula": "H2SO4",
+   "formula_canonical": "H2SO4",
+   "id": "Q4118",
+   "name": "硫酸",
+   "smiles": "OS(O)(=O)=O"
+  },
+  {
+   "cas": "7697-37-2",
+   "formula": "HNO3",
+   "formula_canonical": "HNO3",
+   "id": "Q83320",
+   "name": "硝酸",
+   "smiles": "[N+](=O)(O)[O-]"
+  },
+  {
+   "cas": "7704-34-9",
+   "formula": "S",
+   "formula_canonical": "S",
+   "id": "Q682",
+   "name": "硫",
+   "smiles": "[S]"
+  },
+  {
+   "cas": "7720-78-7",
+   "formula": "FeO4S",
+   "formula_canonical": "FeSO4",
+   "id": "Q214863",
+   "name": "硫酸亚铁",
+   "smiles": "[O-]S(=O)(=O)[O-].[Fe+2]"
+  },
+  {
+   "cas": "7722-64-7",
+   "formula": "KMnO4",
+   "formula_canonical": "KMnO4",
+   "id": "Q190865",
+   "name": "高锰酸钾",
+   "smiles": "[O-][Mn](=O)(=O)=O.[K+]"
+  },
+  {
+   "cas": "7722-84-1",
+   "formula": "H2O2",
+   "formula_canonical": "H2O2",
+   "id": "Q171877",
+   "name": "过氧化氢",
+   "smiles": "OO"
+  },
+  {
+   "cas": "7723-14-0",
+   "formula": "P",
+   "formula_canonical": "P",
+   "id": "Q457556",
+   "name": "红磷",
+   "smiles": "[P]"
+  },
+  {
+   "cas": "7726-95-6",
+   "formula": "Br2",
+   "formula_canonical": "Br2",
+   "id": "Q2685750",
+   "name": "溴分子",
+   "smiles": "BrBr"
+  },
+  {
+   "cas": "7727-37-9",
+   "formula": "N2",
+   "formula_canonical": "N2",
+   "id": "Q2370426",
+   "name": "氮分子",
+   "smiles": "N#N"
+  },
+  {
+   "cas": "7727-43-7",
+   "formula": "BaO4S",
+   "formula_canonical": "BaSO4",
+   "id": "Q309038",
+   "name": "硫酸钡",
+   "smiles": "[O-]S(=O)(=O)[O-].[Ba+2]"
+  },
+  {
+   "cas": "7732-18-5",
+   "formula": "H2O",
+   "formula_canonical": "H2O",
+   "id": "Q283",
+   "name": "水",
+   "smiles": "O"
+  },
+  {
+   "cas": "7733-02-0",
+   "formula": "O4SZn",
+   "formula_canonical": "ZnSO4",
+   "id": "Q204954",
+   "name": "硫酸锌",
+   "smiles": "[O-]S(=O)(=O)[O-].[Zn+2]"
+  },
+  {
+   "cas": "7757-79-1",
+   "formula": "KNO3",
+   "formula_canonical": "KNO3",
+   "id": "Q177836",
+   "name": "硝酸钾",
+   "smiles": "[N+](=O)([O-])[O-].[K+]"
+  },
+  {
+   "cas": "7757-82-6",
+   "formula": "Na2SO4",
+   "formula_canonical": "Na2SO4",
+   "id": "Q211737",
+   "name": "硫酸钠",
+   "smiles": "[O-]S(=O)(=O)[O-].[Na+].[Na+]"
+  },
+  {
+   "cas": "7758-94-3",
+   "formula": "FeCl2",
+   "formula_canonical": "FeCl2",
+   "id": "Q407867",
+   "name": "氯化亚铁",
+   "smiles": "Cl[Fe]Cl"
+  },
+  {
+   "cas": "7758-98-7",
+   "formula": "CuSO4",
+   "formula_canonical": "CuSO4",
+   "id": "Q107184",
+   "name": "硫酸铜",
+   "smiles": "[O-]S(=O)(=O)[O-].[Cu+2]"
+  },
+  {
+   "cas": "7758-99-8",
+   "formula": "CuH10O9S",
+   "formula_canonical": "CuH10SO9",
+   "id": "Q6135414",
+   "name": "五水合硫酸铜",
+   "smiles": "O.O.O.O.O.[O-]S(=O)(=O)[O-].[Cu+2]"
+  },
+  {
+   "cas": "7761-88-8",
+   "formula": "AgNO3",
+   "formula_canonical": "AgNO3",
+   "id": "Q207442",
+   "name": "硝酸银",
+   "smiles": "[N+](=O)([O-])[O-].[Ag+]"
+  },
+  {
+   "cas": "7782-42-5",
+   "formula": "C",
+   "formula_canonical": "C",
+   "id": "Q5309",
+   "name": "石墨",
+   "smiles": ""
+  },
+  {
+   "cas": "7782-44-7",
+   "formula": "O2",
+   "formula_canonical": "O2",
+   "id": "Q5203615",
+   "name": "氧分子",
+   "smiles": "O=O"
+  },
+  {
+   "cas": "7782-50-5",
+   "formula": "Cl2",
+   "formula_canonical": "Cl2",
+   "id": "Q1904422",
+   "name": "氯气",
+   "smiles": "ClCl"
+  },
+  {
+   "cas": "7783-06-4",
+   "formula": "H2S",
+   "formula_canonical": "H2S",
+   "id": "Q170591",
+   "name": "硫化氢",
+   "smiles": "S"
+  },
+  {
+   "cas": "7783-90-6",
+   "formula": "AgCl",
+   "formula_canonical": "AgCl",
+   "id": "Q216918",
+   "name": "氯化银",
+   "smiles": "Cl[Ag]"
+  },
+  {
+   "cas": "7786-30-3",
+   "formula": "Cl2Mg",
+   "formula_canonical": "MgCl2",
+   "id": "Q265414",
+   "name": "氯化镁",
+   "smiles": "[Mg+2].[Cl-].[Cl-]"
+  }
+ ]
+}

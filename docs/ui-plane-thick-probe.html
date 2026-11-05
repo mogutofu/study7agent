@@ -1,0 +1,41 @@
+<!doctype html>
+<html data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>平面多边形描边探针</title>
+<link rel="stylesheet" href="../webui/ui/plane.css">
+<style>
+  :root { --line: #dde4f5; --accent: #4d6bfe; --text-dim: #5f6b86; --muted: #8a94ad; }
+  body { margin: 0; padding: 10px 14px; font: 13px/1.5 "Microsoft YaHei", sans-serif; }
+  .tag { color: #d33; font-size: 11px; margin: 10px 0 2px; }
+  svg { display: block; outline: 1px dashed #d33; }
+  .axis { stroke: #5f6b86; stroke-width: 1; }
+</style>
+</head>
+<body>
+
+<div class="tag">1 = 现在的代码：polygon（plane-poly，都没有 vector-effect）——描边宽度是 2.2 个数据单位</div>
+<svg viewBox="-10 -6 20 12" width="700" height="240">
+  <line class="axis" x1="-10" y1="0" x2="10" y2="0"/>
+  <line class="axis" x1="0" y1="6" x2="0" y2="-6"/>
+  <polygon class="plane-poly" points="0,0 6,0 2,-4"/>
+</svg>
+
+<div class="tag">2 = 加上 vector-effect: non-scaling-stroke（2.2 个屏幕像素，和线段一致）</div>
+<svg viewBox="-10 -6 20 12" width="700" height="240">
+  <line class="axis" x1="-10" y1="0" x2="10" y2="0"/>
+  <line class="axis" x1="0" y1="6" x2="0" y2="-6"/>
+  <polygon class="plane-poly" vector-effect="non-scaling-stroke" points="0,0 6,0 2,-4"/>
+</svg>
+
+<div class="tag">3 = 对比：三条线段（plane-shape，本来就带 non-scaling-stroke）</div>
+<svg viewBox="-10 -6 20 12" width="700" height="240">
+  <line class="axis" x1="-10" y1="0" x2="10" y2="0"/>
+  <line class="axis" x1="0" y1="6" x2="0" y2="-6"/>
+  <line class="plane-shape" vector-effect="non-scaling-stroke" x1="0" y1="0" x2="6" y2="0"/>
+  <line class="plane-shape" vector-effect="non-scaling-stroke" x1="6" y1="0" x2="2" y2="-4"/>
+  <line class="plane-shape" vector-effect="non-scaling-stroke" x1="2" y1="-4" x2="0" y2="0"/>
+</svg>
+
+</body>
+</html>

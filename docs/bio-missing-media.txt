@@ -1,0 +1,56 @@
+生物模块插图：还缺这些（老师手点下载清单）
+================================================
+
+放哪儿：把下到的文件丢进  webui\ui\vendor\bio\
+命名规则：**文件名必须是下表的 key**，扩展名按实际类型（.gif / .png / .jpg）。
+例：下到「动作电位」的动画，存成  action_potential.gif
+放进去就生效（面板里有图就只显示图，不再显示程序画的场景）。只支持 .gif / .png / .jpg。
+
+【一、还缺的 20 个过程】——想下哪个就搜它的英文关键词
+  key                    中文名                  搜索关键词（英文）
+  aerobic_respiration    有氧呼吸                cellular respiration / Krebs cycle
+  blood_sugar            血糖平衡调节            blood glucose insulin glucagon
+  calvin_cycle           暗反应（卡尔文循环）    Calvin cycle / carbon fixation
+  carbon_cycle           碳循环                  carbon cycle
+  cellular_immunity      细胞免疫                cytotoxic T cell
+  dehydration            脱水缩合                peptide bond formation
+  enzyme_barrier         酶降低活化能            activation energy enzyme
+  enzyme_conditions      温度与 pH 对酶活性      enzyme activity temperature / pH
+  expression_vector      基因表达载体            plasmid vector
+  humoral_immunity       体液免疫                antibody immune response
+  internal_environment   内环境                  blood plasma tissue fluid
+  monoclonal_antibody    单克隆抗体              monoclonal antibody / hybridoma
+  nerve_conduction       兴奋在神经纤维上传导    nerve conduction / axon
+  nuclear_transfer       核移植（克隆动物）      nuclear transfer / cloning
+  pcr                    PCR                     polymerase chain reaction
+  protoplast_fusion      植物体细胞杂交          protoplast fusion
+  restriction_enzyme     限制酶切割 DNA          restriction enzyme
+  species_relation       种间关系                predator prey / symbiosis
+  synapse                突触传递                synapse / synaptic transmission
+  thyroid_axis           甲状腺激素分级调节      thyroid hormone regulation
+
+【二、去哪儿找】（这些站点这台机器打不开，你的浏览器能开）
+  1) Commons 动画分类页（最全，浏览器直接翻）：
+     https://commons.wikimedia.org/wiki/Category:Animations_of_biology
+     https://commons.wikimedia.org/wiki/Category:Animations_of_molecular_biology
+     https://commons.wikimedia.org/wiki/Category:Cell_cycle
+     https://commons.wikimedia.org/wiki/Category:Immunology
+     https://commons.wikimedia.org/wiki/Category:Neurophysiology
+     打开某个文件页后，右键图片「图片另存为」即可。
+  2) 直接搜：在 Commons 搜索框里敲  filemime:image/gif <英文关键词>
+
+【三、我已经拿到直链、你点一下就能下的】（存成右边这个名字）
+  动作电位      https://upload.wikimedia.org/wikipedia/commons/a/af/Action_potential_propagation.gif      -> action_potential.gif（已下好）
+  目的基因导入  https://upload.wikimedia.org/wikipedia/commons/7/78/Bacterial_transformation_gif.gif    -> gene_transfer.gif（已下好）
+  细胞分化      https://upload.wikimedia.org/wikipedia/commons/0/04/Human_mesenchymal_stem_cells.gif     -> cell_differentiation.gif（已下好）
+  细胞膜受体    https://upload.wikimedia.org/wikipedia/commons/2/2a/Recettoredimembrana.gif              -> membrane_model.gif（已下好）
+  血液循环      https://upload.wikimedia.org/wikipedia/commons/7/77/Blood_Circulation.gif                -> heart.gif（备用，不是 54 个过程之一）
+  免疫检测      https://upload.wikimedia.org/wikipedia/commons/b/b0/Elisa.gif                            -> elisa.gif（备用）
+  遗传密码      https://upload.wikimedia.org/wikipedia/commons/d/da/Geneticcode_color.gif                -> geneticcode.gif（备用）
+  二分裂        https://upload.wikimedia.org/wikipedia/commons/d/d2/Binary_fission_anim.gif               -> binary_fission.gif（备用）
+  光反应框图    https://upload.wikimedia.org/wikipedia/commons/…/Photosynthesis_Block_diag.gif           -> light_reaction.gif（已有同名文件）
+
+【四、现状】
+  54 个过程里已有 34 个带插图（12 个动画 GIF + 其余静态图）。
+  剩下 20 个如果找不到现成素材，就由程序画的仿真场景顶着（有图后自动让位）。
+  授权说明写在 webui\ui\vendor\bio\README.txt，发布时别删。

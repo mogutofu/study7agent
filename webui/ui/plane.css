@@ -1,0 +1,228 @@
+/* Study7Agent 「平面」（对象模型 + 依赖图）面板
+ *
+ * 视觉上跟作图面板（style.css 里的 .figure-*）是同一套：同一个 SVG 基线、
+ * 同一批 CSS 变量、同一档字号。基线永远是 SVG，没有 WebGL 依赖。
+ *
+ * 文字对比度：这一版新增的文字一律 ≥4.5:1（浅色主题实测值见交付说明），
+ * 所以状态色不用 --ok/--warn/--err（那几个是拿来做描边和圆点的，当正文偏浅），
+ * 用下面这组专门的文字色。
+ */
+
+.plane-panel {
+  position: fixed; inset: 0; z-index: 43; background: var(--panel);
+  display: flex; align-items: center; justify-content: center; padding: 2vh 2vw;
+}
+html[data-theme="dark"] .plane-panel { background: #0b0f16; }
+.plane-panel.hidden { display: none; }
+
+.plane-inner {
+  width: 100%; height: 100%; display: flex; flex-direction: column; gap: 1.2vh;
+  /* 状态文字色：浅色下取深绿/深橙/深红，深色下换成亮的一档，两边都过 4.5:1 */
+  --plane-ok-text: #0f7a52;
+  --plane-warn-text: #8a4a00;
+  --plane-err-text: #b8282f;
+  --plane-hit: #cfd8ee;
+}
+html[data-theme="dark"] .plane-inner {
+  --plane-ok-text: #7ee2b8;
+  --plane-warn-text: #f0b072;
+  --plane-err-text: #ff9aa0;
+  --plane-hit: #2b3547;
+}
+
+.plane-head { display: flex; align-items: center; gap: 8px; flex: none; flex-wrap: wrap; }
+.plane-kind {
+  /* 用 accent-strong 而不是 accent：白字压在 #4d6bfe 上只有 4.33:1（浅色主题，
+     低于正文 4.5:1 的门槛）；#3550f0 是 5.90:1，深色主题下 5.50:1。 */
+  background: var(--accent-strong); color: #fff; border-radius: 999px;
+  padding: .5vh 1.6vh; font-size: 2vh; font-weight: 600;
+}
+.plane-title { font-size: 2.6vh; font-weight: 700; color: var(--text); }
+.plane-note { font-size: 1.8vh; color: var(--muted); flex: 1; min-width: 60px; }
+.plane-head .btn { font-size: 1.7vh; padding: .9vh 1.7vh; }
+
+.plane-body { flex: 1; min-height: 0; display: flex; gap: 10px; }
+
+/* 左边一竖条：视野相关的开关 */
+.plane-tools {
+  /* 两列自动换行。老师反馈"工具栏显示不全"：原来是一根 66px 宽的竖条，
+     现在有 20 个按钮（画图工具 + 适应窗口/复位/重新读取 + 完成/撤销/清空），
+     超出高度只能在那条窄缝里滚动，滚动条细到几乎看不见，后面几个按钮就像消失了。
+     两列之后 20 个排 10 行，正常窗口高度全放得下；真不够时仍然能滚。 */
+  flex: none; width: 150px; display: flex; flex-wrap: wrap;
+  align-content: flex-start; gap: 4px; padding: 2px 2px 0; overflow-y: auto;
+}
+.plane-tools .tool-btn {
+  flex: 0 0 68px; height: 28px; font-size: 12px; padding: 0 2px;
+  display: flex; align-items: center; justify-content: center;
+}
+.plane-tools .tool-sep { flex: 0 0 100%; height: 1px; margin: 2px 0; }
+.plane-tools .plane-hint { flex: 0 0 100%; margin-left: 0; white-space: normal; }
+/* 工具按钮里的小图标：按钮只有 68×28，图标必须和文字横着排（竖排会被挤扁）。
+   图标一律内联 SVG、11px，颜色跟着按钮文字走（选中时是白字，图标也跟着变白）。 */
+.plane-tools .tool-btn { flex-direction: row; gap: 2px; }
+.plane-tools .tool-btn svg { flex: none; width: 11px; height: 11px; }
+
+/* 画布：SVG 直接铺满。坐标全用**数据坐标**画，缩放平移只改 viewBox 一个属性，
+   所以拖动/缩放时不需要重建 DOM（作图面板在这里踩过坑，这里从一开始就不那么写）。 */
+.plane-canvas { flex: 1; min-width: 0; position: relative; }
+.plane-canvas svg {
+  width: 100%; height: 100%; display: block; touch-action: none;
+  -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+}
+.plane-canvas svg { cursor: grab; }
+.plane-canvas svg.panning { cursor: grabbing; }
+
+/* 右栏：代数区 */
+.plane-side {
+  flex: none; width: 268px; min-height: 0; display: flex; flex-direction: column;
+  border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--panel-2);
+}
+.plane-side.hidden { display: none; }
+.plane-side-head {
+  flex: none; display: flex; justify-content: space-between; align-items: center; gap: 8px;
+  padding: 7px 10px; border-bottom: 1px solid var(--line);
+  font-size: 11.8px; font-weight: 600; letter-spacing: .3px; color: var(--muted);
+}
+.plane-list { flex: 1; min-height: 0; overflow-y: auto; padding: 5px; }
+.plane-empty { color: var(--muted); font-size: 12px; line-height: 1.7; padding: 8px 6px; }
+.plane-row {
+  display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px;
+  padding: 6px 7px; border: 1px solid var(--line); border-left: 3px solid var(--line);
+  border-radius: 8px; background: var(--panel); cursor: pointer;
+}
+.plane-row:hover { border-color: var(--accent); border-left-color: var(--accent); }
+.plane-row.on { border-left-color: var(--accent); background: var(--panel-3); }
+.plane-row.dim { opacity: .5; }
+.plane-row-main { flex: 1; min-width: 0; }
+.plane-row-id { font-family: var(--mono); font-size: 13.5px; font-weight: 700; color: var(--text); }
+.plane-row-def, .plane-row-val {
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.5;
+  word-break: break-all; color: var(--text-dim);
+}
+.plane-row-def { color: var(--muted); }
+.plane-row-tag {
+  display: inline-block; margin-left: 5px; padding: 0 5px; font-size: 10.5px; font-weight: 600;
+  border: 1px solid var(--line); border-radius: 999px; color: var(--muted); vertical-align: 1px;
+}
+.plane-row-acts { flex: none; display: flex; flex-direction: column; gap: 3px; }
+.plane-mini {
+  font-size: 10.5px; padding: 2px 6px; cursor: pointer; color: var(--text-dim);
+  background: var(--panel-2); border: 1px solid var(--line); border-radius: 6px;
+}
+.plane-mini:hover { border-color: var(--accent); color: var(--text); }
+
+/* 选中那一行的编辑表单：老师点的是右栏这一行，改的地方就在这里。
+   触摸屏上输入框至少 28px 高（手指点得中），文字色一律用 --text/--text-dim/--muted，
+   浅色主题下分别是 15.9:1 / 8.7:1 / 5.3:1（白底，实测），都过 4.5:1。 */
+.plane-edit { margin-top: 5px; padding-top: 5px; border-top: 1px dashed var(--line); }
+/* 老内核的 flexbox 不认 gap，间距会塌成 0，所以这一块用 margin 排 */
+.plane-edit-row { display: flex; align-items: center; margin-bottom: 4px; }
+.plane-edit-label {
+  flex: none; width: 3.2em; margin-right: 6px;
+  font-size: 11.5px; color: var(--muted); font-family: var(--mono);
+}
+.plane-edit-input {
+  flex: 1; min-width: 0; height: 28px; box-sizing: border-box; padding: 2px 7px;
+  font-size: 12.5px; font-family: var(--mono); color: var(--text);
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+}
+.plane-edit-input:focus { outline: none; border-color: var(--accent); }
+.plane-edit-input[type="range"] { padding: 0; border: none; background: transparent; }
+.plane-edit-ro { display: flex; font-size: 11.5px; line-height: 1.6; font-family: var(--mono); }
+.plane-edit-rolabel { flex: none; width: 3.2em; margin-right: 6px; color: var(--muted); }
+.plane-edit-rovalue { flex: 1; min-width: 0; word-break: break-all; color: var(--text-dim); }
+.plane-edit-note { font-size: 11.5px; line-height: 1.6; color: var(--muted); }
+.plane-edit-tip { margin-top: 3px; font-size: 11px; line-height: 1.5; color: var(--muted); }
+
+/* 底下那条：选中对象的定义 / 当前值 / 警告（沿用 .info-card 那套） */
+.plane-info {
+  flex: none; max-height: 17vh; overflow-y: auto; display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: flex-start;
+}
+.plane-info:empty { display: none; }
+.plane-info .info-card { flex: 1 1 190px; }
+.plane-info .info-card h4 { text-transform: none; }
+.plane-warn { flex: 1 1 100%; color: var(--plane-warn-text); font-size: 12.5px; line-height: 1.6; }
+
+/* 状态条：拖拽时的"正在算…"、出错提示都在这儿，不弹窗、不遮画布。
+   **藏起来的时候也占着位置**（visibility 而不是 display:none）：这条一出现/消失，
+   画布就整体挪十几像素，老师正瞄着圆周点下去就偏了（触摸屏上更明显）。
+   全局的 .hidden 是 display:none !important，所以这里要显式压回去。 */
+.plane-status {
+  flex: none; display: flex; align-items: center; gap: 8px;
+  padding: 5px 2px; font-size: 13px; color: var(--text-dim);
+}
+.plane-status.hidden { display: flex !important; visibility: hidden; }
+.plane-status .dot {
+  width: 9px; height: 9px; border-radius: 50%; background: var(--accent);
+  animation: fig-blink 1s ease-in-out infinite;
+}
+.plane-status.done { color: var(--plane-ok-text); }
+.plane-status.done .dot { background: var(--plane-ok-text); animation: none; }
+.plane-status.warn { color: var(--plane-warn-text); }
+.plane-status.warn .dot { background: var(--plane-warn-text); animation: none; }
+.plane-status.err { color: var(--plane-err-text); }
+.plane-status.err .dot { background: var(--plane-err-text); animation: none; }
+
+/* ---------------------------------------------------------------- 画布里的图形
+   颜色一律跟着主题变量走；导出成独立 SVG 文件时用 plane.js 里那份写死颜色的副本
+   （独立文件里没有 var()，所以那份不能共用）。 */
+.plane-grid { stroke: var(--line); stroke-width: 1; }
+.plane-axis { stroke: var(--muted); stroke-width: 1.4; }
+.plane-tick { fill: var(--muted); font-size: 13px; font-family: var(--mono); }
+.plane-label {
+  fill: var(--text); font-size: 14px; font-family: var(--mono);
+  paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round;
+}
+.plane-curve { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linejoin: round; }
+.plane-shape { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linejoin: round; }
+.plane-poly { fill: rgba(77, 107, 254, .14); stroke: var(--accent); stroke-width: 2.2; }
+.plane-region { fill: rgba(77, 107, 254, .16); stroke: none; }
+.plane-point { fill: var(--accent); stroke: var(--panel); stroke-width: 1.5; }
+/* 选中 = 更大的实心点 + 白色描边。**不能也做成空心**：
+   空心是交点的专属记号，两个都空心老师就分不出"哪个点能拖"了。 */
+.plane-point.on { fill: var(--accent); stroke: #fff; stroke-width: 2.5; }
+/* 交点：空心小圈——跟自由点一眼分得开（空心 = 自己不能拖，位置由父对象决定） */
+.plane-isect { fill: var(--panel); stroke: var(--accent-strong); stroke-width: 2.4; }
+.plane-isect.on { fill: var(--panel); stroke: var(--accent-strong); stroke-width: 3.6; }
+.plane-trace { fill: none; stroke: var(--warn); stroke-width: 2; stroke-dasharray: 5 4; }
+.plane-slider-bar { stroke: var(--line); stroke-width: 5; stroke-linecap: round; }
+.plane-slider-knob { fill: var(--accent); stroke: var(--panel); stroke-width: 1.5; }
+.plane-text { fill: var(--text); font-size: 15px; }
+/* 透明的大点击圈：点小点太难按，触摸屏更明显（作图面板同样思路） */
+.plane-hit { fill: transparent; stroke: none; }
+.plane-hit.grab { cursor: grab; }
+.plane-hit.grabbing { cursor: grabbing; }
+.plane-export-bg { fill: #ffffff; }
+/* 讲解用的几何记号：直角小方块、等长小横杠、等角小圆弧。
+   单独一层，不参与命中判定（pointer-events: none），颜色比图形本身深一点，
+   老师一放大就能指着图讲"这两段相等""这是个直角"。 */
+.plane-mark {
+  fill: none; stroke: var(--accent-strong); stroke-width: 1.8;
+  stroke-linejoin: round; stroke-linecap: round; pointer-events: none;
+}
+.plane-mark.on { stroke-width: 2.8; }
+
+/* 窄屏（教室一体机竖屏 / 小窗口）：代数区收成上面一条，别把画布挤没 */
+@media (max-width: 900px) {
+  .plane-body { flex-wrap: wrap; }
+  .plane-side { width: 100%; order: 3; max-height: 34vh; }
+  .plane-tools { flex-direction: row; width: 100%; order: 1; }
+  .plane-canvas { order: 2; min-height: 40vh; }
+}
+
+/* 画图工具：选中的那个要一眼看出来（老师要"清晰的工具"），旁边一行提示下一步做什么 */
+.plane-tool.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+.plane-hint { margin-left: auto; font-size: 12px; color: var(--muted); white-space: nowrap; }
+.plane-tools { flex-wrap: wrap; }
+
+/* 方程输入：跟作图面板的输入栏同一个位置和大小，老师不用换习惯 */
+.plane-input-bar { display: flex; width: 100%; margin: 6px 0 0; padding: 0 10px; box-sizing: border-box; }
+.plane-input-bar input {
+  flex: 1; min-width: 200px; padding: 5px 9px; font-size: 13px;
+  color: var(--text); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px 0 0 6px; font-family: Consolas, "Microsoft YaHei", monospace;
+}
+.plane-input-bar input:focus { outline: none; border-color: var(--accent); }
+.plane-input-bar .tool-btn { border-radius: 0 6px 6px 0; border-left: none; }

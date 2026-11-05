@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+<meta charset="utf-8">
+<!-- 双核浏览器（360 / QQ / 搜狗）内核声明：让它们优先使用极速（Blink）模式而不是 IE 兼容模式。
+     不认识的浏览器会直接忽略这三行，没有副作用。 -->
+<meta name="renderer" content="webkit">
+<meta name="force-rendering" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Study7Agent · 本地智能体控制台</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%234d6bfe'/%3E%3Ctext x='16' y='21' font-size='13' font-family='Segoe UI' font-weight='700' fill='white' text-anchor='middle'%3ES7%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="plane.css">
+</head>
+<body>
+<!-- Study7Agent — 作者 Lv Chengyue；Created and Powered by "AI" -->
+<div id="app">
+  <aside id="sidebar">
+    <div class="side-brand">
+      <span class="logo-mini">S7</span>
+      <span class="brand-name">Study7Agent</span>
+      <span class="brand-badge" id="versionBadge">v1</span>
+      <button id="sidebarFold" class="btn icon ghost" title="收起侧边栏"><span class="ico-slot" data-icon="panel"></span></button>
+    </div>
+
+    <div class="side-by">作者 Lv Chengyue · Created and Powered by &quot;AI&quot;</div>
+    <button id="newSession" class="side-nav primary"><span class="ico-slot" data-icon="plus"></span>新会话</button>
+    <button id="btnSkills" class="side-nav" title="技能中心：勾选后每次对话都会带上"><span class="ico-slot" data-icon="check"></span>技能中心</button>
+
+    <div class="side-section">
+      <span class="section-label" id="wsSectionLabel" title="当前工作区">工作区</span>
+      <div class="section-actions">
+        <button id="btnSearch" class="btn icon ghost" title="搜索对话"><span class="ico-slot" data-icon="search"></span></button>
+        <button id="btnScope" class="btn icon ghost" title="只看本工作区"><span class="ico-slot" data-icon="filter"></span></button>
+        <button id="workspacePicker" class="btn icon ghost" title="新建工作区：在某个位置建一个文件夹，它的对话挂在侧栏这一行下面"><span class="ico-slot" data-icon="folderPlus"></span></button>
+      </div>
+    </div>
+    <input id="sessionSearch" class="side-search hidden" type="search" placeholder="搜索对话…">
+
+    <div id="sessionList" class="sessions"></div>
+
+    <div class="side-footer">
+      <button id="btnSnapshots" class="btn icon" title="文件快照与回滚"><span class="ico-slot" data-icon="history"></span></button>
+      <button id="btnSettings" class="btn icon" title="设置：模型、接口、权限"><span class="ico-slot" data-icon="settings"></span></button>
+    </div>
+  </aside>
+
+  <main>
+    <header id="topbar">
+      <button id="sidebarToggle" class="btn icon" title="显示 / 隐藏会话列表"><span class="ico-slot" data-icon="menu"></span></button>
+      <div class="model-picker">
+        <select id="modelSelect" title="切换模型"></select>
+        <select id="effortSelect" title="推理等级：越高想得越久、越周密，也越慢越贵；默认表示不改动接口参数"></select>
+        <span id="endpointLabel" class="muted" style="font-size:12px"></span>
+      </div>
+      <div class="top-actions">
+        <span id="statusPill" class="pill">就绪</span>
+        <button id="btnClear" class="btn" title="清空当前会话消息">清空</button>
+        <button id="btnExport" class="btn" title="把当前对话导出为 Markdown"><span class="ico-slot" data-icon="download"></span>导出</button>
+        <button id="btnMaterials" class="btn" title="课堂资料：板书 / 课堂时间点 / 截图存在哪，一键打开文件夹"><span class="ico-slot" data-icon="folder"></span>课堂资料</button>
+        <button id="btnFigure" class="btn" title="几何画板（平面）：点、线、圆、函数、方程、交点、动点；立体进面板后点右上角的「立体」"><span class="ico-slot" data-icon="figure"></span>作图</button>
+            <button id="btnCalc" class="btn" title="计算器 / 单位换算：精确到分数和根号，215 个单位可搜索"><span class="ico-slot" data-icon="calculator"></span>计算器</button>
+        <button id="btnChem" class="btn" title="化学：配平方程式、判断反应能不能发生、算反应热、查物质与结构（离线数据）"><span class="ico-slot" data-icon="flask"></span>化学</button>
+        <button id="btnCircuit" class="btn" title="电路画板：自己摆电源/电阻/滑动变阻器/电流表/电压表/开关，连好线直接算电流电压"><span class="ico-slot" data-icon="circuit"></span>电路</button>
+        <button id="btnRead" class="btn" title="仪器读数练习：游标卡尺 / 螺旋测微器 / 电流表 / 电压表 / 刻度尺（按高考估读口径判分）"><span class="ico-slot" data-icon="ruler"></span>读数</button>
+        <button id="btnPhet" class="btn" title="PhET 互动仿真：电路组建(直流) / 分子形状 / pH 酸碱（随包内置，离线可用）"><span class="ico-slot" data-icon="phet"></span>PhET 模拟</button>
+<button id="btnPhysics" class="btn" title="物理沙盒：自己画轨道和场（有传送带）、放物块、看图像"><span class="ico-slot" data-icon="physics"></span>物理</button>
+        <button id="btnBio" class="btn" title="生物过程动画：有丝分裂 / 减数分裂 / 光合与呼吸 / 遗传定律 / 免疫 / PCR 等 50 多个课本过程，分步演示"><span class="ico-slot" data-icon="bio"></span>生物</button>
+        <button id="btnInspector" class="btn icon" title="运行详情"><span class="ico-slot" data-icon="inspector"></span></button>
+        <button id="btnTouch" class="btn icon" title="触屏模式：放大字号与按钮，适合教室一体机"><span class="ico-slot" data-icon="display"></span></button>
+        <button id="btnTheme" class="btn icon" title="切换浅色 / 深色主题"><span class="ico-slot" data-icon="theme"></span></button>
+        <button id="btnSettingsTop" class="btn icon" title="设置（模型、接口、工作区、外部文件权限）"><span class="ico-slot" data-icon="settings"></span></button>
+      </div>
+    </header>
+
+    <section id="messages">
+      <div class="thread" id="thread"></div>
+    </section>
+    <button id="scrollBottom" class="scroll-bottom hidden" title="回到最新">
+      <span class="ico-slot" data-icon="chevron"></span>最新
+    </button>
+
+    <div id="contextBar" class="context-bar"></div>
+    <div id="imageBar" class="image-bar hidden"></div>
+
+    <footer id="composer">
+      <div class="composer-box" id="composerBox">
+        <textarea id="input" rows="1" placeholder="描述你的任务，例如：读取 C:\work\周报.md，按上周格式生成本周周报。"></textarea>
+        <div class="composer-tools">
+          <button id="btnAttach" class="btn" title="把本地文件加入上下文"><span class="ico-slot" data-icon="paperclip"></span>文件</button>
+          <button id="btnImage" class="btn" title="添加图片：也可以直接截图后 Ctrl+V 粘贴，或拖拽图片到输入框"><span class="ico-slot" data-icon="image"></span>图片</button>
+          <button id="btnUrl" class="btn" title="把内网页面加入上下文"><span class="ico-slot" data-icon="link"></span>页面</button>
+          <button id="btnRun" class="btn" title="直接执行一条本机命令"><span class="ico-slot" data-icon="terminal"></span>命令</button>
+          <span id="skillChips" class="chips"></span>
+          <span class="spacer"></span>
+          <span id="tokenHint" class="muted" style="font-size:11.5px"></span>
+          <button id="btnSend" class="btn primary" title="发送（Enter）">发送</button>
+          <button id="btnStop" class="btn danger hidden" title="停止（Esc）"><span class="ico-slot" data-icon="stop"></span>停止</button>
+        </div>
+      </div>
+      <!-- 输入补全（@ 文件 / 斜杠命令）的弹层：贴在输入区上方，见 complete.js 与 style.css -->
+      <div id="completePopup" class="complete-popup hidden" role="listbox" aria-label="补全候选"></div>
+      <div class="hint muted">Enter 发送 · Shift+Enter 换行 · Esc 停止 · 截图后 Ctrl+V 可直接粘贴图片 · 也可拖拽图片到输入框</div>
+    </footer>
+  </main>
+
+  <aside id="inspector">
+    <div class="card">
+      <h3>本次运行</h3>
+      <div class="stat"><span>状态</span><span id="runStatus">空闲</span></div>
+      <div class="stat"><span>模型</span><span id="runModel">-</span></div>
+      <div class="stat"><span>推理等级</span><span id="runEffort">默认</span></div>
+      <div class="stat"><span>轮次 / 耗时</span><span id="runMeta">0 / 0s</span></div>
+      <div class="stat"><span>技能</span><span id="activeSkills">未启用</span></div>
+      <div class="stat"><span>Token</span><span id="tokenLine">0</span></div>
+      <div class="stat"><span>费用</span><span id="costLine">-</span></div>
+    </div>
+    <div class="card">
+      <h3>思考要点</h3>
+      <div class="trace-hint" id="traceHint">完整思考在左侧折叠栏；这里只提炼要点。</div>
+      <div class="reasoning-trace" id="reasonTrace"><span class="muted">运行时会在这里实时提炼模型思考的要点</span></div>
+    </div>
+    <div class="card" id="subagentCard">
+      <h3>子代理 <span class="muted" id="subagentSummary" style="font-weight:400;font-size:12px"></span></h3>
+      <div class="timeline" id="subagentList">
+        <div class="muted" style="font-size:12px">模型派子代理并行干活时，这里会列出它们各自在做什么。</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>工具调用</h3>
+      <div class="timeline" id="timeline"><div class="muted" style="font-size:12px">暂无工具调用</div></div>
+    </div>
+  </aside>
+</div>
+
+<dialog id="settingsDialog">
+  <div class="dialog-head">
+    <h2>设置</h2>
+    <button class="btn" data-close="settingsDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="grid2">
+      <div class="field">
+        <label for="setModel">模型</label>
+        <input id="setModel" list="modelOptions" placeholder="deepseek-flash">
+        <datalist id="modelOptions"></datalist>
+        <span class="hint-inline" id="modelsHint">可从接口自动获取模型列表</span>
+      </div>
+      <div class="field">
+        <label for="setEndpoint">接口地址 base_url</label>
+        <input id="setEndpoint" placeholder="https://api.deepseek.com">
+        <span class="hint-inline">留空则用 config\agent.json 里的 base_url；裸域名、/v1、完整地址都支持</span>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="setApiKey">模型 API Key（填一次就存在 config\agent.json 里）</label>
+        <input id="setApiKey" type="password" autocomplete="off" spellcheck="false">
+        <span class="hint-inline" id="apiKeyHint">留空 = 不修改；保存后只显示掩码，不会明文回传</span>
+      </div>
+      <div class="field">
+        <label for="setAuthHeader">认证方式（网关不认 Bearer 时改这里）</label>
+        <select id="setAuthHeader">
+          <option value="Authorization">Authorization: Bearer &lt;key&gt;（DeepSeek 官方/OpenAI 兼容）</option>
+          <option value="api-key">api-key: &lt;key&gt;</option>
+          <option value="x-api-key">x-api-key: &lt;key&gt;</option>
+          <option value="__custom__">自定义请求头名…</option>
+        </select>
+        <input id="setAuthHeaderCustom" class="hidden" placeholder="例如 X-Auth-Token" style="margin-top:6px">
+      </div>
+    </div>
+    <div class="picker-bar">
+      <button class="btn primary" id="apiKeyTest"><span class="ico-slot" data-icon="link"></span>测试连接</button>
+      <button class="btn" id="apiKeyClear">清除密钥</button>
+      <span class="hint-inline" id="apiKeyState"></span>
+    </div>
+    <div class="notice" id="apiKeyResult" style="display:none"></div>
+    <div class="notice" id="endpointEffective" style="display:none"></div>
+    <div class="grid3">
+      <div class="field">
+        <label for="setTemp">temperature</label>
+        <input id="setTemp" type="number" step="0.1" min="0" max="2">
+      </div>
+      <div class="field">
+        <label for="setMaxTokens">max_tokens（0 = 不限制）</label>
+        <input id="setMaxTokens" type="number" min="0" step="64">
+      </div>
+      <div class="field">
+        <label for="setRounds">工具最大轮次（一次任务最多调几轮工具）</label>
+        <input id="setRounds" type="number" min="0" max="8192">
+        <span class="hint-inline">
+          默认 1024。画图、整理课件这类一步一个动作的活很费轮次（画一笔算一轮）；
+          真正兜底的是下面的「单次运行最长秒数」和熔断，不靠轮次卡人。
+          轮次真的用尽时会明确提示"这一轮没执行"，并留一个「继续生成」按钮接着做。
+        </span>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="setEffort">默认推理等级（新会话沿用，可在顶栏按会话临时改）</label>
+        <select id="setEffort"></select>
+        <span class="hint-inline" id="setEffortHint"></span>
+      </div>
+      <div class="field">
+        <label for="setThinking">思考模式（官方 thinking 参数）</label>
+        <select id="setThinking">
+          <option value="">默认（不改动接口参数）</option>
+          <option value="enabled">enabled 开启（默认就是开启）</option>
+          <option value="disabled">disabled 关闭（更快、更省，适合翻译/改写）</option>
+        </select>
+        <span class="hint-inline">关闭思考后不再有思考过程，适合有明确答案的活。</span>
+      </div>
+    </div>
+    <div class="field">
+      <label class="switch"><input id="setLoopBreaker" type="checkbox"> 启用熔断（同一个动作重复多次就停下；默认关闭）</label>
+      <span class="hint-inline">关闭时不会因为"动作重复"中断，长任务更不容易被误停。</span>
+    </div>
+    <div class="field">
+      <label for="setWorkspace">工作区根目录（相对路径的基准目录）</label>
+      <input id="setWorkspace" placeholder="留空 = agent 所在目录">
+    </div>
+    <div class="field">
+      <label class="switch"><input id="setTools" type="checkbox"> 启用原生工具调用（读写文件 / 执行命令 / 读取内网页面）</label>
+      <label class="switch"><input id="setOutside" type="checkbox"> 允许读写工作区之外的路径（默认开启）</label>
+      <span class="hint-inline">开启后模型可以编辑任意盘符的文件；只想让它改工作区内的文件时再关掉。</span>
+    </div>
+    <div class="field">
+      <label class="switch"><input id="setAutostart" type="checkbox"> 开机自动启动 Study7Agent（默认开启）</label>
+      <span class="hint-inline" id="setAutostartNote">关掉之后开机不会自己起来，随时可以在这里再打开。</span>
+      <div class="picker-bar" style="margin-top:8px">
+        <button class="btn" id="autostartDiagBtn"><span class="ico-slot" data-icon="check"></span>开机自启动诊断</button>
+        <button class="btn primary" id="autostartFixBtn" style="display:none"><span class="ico-slot" data-icon="refresh"></span>一键修复</button>
+      </div>
+      <div class="notice" id="autostartDiagReport" style="display:none"></div>
+    </div>
+    <div class="field">
+      <label class="switch"><input id="setDesktop" type="checkbox"> 允许桌面操作（截屏 / 列窗口 / 切窗口 / 剪贴板 / 音量 / 消息）</label>
+      <label class="switch"><input id="setDesktopConfirm" type="checkbox"> 动鼠标键盘这类操作前先问我（默认不问，直接执行）</label>
+      <label class="switch"><input id="setMessageConfirm" type="checkbox"> 发邮件 / 推群 / 发 QQ 消息前先问我（默认不问，直接发）</label>
+      <span class="hint-inline">
+        默认都是「不问，直接执行」：截屏、切窗口、画图、打字、改剪贴板、发消息都不再弹确认框。
+        想收紧就勾上对应的开关——勾了之后那类操作每次都会先弹一个确认框，框里写着要做什么。
+      </span>
+    </div>
+    <div class="field">
+      <label>自我修改与安全边界</label>
+      <div class="field">
+        <label for="setMaxImages">单条消息最多注入几张图片</label>
+        <input id="setMaxImages" type="number" min="1" max="2000">
+      </div>
+      <label class="switch"><input id="setCommandConfirm" type="checkbox"> 执行高风险命令（del / format / reg / powershell…）前先问我</label>
+      <label class="switch"><input id="setSelfRestart" type="checkbox"> 允许 agent 改完自己的源码后自动重启服务生效</label>
+      <span class="hint-inline">
+        图片上限默认 256 张：一批卷子照片可以一次性全丢给它，实际注入还有总字节预算兜底，超了会在对话里说明。
+        命令默认是「不问，直接执行」，想收紧就勾上这一项；config\agent.json 里的 blocked_prefixes
+        硬拦截不受开关影响，永远生效。<br>
+        自我修改：允许 agent 改动自己的源码、配置和技能，改完先跑 self_check 自检，再用 restart_service
+        重启生效；关掉这一项后它仍能改文件，但只能提示你手动重启。随包的 python\ 目录和
+        webui\data（对话记录）始终禁写。
+      </span>
+    </div>
+    <div class="field">
+      <label>悬浮工具栏（屏幕右边那条小工具条）</label>
+      <div class="field">
+        <label for="setQqDir">QQ 收到的文件放在哪个文件夹（「切到PPT」找不到正在放的课件时，来这里找最新的 .ppt/.pptx）</label>
+        <input id="setQqDir" placeholder="留空 = 自动去 文档\Tencent Files 和系统下载目录里找">
+        <span class="hint-inline">
+          新版 QQ 把下载路径存在它自己的数据库里，外面读不到，所以填一下最准：
+          在 QQ 的「设置 - 基本设置 - 文件管理」里能看到它当前的下载目录，照着填到这里。
+          填了之后就<strong>只在这个文件夹里找</strong>，不会再翻别的地方。
+        </span>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label for="setFloatWhiteboard">希沃白板的 exe</label>
+          <input id="setFloatWhiteboard" placeholder="留空 = 自动查找">
+        </div>
+        <div class="field">
+          <label for="setFloatDisplay">希沃展台的 exe</label>
+          <input id="setFloatDisplay" placeholder="留空 = 自动查找">
+        </div>
+        <div class="field">
+          <label for="setFloatQq">QQ 的 exe</label>
+          <input id="setFloatQq" placeholder="留空 = 自动查找">
+        </div>
+      </div>
+      <span class="hint-inline">
+        留空时先按常见安装目录找，再到开始菜单 / 桌面的快捷方式名字里找；实在找不到时工具条会提示填这里。
+        这几项存在 <code>config\float.json</code>，不进发布的包。改完立刻生效，不用重启。
+      </span>
+    </div>
+    <div class="field">
+      <label>消息通知（发邮件 / 推送到群里）</label>
+      <span class="hint-inline" id="notifyStatus">正在读取…</span>
+      <div class="grid3">
+        <div class="field">
+          <label for="setSmtpHost">SMTP 服务器</label>
+          <input id="setSmtpHost" placeholder="smtp.qq.com">
+        </div>
+        <div class="field">
+          <label for="setSmtpPort">端口</label>
+          <input id="setSmtpPort" type="number" placeholder="465">
+        </div>
+        <div class="field">
+          <label for="setSmtpSsl">加密</label>
+          <select id="setSmtpSsl">
+            <option value="1">SSL（465，QQ 邮箱默认）</option>
+            <option value="0">STARTTLS / 不加密（587，学校内网常见）</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="setSmtpUser">邮箱账号</label>
+          <input id="setSmtpUser" placeholder="你的QQ号@qq.com">
+        </div>
+        <div class="field">
+          <label for="setSmtpPassword">密码 / 授权码</label>
+          <input id="setSmtpPassword" type="password" placeholder="留空 = 不修改">
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field">
+          <label for="setMailTo">默认收件人</label>
+          <input id="setMailTo" placeholder="多个用分号隔开，可留空">
+        </div>
+        <div class="field">
+          <label for="setWebhookKind">群机器人类型</label>
+          <select id="setWebhookKind">
+            <option value="wecom">企业微信</option>
+            <option value="dingtalk">钉钉</option>
+            <option value="feishu">飞书</option>
+            <option value="custom">自定义（发送 {"text": "..."}）</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="setWebhookUrl">群机器人 Webhook 地址</label>
+        <input id="setWebhookUrl" placeholder="留空 = 不修改；填了才能推送">
+      </div>
+      <span class="hint-inline">
+        QQ 邮箱不能用登录密码发信：设置 - 账户 - 开启「POP3/SMTP 服务」后会给你一串 16 位授权码，填到「密码 / 授权码」里。
+        用 QQ 客户端本身发消息则不需要这些配置（走桌面控制，会截一张图让你确认发没发出去）。
+      </span>
+    </div>
+    <div class="grid3">
+      <div class="field">
+        <label for="setPriceHit">缓存命中价 / 百万 token</label>
+        <input id="setPriceHit" type="number" step="0.001" min="0">
+      </div>
+      <div class="field">
+        <label for="setPriceMiss">缓存未命中价 / 百万 token</label>
+        <input id="setPriceMiss" type="number" step="0.001" min="0">
+      </div>
+      <div class="field">
+        <label for="setPriceOut">输出价 / 百万 token</label>
+        <input id="setPriceOut" type="number" step="0.001" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label for="setSystem">系统提示词</label>
+      <textarea id="setSystem" spellcheck="false"></textarea>
+      <span class="hint-inline">占位符：{{workspace}} {{os}} {{date}}；保持前缀稳定可提升 DeepSeek 上下文缓存命中率</span>
+    </div>
+    <div class="grid3">
+      <div class="field">
+        <label for="setLoopLimit">熔断：连续重复几次就停止</label>
+        <input id="setLoopLimit" type="number" min="1" max="10">
+      </div>
+      <div class="field">
+        <label for="setMaxSeconds">单次运行最长秒数（0 = 不限制）</label>
+        <input id="setMaxSeconds" type="number" min="0" step="30">
+        <span class="hint-inline">默认 0 = 不限制：长任务（画图、批量整理）不会被时间掐断。</span>
+      </div>
+      <div class="field">
+        <label for="setMaxSubagents">一次最多派几个子代理</label>
+        <input id="setMaxSubagents" type="number" min="0" max="8">
+      </div>
+      <div class="field">
+        <label for="setSubagentRounds">每个子代理最多几轮工具</label>
+        <input id="setSubagentRounds" type="number" min="0" max="1024">
+        <span class="hint-inline">默认 256；正在工作的子代理会显示在右侧「子代理」栏里。</span>
+      </div>
+      <div class="field">
+        <label class="switch"><input id="setAutoCompact" type="checkbox"> 上下文快满时自动压缩较早的对话（长任务必需）</label>
+        <label for="setCompactRatio">压缩阈值（占上下文窗口的比例）</label>
+        <input id="setCompactRatio" type="number" min="0.3" max="0.95" step="0.05">
+        <span class="hint-inline">
+          默认 0.8：用到模型上下文窗口的 80% 就把最旧的对话总结成摘要、保留最近一段逐字不变，
+          超大工具结果先剪成「开头+结尾」。压缩后原始消息仍保存在会话文件里。关掉它，
+          长任务会在上下文满了以后被接口拒绝。
+        </span>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="setSearchEngine">联网搜索引擎</label>
+        <select id="setSearchEngine">
+          <option value="auto">自动（先用 Bing，再用 DuckDuckGo）</option>
+          <option value="bing">Bing</option>
+          <option value="duckduckgo">DuckDuckGo</option>
+          <option value="custom">单位自建搜索接口</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="setSearchEndpoint">自建搜索接口地址（用 {query} 占位）</label>
+        <input id="setSearchEndpoint" placeholder="http://intranet/search?q={query}">
+        <span class="hint-inline">返回 JSON（含 results/title/url）或普通 HTML 结果页都能解析</span>
+      </div>
+    </div>
+    <div class="field">
+      <label for="setHost">监听地址（重启生效）</label>
+      <input id="setHost" placeholder="127.0.0.1">
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label for="setPort">端口（重启生效）</label>
+        <input id="setPort" type="number" min="1" max="65535">
+      </div>
+      <div class="field">
+        <label for="setToken">访问令牌（非本机监听时必填）</label>
+        <input id="setToken" placeholder="留空 = 不校验">
+      </div>
+    </div>
+    <div class="notice" id="settingsNote" style="display:none"></div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn" id="settingsTest">测试连接</button>
+    <button class="btn" id="settingsModels">获取模型列表</button>
+    <button class="btn primary" id="settingsSave">保存</button>
+  </div>
+</dialog>
+
+<dialog id="confirmDialog">
+  <div class="dialog-head">
+    <h2>需要确认</h2>
+  </div>
+  <div class="dialog-body">
+    <p id="confirmReason" class="muted" style="margin-top:0"></p>
+    <div class="confirm-command" id="confirmCommand"></div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn" id="confirmDeny">拒绝</button>
+    <button class="btn primary" id="confirmAllow">允许执行</button>
+  </div>
+</dialog>
+
+<dialog id="snapshotDialog">
+  <div class="dialog-head">
+    <h2>文件快照</h2>
+    <button class="btn" data-close="snapshotDialog">关闭</button>
+  </div>
+  <div class="dialog-body" id="snapshotList"></div>
+  <div class="dialog-foot">
+    <span class="muted" style="margin-right:auto;font-size:12px">每次覆盖写入前都会自动保存快照，最多保留 200 份。</span>
+    <button class="btn" data-close="snapshotDialog">完成</button>
+  </div>
+</dialog>
+
+<div id="toasts"></div>
+
+<div id="timerPill" class="timer-pill hidden">
+  <div class="timer-label" id="timerLabel">课堂计时</div>
+  <div class="timer-value" id="timerValue">00:00</div>
+  <div class="timer-hint">点这里结束计时</div>
+</div>
+
+<div id="board" class="board hidden">
+  <div class="board-inner">
+    <div class="board-head">
+      <span class="board-kind" id="boardKind">要点</span>
+      <span class="board-timer hidden" id="boardTimer"></span>
+      <button class="btn" id="boardClose">关闭（Esc）</button>
+    </div>
+    <h1 class="board-title" id="boardTitle"></h1>
+    <div class="board-body" id="boardBody"></div>
+    <div class="board-footer" id="boardFooter"></div>
+    <!-- 抽学号专属：抽完一轮后老师最想干的两件事，直接放在大屏上，不用再回输入框说话 -->
+    <div class="board-actions hidden" id="boardActions">
+      <button class="btn" id="boardReset" title="清空本轮抽取记录，1-N 号全部重新可抽">完全重置抽取记录</button>
+      <button class="btn primary" id="boardNext" title="再抽一个还没抽到的学号">抽下一个</button>
+    </div>
+  </div>
+</div>
+
+<dialog id="timerDialog">
+  <div class="dialog-head">
+    <h2>课堂计时</h2>
+    <button class="btn" data-close="timerDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <p class="muted" style="margin-top:0">
+      点一下时长就开始；倒计时显示在屏幕右下角，开始答题时也会跟着显示在大屏上，结束时有提示音。
+    </p>
+    <div class="chips" id="timerPresets"></div>
+    <div class="grid2">
+      <div class="field">
+        <label for="timerSeconds">自定义秒数（最长 7200）</label>
+        <input id="timerSeconds" type="number" min="1" max="7200" value="300">
+      </div>
+      <div class="field">
+        <label for="timerLabelInput">这段计时叫什么（可选）</label>
+        <input id="timerLabelInput" placeholder="小组讨论">
+      </div>
+    </div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn" data-close="timerDialog">取消</button>
+    <button class="btn primary" id="timerStart">开始计时</button>
+  </div>
+</dialog>
+
+<dialog id="calcDialog">
+  <div class="dialog-head">
+    <h2>计算器 / 单位换算</h2>
+    <button class="btn" data-close="calcDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="chips" id="calcTabs">
+      <button class="chip active" id="calcTabMath" data-tab="math">计算器</button>
+      <button class="chip" id="calcTabUnits" data-tab="units">单位换算</button>
+      <button class="chip" id="calcTabSolve" data-tab="solve">解方程 / 因式分解</button>
+    </div>
+
+    <div id="calcSolvePane" class="hidden">
+      <div class="field">
+        <label for="solveInput">方程或式子</label>
+        <input id="solveInput" spellcheck="false"
+               placeholder="例如 x^2 - 5x + 6 = 0、2x + 3 = 7、x^2 - 9">
+      </div>
+      <div class="chips">
+        <button class="chip active" id="solveKindEquation" data-kind="equation">解方程</button>
+        <button class="chip" id="solveKindFactor" data-kind="factor">因式分解</button>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;margin:12px 0">
+        <button class="btn primary" id="solveGo">让 AI 算</button>
+        <span class="muted">结果直接显示在下面，同时也会进对话</span>
+      </div>
+      <div class="ai-result" id="solveResult"></div>
+      <div class="notice" id="solveNote" style="display:none"></div>
+    </div>
+
+    <div id="calcMathPane">
+      <div class="calc-screen">
+        <input id="calcInput" spellcheck="false" autocomplete="off"
+               placeholder="例如 1/3 + 1/6、sqrt(8)、sin(pi/6)、5!、2^10">
+        <div class="calc-exact" id="calcExact"></div>
+        <div class="calc-decimal" id="calcDecimal"></div>
+      </div>
+      <div class="chips">
+        <button class="chip active" id="calcModeRad" data-mode="rad">弧度</button>
+        <button class="chip" id="calcModeDeg" data-mode="deg">角度</button>
+      </div>
+      <div class="calc-pad" id="calcPad"></div>
+      <div class="muted" style="margin:6px 0 0">
+        精确值优先给分数和根号（<code>√2/2</code>、<code>1/3</code>），化不出来的话会标明"近似值"。
+      </div>
+      <div class="calc-history" id="calcHistory"></div>
+    </div>
+
+    <div id="calcUnitsPane" class="hidden">
+      <div class="field">
+        <label for="unitSearch">搜单位（中文名、符号都行，例如"亩""大气压""psi"）</label>
+        <div class="unit-search-row">
+          <input id="unitSearch" spellcheck="false" placeholder="输入就搜，也可以点右边的按钮">
+          <button class="btn primary" id="unitSearchGo">搜索</button>
+        </div>
+      </div>
+      <div class="unit-hits" id="unitHits"></div>
+      <div class="field">
+        <label>物理量（点一个；找不到就搜上面）</label>
+        <div class="unit-measures" id="unitMeasures"></div>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label for="unitValue">数值</label>
+          <input id="unitValue" type="number" step="any" value="1">
+        </div>
+        <div class="field">
+          <label for="unitFrom">从</label>
+          <select id="unitFrom"></select>
+        </div>
+        <div class="field">
+          <label for="unitTo">到</label>
+          <select id="unitTo"></select>
+        </div>
+      </div>
+      <div class="unit-result" id="unitResult"></div>
+      <div class="notice" id="unitNote" style="display:none"></div>
+    </div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn" id="unitSwap">对调</button>
+    <button class="btn" data-close="calcDialog">关闭</button>
+  </div>
+</dialog>
+
+<dialog id="chemDialog">
+  <div class="dialog-head">
+    <h2>化学</h2>
+    <button class="btn" data-close="chemDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="chips" id="chemTabs">
+      <button class="chip active" data-chem-tab="balance">配平</button>
+      <button class="chip" data-chem-tab="react">反应预测</button>
+      <button class="chip" data-chem-tab="query">查物质 / 结构</button>
+      <button class="chip" data-chem-tab="lab">实验台</button>
+    </div>
+
+    <div id="chemPaneBalance">
+      <div class="field">
+        <label for="chemEquation">写方程式（两边用 -&gt; 或 = 分隔，系数可以不写）</label>
+        <input id="chemEquation" placeholder="例如 Fe + O2 -&gt; Fe3O4" spellcheck="false">
+      </div>
+      <div class="dialog-foot">
+        <button class="btn primary" id="chemBalanceBtn">配平</button>
+        <button class="btn" id="chemThermoBtn">算反应热</button>
+      </div>
+    </div>
+
+    <div id="chemPaneReact" style="display:none">
+      <div class="grid3">
+        <div class="field">
+          <label for="chemA">物质 A</label>
+          <input id="chemA" placeholder="Na2CO3" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="chemB">物质 B</label>
+          <input id="chemB" placeholder="CaCl2" spellcheck="false">
+        </div>
+      </div>
+      <div class="grid3">
+        <div class="field">
+          <label for="chemMetal">置换：金属单质</label>
+          <input id="chemMetal" placeholder="Fe" spellcheck="false">
+        </div>
+        <div class="field">
+          <label for="chemOther">置换：酸或盐溶液</label>
+          <input id="chemOther" placeholder="CuSO4" spellcheck="false">
+        </div>
+      </div>
+      <div class="dialog-foot">
+        <button class="btn primary" id="chemReactBtn">两种溶液混合</button>
+        <button class="btn" id="chemReplaceBtn">置换反应</button>
+      </div>
+    </div>
+
+    <div id="chemPaneQuery" style="display:none">
+      <div class="field">
+        <label for="chemQuery">名字或分子式</label>
+        <input id="chemQuery" placeholder="例如 氢氧化钠 / CaCO3 / C2H6O" spellcheck="false">
+      </div>
+      <div class="dialog-foot">
+        <button class="btn primary" id="chemSpeciesBtn">查物质</button>
+        <button class="btn" id="chemStructureBtn">查结构</button>
+      </div>
+      <div class="field">
+        <label>结构式 / 球棍模型（点上面表格里的行，或自己粘一个 SMILES）</label>
+        <div class="lab-bar">
+          <input id="chemSmiles" type="text" style="width:200px"
+                 placeholder="例如 CCO（乙醇）、c1ccccc1（苯）" spellcheck="false">
+          <button class="btn" id="chemDraw2d">画结构式</button>
+          <button class="btn" id="chemDraw3d">球棍模型</button>
+          <button class="btn" id="chemDrawJsme">自己画（JSME）</button>
+        </div>
+        <div id="chemStructNote" class="muted" style="margin:6px 0"></div>
+        <div id="chemStructBox" class="chem-struct"></div>
+        <div class="lab-bar">
+          <label>反应动画（断键 / 成键）</label>
+          <select id="chemAnimPick" class="lab-num" style="width:260px"></select>
+          <button class="btn" id="chemAnimPlay">播放</button>
+          <span class="muted" id="chemAnimNote"></span>
+        </div>
+        <div id="chemAnimBox" class="chem-struct"></div>
+        <div id="chemJsmeBox" class="chem-jsme" style="display:none"></div>
+      </div>
+    </div>
+
+    <div id="chemPaneLab" style="display:none">
+      <p class="muted" style="margin-top:0">
+        把器材拖到台面上（点一下也能直接放上来），再把药瓶拖到器材上就是加试剂；
+        点「导管」进连接模式，再点两个接口点就把装置接起来，出气时能看到气泡沿导管过去；
+        器材下面的「加热 / 倒掉 / 倾斜」按需要点。全部按随包离线规则表判，查不到会直接说「资料未收录」。
+      </p>
+      <div class="field">
+        <label>器材</label>
+        <div class="lab-shelf" id="chemLabShelf"></div>
+      </div>
+      <div class="field">
+        <label>试剂架（按类别分组，盒子里可以滚动）</label>
+        <div class="lab-reagents" id="chemLabReagents"></div>
+      </div>
+      <div class="field">
+        <label>预设实验（一键摆好）</label>
+        <div class="lab-presets" id="chemLabPresets"></div>
+      </div>
+      <div class="lab-stage">
+        <div class="lab-bench" id="chemLabBench"></div>
+        <svg id="chemLabWires" class="lab-wires" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+      <div class="lab-bar">
+        <button class="btn" id="chemLabCheckBtn">检查装置</button>
+        <button class="btn" id="chemLabClearBtn">清空台面</button>
+        <span class="muted">器材右上角的「×」可以单独拿走一件；「倒掉」只倒掉里面的试剂。
+          检查装置只判摆法（有没有倾斜、有没有铁架台、有没有接导管），反应对不对看下面对话框的结果</span>
+      </div>
+      <div class="lab-vessel" id="chemLabVessel" style="display:none">
+        <span id="chemLabVesselName" class="muted">恒容密闭反应釜</span>
+        <label>温度 <input id="chemVesselTemp" class="lab-num" type="number" min="200" max="1500"
+                          step="5" value="298"> K</label>
+        <label>压强 <input id="chemVesselPressure" class="lab-num" type="number" min="1"
+                          max="60000" step="100" value="100"> kPa</label>
+        <button class="btn lab-mini" id="chemVesselApply">按这个温度和压强来</button>
+        <button class="btn lab-mini" id="chemVesselPreset1">常压</button>
+        <button class="btn lab-mini" id="chemVesselPreset2">10 MPa</button>
+        <button class="btn lab-mini" id="chemVesselPreset3">30 MPa</button>
+        <button class="btn lab-mini" id="chemVesselCool">回到常温常压</button>
+        <span class="muted">恒容：气体不外逸，加压=按该压强重新配料（合成氨加压平衡右移）；不设压强时另充惰性气体只升总压、平衡不移动</span>
+      </div>
+      <div id="chemLabResult" class="chem-result"></div>
+    </div>
+
+    <div class="notice" id="chemNote" style="display:none"></div>
+    <div id="chemResult" class="chem-result"></div>
+  </div>
+</dialog>
+
+
+
+<dialog id="phetDialog">
+  <div class="dialog-head">
+    <h2>PhET 互动仿真</h2>
+    <button class="btn" data-close="phetDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="lab-bar">
+      <label>模拟</label>
+      <select id="phetPick" class="lab-num" style="width:260px"></select>
+      <button class="btn lab-mini" id="phetOpen">在新标签打开（投影/全屏用）</button>
+      <span class="muted" id="phetNote"></span>
+    </div>
+    <iframe id="phetFrame" title="PhET" style="width:100%;height:66vh;border:1px solid var(--line);
+            border-radius:6px;background:#fff"></iframe>
+    <p class="muted" style="margin:6px 0 0">
+      来自 PhET Interactive Simulations, University of Colorado Boulder（CC BY-NC 4.0，署名 - 非商业：
+      只能课堂教学用）。随包内置、离线可用；本程序只删掉了它自带的第三方统计脚本，模拟本身没有改动。
+    </p>
+  </div>
+</dialog>
+
+<div id="sandboxPanel" class="sandbox-panel hidden">
+  <div class="panel-grip panel-grip-e" id="sbWinE" title="拖我调宽度（双击 = 还原全屏）"></div>
+  <div class="panel-grip panel-grip-s" id="sbWinS" title="拖我调高度（双击 = 还原全屏）"></div>
+  <div class="panel-grip panel-grip-se" id="sbWinSE" title="拖我同时调宽高（双击 = 还原全屏）"></div>
+  <div class="sandbox-inner">
+    <div class="sandbox-bar">
+      <b>物理沙盒</b>
+      <span class="muted" id="sbCursor">鼠标移到画布上看坐标</span>
+      <button class="btn lab-mini" id="prLaunch">物理练习</button>
+      <button class="btn lab-mini" id="prRead">只练读数</button>
+      <button class="btn lab-mini" id="sbClose">关闭（Esc）</button>
+    </div>
+    <div class="sandbox-bar">
+      <label>工具</label>
+      <select id="sbTool" class="lab-num" style="width:170px">
+        <option value="select">选择 / 拖动</option>
+        <option value="pan">移动视图（也可以按住右键或空白处拖）</option>
+        <option value="track">画轨道（点几下）</option>
+        <option value="block">放/加物块（点空处加一个，点物块选中它）</option>
+        <option value="E">拖出电场区</option>
+        <option value="B">拖出磁场区</option>
+        <option value="battery">拖出电池（平行板）</option>
+        <option value="plate">放板 / 小车（点两下拖出矩形）</option>
+        <option value="wheel">放轮子（点一下，默认纯滚动）</option>
+        <option value="arc">画圆弧轨道（圆心、起点、终点）</option>
+        <option value="spring">拉弹簧（点 A 再点 B 或空白）</option>
+        <option value="rope">拉轻绳（点 A 再点 B 或空白）</option>
+        <option value="rod">拉轻杆（点 A 再点 B 或空白）</option>
+      </select>
+      <label>吸附</label>
+      <select id="sbSnapPick" class="lab-num" style="width:96px">
+        <option value="0.5">0.5 m</option>
+        <option value="0.1" selected>0.1 m</option>
+        <option value="0.05">0.05 m</option>
+        <option value="0.02">0.02 m</option>
+        <option value="0">不吸附</option>
+      </select>
+      <label>这一段的 μ</label>
+      <input id="sbMu" class="lab-num" type="text" style="width:56px" value="0.2">
+      <label>场的大小</label>
+      <input id="sbFieldValue" class="lab-num" type="text" style="width:64px" value="0.5">
+      <label>电池电压 U</label>
+      <input id="sbVoltage" class="lab-num" type="text" style="width:64px" value="100">
+      <label>恢复系数 e</label>
+      <input id="sbE" class="lab-num" type="text" style="width:56px" value="1.0">
+      <span class="muted">1=弹性碰撞，0=完全非弹性</span>
+      <button class="btn lab-mini" id="sbZoomOut">缩小</button>
+      <button class="btn lab-mini" id="sbZoomIn">放大</button>
+      <button class="btn lab-mini" id="sbZoomFit">适应</button>
+      <span class="muted" id="sbZoomLabel">100%</span>
+    </div>
+    <div class="sandbox-bar">
+      <label>重力 g</label>
+      <input id="sbG" class="lab-num" type="text" style="width:64px" value="9.8">
+      <label>方向</label>
+      <select id="sbGdir" class="lab-num" style="width:110px">
+        <option value="down">竖直向下</option>
+        <option value="up">竖直向上</option>
+        <option value="right">水平向右</option>
+        <option value="left">水平向左</option>
+      </select>
+      <button class="btn primary" id="sbRunBtn">开始</button>
+      <button class="btn lab-mini" id="sbPlayBtn">重放</button>
+      <button class="btn lab-mini" id="sbUndoBtn">撤销一点</button>
+      <button class="btn lab-mini" id="sbEndTrackBtn">结束这条轨道</button>
+      <button class="btn lab-mini" id="sbDeleteBtn">删掉选中</button>
+      <label>例子</label>
+      <select id="sbExample" class="lab-num" style="width:230px"></select>
+      <button class="btn lab-mini" id="sbExampleLoad">装载</button>
+      <button class="btn lab-mini" id="sbDemoBtn">示例题</button>
+      <button class="btn lab-mini" id="sbClearBtn">清空</button>
+    </div>
+    <div class="sandbox-main">
+      <div class="sandbox-canvas">
+        <svg id="sbScene" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 420"></svg>
+      </div>
+      <div class="sandbox-side">
+        <div class="sb-side-head">选中的东西</div>
+        <div id="sbEdit" class="sb-list"></div>
+        <div id="sbValues" class="phys-values"></div>
+        <div id="sbCards" class="phys-cards"></div>
+      </div>
+    </div>
+    <div class="chart-grip" id="sbGrip" title="按住上下拖动：调上面画布 / 下面图像的高度"></div>
+    <div class="chart-bar">
+      <b>图像</b>
+      <label>x 轴</label>
+      <input class="lab-num" id="sbChartX" type="text" style="width:118px" placeholder="比如 t">
+      <label>y 轴</label>
+      <input class="lab-num" id="sbChartY" type="text" style="width:130px" placeholder="多条用 ; 隔开">
+      <button class="btn primary" id="sbChartDraw">画图</button>
+      <button class="btn lab-mini" id="sbChartSave">存图</button>
+      <label>刻度</label>
+      <span class="muted">x</span>
+      <input class="lab-num" id="sbChartXMin" type="text" style="width:52px" placeholder="自动">
+      <span class="muted">~</span>
+      <input class="lab-num" id="sbChartXMax" type="text" style="width:52px" placeholder="自动">
+      <span class="muted">y</span>
+      <input class="lab-num" id="sbChartYMin" type="text" style="width:52px" placeholder="自动">
+      <span class="muted">~</span>
+      <input class="lab-num" id="sbChartYMax" type="text" style="width:52px" placeholder="自动">
+      <button class="btn lab-mini" id="sbChartAuto">自动</button>
+      <span class="muted" id="sbChartNote">播放动画时图上那个红点会跟着走</span>
+    </div>
+    <div class="chart-main">
+      <div class="chart-stage" id="sbChart"></div>
+      <div class="chart-side">
+        <div class="sb-side-head">记号说明表</div>
+        <div class="muted" id="sbChartHelp"></div>
+        <div class="chart-legend" id="sbChartLegend"></div>
+      </div>
+    </div>
+    <div class="sandbox-foot">
+      <input id="sbTime" class="lab-num" type="range" min="0" max="60" value="0">
+      <span class="muted" id="sbTimeLabel"></span>
+    </div>
+    <div class="notice" id="sbNote" style="display:none"></div>
+  </div>
+</div>
+
+<div id="circuitPanel" class="sandbox-panel hidden">
+  <div class="panel-grip panel-grip-e" id="crWinE" title="拖我调宽度（双击 = 还原全屏）"></div>
+  <div class="panel-grip panel-grip-s" id="crWinS" title="拖我调高度（双击 = 还原全屏）"></div>
+  <div class="panel-grip panel-grip-se" id="crWinSE" title="拖我同时调宽高（双击 = 还原全屏）"></div>
+  <div class="sandbox-inner">
+    <div class="sandbox-bar">
+      <b>电路画板</b>
+      <span class="muted" id="crNote">摆元件 -> 连线 -> 算一算（电流电压、电表读数都由服务端算）</span>
+      <button class="btn lab-mini" id="crClose">关闭（Esc）</button>
+    </div>
+    <div class="sandbox-bar">
+      <label>工具</label>
+      <select id="crTool" class="lab-num" style="width:190px">
+        <option value="place">放元件（点一下就放，默认）</option>
+        <option value="select">只选择 / 拖动（不新放元件）</option>
+        <option value="wire">连线（点两个接线柱）</option>
+        <option value="pan">移动视角（按住拖画面，滚轮缩放）</option>
+      </select>
+      <label>元件</label>
+      <select id="crType" class="lab-num" style="width:190px"></select>
+      <button class="btn primary" id="crSolve">算一算</button>
+      <button class="btn lab-mini" id="crUndo">撤销</button>
+      <label>例子</label>
+      <select id="crExample" class="lab-num" style="width:230px"></select>
+      <button class="btn lab-mini" id="crExampleLoad">装载</button>
+      <button class="btn lab-mini" id="crDemo">示例电路</button>
+      <button class="btn lab-mini" id="crClear">清空</button>
+      <button class="btn lab-mini" id="crZoomOut">缩小</button>
+      <button class="btn lab-mini" id="crZoomIn">放大</button>
+      <button class="btn lab-mini" id="crZoomFit">适应</button>
+      <span class="muted" id="crZoomLabel">100%</span>
+    </div>
+    <div class="sandbox-main">
+      <div class="sandbox-canvas" id="crCanvas"></div>
+      <div class="sandbox-side">
+        <div class="sb-side-head">选中的元件</div>
+        <div id="crEdit" class="sb-list"></div>
+        <div class="sb-side-head">读数</div>
+        <div id="crReadings" class="phys-values"></div>
+      </div>
+    </div>
+    <div class="chart-grip" id="crGrip" title="按住上下拖动：调上面画布 / 下面图像的高度"></div>
+    <div class="chart-bar">
+      <b>图像</b>
+      <label>x 轴</label>
+      <input class="lab-num" id="crChartX" type="text" style="width:118px" placeholder="比如 R(滑1)">
+      <label>y 轴</label>
+      <input class="lab-num" id="crChartY" type="text" style="width:118px" placeholder="多条用 ; 隔开">
+      <button class="btn primary" id="crChartDraw">画图</button>
+      <button class="btn lab-mini" id="crChartSweep">扫一遍（滑片 0 -> 100%）</button>
+      <button class="btn lab-mini" id="crChartSave">存图</button>
+      <label>刻度</label>
+      <span class="muted">x</span>
+      <input class="lab-num" id="crChartXMin" type="text" style="width:52px" placeholder="自动">
+      <span class="muted">~</span>
+      <input class="lab-num" id="crChartXMax" type="text" style="width:52px" placeholder="自动">
+      <span class="muted">y</span>
+      <input class="lab-num" id="crChartYMin" type="text" style="width:52px" placeholder="自动">
+      <span class="muted">~</span>
+      <input class="lab-num" id="crChartYMax" type="text" style="width:52px" placeholder="自动">
+      <button class="btn lab-mini" id="crChartAuto">自动</button>
+      <span class="muted" id="crChartNote">拖动滑片 / 点「扫一遍」都会自动重画</span>
+    </div>
+    <div class="chart-main">
+      <div class="chart-stage" id="crChart"></div>
+      <div class="chart-side">
+        <div class="sb-side-head">记号说明表</div>
+        <div class="muted" id="crChartHelp"></div>
+        <div class="chart-legend" id="crChartLegend"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="practicePanel" class="sandbox-panel hidden">
+  <div class="sandbox-inner">
+    <div class="sandbox-bar">
+      <b>物理练习</b>
+      <span class="muted" id="prNote">四种题型：仪器读数 / 模型计算题 / 过程填空 / 图像读数</span>
+      <button class="btn lab-mini" id="prClose">关闭（Esc）</button>
+    </div>
+    <div class="sandbox-bar">
+      <label>题型</label>
+      <select id="prType" class="lab-num" style="width:150px"></select>
+      <label>具体</label>
+      <select id="prKind" class="lab-num" style="width:190px"></select>
+      <button class="btn primary" id="prNew">出一题</button>
+      <button class="btn" id="prSubmit">提交判分</button>
+      <button class="btn lab-mini" id="prNext">下一题</button>
+      <button class="btn lab-mini" id="prAnswer">对答案</button>
+      <button class="btn lab-mini" id="prZoomOut">缩小</button>
+      <button class="btn lab-mini" id="prZoomIn">放大</button>
+      <button class="btn lab-mini" id="prZoomFit">适应</button>
+      <span class="muted" id="prZoomLabel">100%</span>
+      <button class="btn lab-mini" id="prBook">看错题本</button>
+      <span class="muted" id="prStats"></span>
+    </div>
+    <div class="sandbox-main">
+      <div class="sandbox-canvas" id="prStage" style="overflow:auto">
+        <div id="prFigure" class="pr-figure"></div>
+        <div id="prChartBox" class="pr-chart"></div>
+      </div>
+      <div class="sandbox-side">
+        <div class="sb-side-head" id="prTitle">题目</div>
+        <div id="prPrompt" class="pr-prompt"></div>
+        <div id="prBlanks" class="pr-blanks"></div>
+        <div id="prResult" class="phys-cards"></div>
+        <div class="sb-side-head">错题本</div>
+        <div id="prMistakes" class="pr-mistakes"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<dialog id="figureDialog">
+  <div class="dialog-head">
+    <h2>作图</h2>
+    <button class="btn" data-close="figureDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <p class="muted" style="margin-top:0">
+      <strong>这里只画立体图形了。</strong>
+      函数、方程、平面几何（点 / 线 / 圆 / 多边形 / 交点 / 动点）全部搬到
+      <strong>「几何画板（平面面板）」</strong>：顶栏点「作图」，或者在左边输入栏直接写方程。<br>
+      立体图形一行一条：<code>A(0,0,0)</code> 定义空间点、<code>seg A B</code> 棱、
+      <code>face A B C</code> 面、<code>box A B C D 3</code> 长方体、<code>prism A B C 5</code> 棱柱、
+      <code>pyramid A B C D 3</code> 四棱锥、<code>circle3 A B C</code> 过三点的圆。
+    </p>
+    <div class="chips" id="figureKinds">
+      <button class="chip active" id="figureKindSolid" data-kind="solid">立体图形</button>
+    </div>
+    <!-- 这块输入是旧的「函数 / 方程」入口。老师要求平面统一走几何画板，所以它不再画图：
+         留着输入框是为了老师还能往这儿写（习惯改不过来），但按「画出来」会**中文说明**
+         并指向平面面板，不会静默什么都不发生（见 app.js 的 drawFromDialog）。 -->
+    <div class="field" id="figureExpressionField">
+      <label for="figureExpression">表达式（关于 x）—— 已停用</label>
+      <input id="figureExpression" placeholder="函数和方程请写到这里：几何画板（平面面板）" spellcheck="false">
+    </div>
+    <div class="field" id="figureShapesField">
+      <label for="figureShapes">立体图形（一行一条，例如点的坐标和 box）</label>
+      <textarea id="figureShapes" spellcheck="false"
+        placeholder="A(0,0,0)&#10;B(4,0,0)&#10;C(4,3,0)&#10;D(0,3,0)&#10;box A B C D 3"></textarea>
+    </div>
+    <div class="field">
+      <label for="figureTitleInput">标题（可选）</label>
+      <input id="figureTitleInput" placeholder="例如：长方体 ABCD-A₁B₁C₁D₁">
+    </div>
+    <div class="notice" id="figureNoteBox" style="display:none"></div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn" data-close="figureDialog">取消</button>
+    <button class="btn primary" id="figureDraw">画出来</button>
+  </div>
+</dialog>
+
+<dialog id="materialsDialog">
+  <div class="dialog-head">
+    <h2>课堂资料</h2>
+    <button class="btn" data-close="materialsDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <p class="muted" style="margin-top:0">
+      悬浮工具栏上「板书保存」「课堂标记」「截图给AI」存下来的东西都放在工作区里，点右边就能打开文件夹。
+    </p>
+    <div class="mat-list" id="matList"></div>
+  </div>
+  <div class="dialog-foot">
+    <span class="muted" id="matWorkspace" style="margin-right:auto;font-size:12px"></span>
+    <button class="btn primary" data-close="materialsDialog">完成</button>
+  </div>
+</dialog>
+
+<div id="figurePanel" class="figure-panel hidden">
+  <div class="figure-inner">
+    <div class="figure-head">
+      <span class="figure-kind" id="figureKindLabel">立体</span>
+      <span class="figure-title" id="figureTitleLabel"></span>
+      <span class="figure-note" id="figureNoteLabel"></span>
+      <button class="btn" id="figureMore" title="更多设置：一行一条的立体图形输入">更多设置</button>
+      <button class="btn" id="figureClose">关闭（Esc）</button>
+    </div>
+    <div class="figure-body">
+      <div class="figure-tools" id="figureTools">
+        <button class="tool-btn solid-tool hidden" id="solidFree"
+                title="解除约束，点可以自由拖动">自由拖</button>
+        <button class="tool-btn solid-tool hidden" id="solidAlongLine"
+                title="点沿直线滑动：先点这条直线上的两个点当轨道，之后拖点只能沿着它滑（只管点，不碰棱）">沿线拖点</button>
+        <button class="tool-btn solid-tool hidden" id="solidAlongEdge"
+                title="整条线段沿一条直线滑动（长度不变）：先点轨道直线上的两个点，再点要滑的那条线段的两个端点，之后按住这两个端点里任意一个拖">拖棱</button>
+        <button class="tool-btn solid-tool hidden" id="solidOnFace"
+                title="让选中的点只能在某个面上滑动（先选点，再选面上三点）">在面拖</button>
+        <button class="tool-btn solid-tool hidden" id="solidCircle3"
+                title="画圆：点三个点，然后按「确定」（过这三点的圆）">画圆</button>
+        <button class="tool-btn solid-tool hidden" id="solidSphere"
+                title="画球：点球心 + 球面上一个点，然后按「确定」">画球</button>
+        <button class="tool-btn solid-tool hidden" data-solid="select" id="solidSelect"
+                title="点一下图上的点选中它（右栏看坐标）">选择</button>
+        <button class="tool-btn solid-tool hidden" id="solidConfirm"
+                title="把刚选的点定成线段或平面">确定</button>
+        <button class="tool-btn solid-tool hidden" id="solidUnselect"
+                title="一键取消所有选中的点、圆和曲面">取消选择</button>
+        <button class="tool-btn solid-tool hidden" id="solidPickSphere"
+                title="选中球心后按这里 = 选中整个球面">整个球面</button>
+        <button class="tool-btn solid-tool hidden" id="solidOnCircle"
+                title="在选中的圆上放一个**新的**动点。先点圆的边选中它">圆上动点</button>
+        <button class="tool-btn solid-tool hidden" id="solidBindCircle"
+                title="把已经画好的一个点设为圆上动点：先点圆的边，再点那个点，然后按这里">设为圆上动点</button>
+        <button class="tool-btn solid-tool hidden" id="solidOnSurface"
+                title="在圆锥/圆柱侧面上放动点。圆锥=一个圆+顶点，圆柱=两个圆">侧面动点</button>
+        <button class="tool-btn solid-tool hidden" id="solidOnSphere"
+                title="在球面上放一个动点。选中球心后先按「整个球面」">球面动点</button>
+        <button class="tool-btn solid-tool hidden" id="solidSection"
+                title="把球面上选中的几个点定成一个截面圆">截面圆</button>
+        <button class="tool-btn solid-tool hidden" id="solidAngleLL"
+                title="线线角：点两点然后确定（第一条线）然后再点两点然后确定">线线角</button>
+        <button class="tool-btn solid-tool hidden" id="solidAngleLP"
+                title="线面角：点两点然后确定（直线）然后点三点然后确定（平面）">线面角</button>
+        <button class="tool-btn solid-tool hidden" id="solidAnglePP"
+                title="面面角：点三点然后确定（第一个面）然后再点三点然后确定">面面角</button>
+        <button class="tool-btn solid-tool hidden" id="solidLine"
+                title="把选中的两个点连成棱">连线</button>
+        <button class="tool-btn solid-tool hidden" id="solidFace"
+                title="把选中的三个及以上点连成一个面">画面</button>
+        <button class="tool-btn solid-tool hidden" data-solid="delete" id="solidDelete"
+                title="点一个点把它和用到它的图形一起删掉">删除</button>
+        <button class="tool-btn solid-tool hidden" id="solidUndo" title="撤掉最后一条">撤销</button>
+        <button class="tool-btn solid-tool hidden" id="solidClear" title="全部清空">清空</button>
+        <div class="geo-coord hidden" id="solidPointBox">
+          <div class="geo-coord-title">按坐标加点</div>
+          <div class="geo-coord-row">
+            <input id="solidX" class="geo-coord-input" placeholder="x" spellcheck="false">
+            <input id="solidY" class="geo-coord-input" placeholder="y" spellcheck="false">
+            <input id="solidZ" class="geo-coord-input" placeholder="z" spellcheck="false">
+          </div>
+          <button class="tool-btn solid-tool" id="solidAdd"
+                  title="在输入的坐标处放一个空间点">加点</button>
+        </div>
+      </div>
+      <div class="figure-canvas" id="figureCanvas"></div>
+      <div class="figure-info" id="figureInfo"></div>
+    </div>
+    <div class="geo-hint hidden" id="geoHint"></div>
+    <div class="figure-status hidden" id="figureStatus">
+      <span class="dot"></span><span id="figureStatusText"></span>
+    </div>
+    <div class="figure-bar">
+      <!-- 只剩「立体」了：函数 / 方程 / 几何的 kind 标签已经删掉，平面全归几何画板。
+           留一个按钮是为了老师看得见"这块面板现在画什么"，不再有切换语义。 -->
+      <div class="chips">
+        <button class="chip active" id="panelKindSolid" data-kind="solid">立体</button>
+      </div>
+      <input id="panelInput" placeholder="写立体图形，一行一条，例如 A(0,0,0)；B(4,0,0)；box A B C D 3">
+      <button class="btn primary" id="panelDraw">画出来</button>
+      <button class="btn" id="panelAskAI" title="把这句话发给 AI，让它按题意画到这块面板里">让 AI 画</button>
+    </div>
+    <div class="notice" id="panelNote" style="display:none"></div>
+  </div>
+</div>
+
+<!-- 平面：对象模型（webui\plane.py）的渲染与联动层。跟作图面板一样是整屏 SVG，
+     只是画的东西来自服务端返回的 PlaneState，不是一条表达式。 -->
+<div id="planePanel" class="plane-panel hidden">
+  <div class="plane-inner">
+    <div class="plane-head">
+      <span class="plane-kind">平面</span>
+      <span class="plane-title" id="planeTitle">对象与联动</span>
+      <span class="plane-note" id="planeNote"></span>
+      <button class="btn" id="planeUndo" title="撤销上一步改动">撤销</button>
+      <button class="btn" id="planeRedo" title="重做">重做</button>
+      <button class="btn" id="planeSideToggle" title="折叠 / 展开右边的代数区">代数区</button>
+      <button class="btn" id="planeExportSvg" title="导出成矢量图，可以直接放进课件或打印">导出 SVG</button>
+      <button class="btn" id="planeExportPng" title="导出成图片（在网页端由画布转出）">导出 PNG</button>
+      <button class="btn" id="planeExportJson" title="导出对象与依赖关系的原始数据">导出 JSON</button>
+      <button class="btn" id="planeSolid" title="立体（柱 / 锥 / 球 / 截面 / 三种角）在旧的作图面板里画，这块面板只管平面。点这里会收起本面板并打开作图面板">立体</button>
+      <button class="btn" id="planeClose">关闭（Esc）</button>
+    </div>
+    <div class="plane-body">
+      <div class="plane-tools">
+        <button class="tool-btn" id="planeFit" title="缩放到刚好放下所有对象">适应窗口</button>
+        <button class="tool-btn" id="planeReset" title="回到服务端给的默认视野">复位视野</button>
+        <button class="tool-btn" id="planeRefresh" title="重新向服务端要一次当前状态">重新读取</button>
+        <div class="tool-sep"></div>
+        <!-- 画图工具：跟「作图」面板那一排一样的用法 —— 点工具，再在画布上点。
+             全部走 /api/plane/apply，不另开一套写入口。 -->
+        <button class="tool-btn plane-tool on" data-plane="select" title="选择：拖动自由点、点选对象、拖背景平移、滚轮缩放">选择</button>
+        <button class="tool-btn plane-tool" data-plane="point" title="在空白处点一下，就在那里放一个点">点</button>
+        <button class="tool-btn plane-tool" data-plane="segment" title="点两个点连成线段（点已有的点就复用它）">线段</button>
+        <button class="tool-btn plane-tool" data-plane="line" title="点两个点画直线">直线</button>
+        <button class="tool-btn plane-tool" data-plane="ray" title="点两个点画射线">射线</button>
+        <button class="tool-btn plane-tool" data-plane="circle" title="先点圆心，再点圆上一点">圆</button>
+        <!-- 圆的一族：先有「圆」，再跟着「三点定一个圆」的外接圆（同一类老师一起找）。 -->
+        <button class="tool-btn plane-tool" data-plane="circumcircle" title="外接圆：依次点三个点，作出过这三点的圆（圆心到三个点距离相等；三点共线时画不出来）"><svg class="plane-tool-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3L20.4 16.5H3.6Z"/></svg>外接圆</button>
+        <button class="tool-btn plane-tool" data-plane="midpoint" title="点两个点，连成线段并标出中点">中点</button>
+        <!-- 由三个点定一个点：中点、重心、内心、垂心挨着放 —— 讲三角形的「心」时就沿这一排往下点。 -->
+        <button class="tool-btn plane-tool" data-plane="centroid" title="重心：依次点三角形的三个顶点，求出三条中线的交点"><svg class="plane-tool-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L21 20H3Z"/><path d="M12 3v17"/><path d="M21 20L7.5 11.5"/><path d="M3 20l13.5-8.5"/><circle cx="12" cy="14.3" r="1.8" fill="currentColor" stroke="none"/></svg>重心</button>
+        <button class="tool-btn plane-tool" data-plane="incenter" title="内心：依次点三角形的三个顶点，求出三条角平分线的交点（也是内切圆的圆心）"><svg class="plane-tool-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L21 20H3Z"/><circle cx="12" cy="14.5" r="5.4"/></svg>内心</button>
+        <button class="tool-btn plane-tool" data-plane="orthocenter" title="垂心：依次点三角形的三个顶点，求出三条高线的交点"><svg class="plane-tool-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3L21 20H3Z"/><path d="M12 3v17"/><path d="M21 20L9.5 11.7"/><circle cx="12" cy="15.2" r="1.8" fill="currentColor" stroke="none"/></svg>垂心</button>
+        <button class="tool-btn plane-tool" data-plane="perp" title="先点一个点，再点一条线，作出过该点的垂线">垂线</button>
+        <!-- 线的一族：过一点作垂线、作两点（或一条现成线段）的中垂线、过一点作平行线。 -->
+        <button class="tool-btn plane-tool" data-plane="pbisector" title="中垂线（垂直平分线）：点两个点，先把它们连成线段再作这条线段的垂直平分线；也可以直接点一条现成的线段。线上任一点到两端点距离相等，图上会画等长小横杠和直角符号"><svg class="plane-tool-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18h20"/><path d="M12 3v15"/><path d="M12 15h3v-3"/></svg>中垂线</button>
+        <button class="tool-btn plane-tool" data-plane="parallel" title="平行线：先点一个点，再点一条直线或线段，作出过这个点、与那条线平行的直线"><svg class="plane-tool-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h18"/><path d="M3 16h18"/></svg>平行线</button>
+        <button class="tool-btn plane-tool" data-plane="intersect" title="先后点两个对象求交点；有两个交点时取离你点的那一下最近的那个">交点</button>
+        <button class="tool-btn plane-tool" data-plane="poly" title="依次点多边形顶点，点「完成」收尾">多边形</button>
+        <button class="tool-btn plane-tool" data-plane="area" title="算面积：依次点几个点，点完按「完成」，围成的多边形面积显示在代数区那一行">面积</button>
+        <button class="tool-btn plane-tool" data-plane="angle" title="算角：先点一条直线或线段，再点另一条，算两条线所成的角（锐角，给度数、sin、cos）">角</button>
+        <!-- 角的平分线跟着「角」放：先算角，再作角平分线。 -->
+        <button class="tool-btn plane-tool" data-plane="abisector" title="角平分线：依次点三个点 —— 角的一边上一点、角的顶点（中间那个点）、另一边上一点。线上任一点到角的两边距离相等，图上两侧会画等角小圆弧"><svg class="plane-tool-ico" viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12L21 4"/><path d="M3 12h18"/><path d="M3 12l18 8"/></svg>角平分线</button>
+        <button class="tool-btn plane-tool" data-plane="trace" title="追踪：选中一个点再点这里（或点这里之后去画布上点那个点），拖它走一圈就留下轨迹">追踪</button>
+        <button class="tool-btn plane-tool" data-plane="motion" title="动点：点一个圆 / 线段 / 直线 / 弧 / 函数曲线，就在它上面放一个能顺着滑的动点">动点</button>
+        <button class="tool-btn plane-tool" data-plane="tangent" title="切线：点一个在曲线或圆上的点（动点、交点、自己放的点都行），就在那儿画切线；认不出哪条曲线时再点一条">切线</button>
+        <button class="tool-btn plane-tool" data-plane="rotate" title="旋转：先点一个定点（旋转中心），再点一条直线或线段，然后按住拖动，它就绕定点转">旋转</button>
+        <button class="tool-btn plane-tool" data-plane="slide" title="沿线拖（保线段长度）：先点一条轨道（直线/线段/圆/弧/函数曲线），再按住一条线段拖动，它整条沿着轨道滑且长度不变；在曲线轨道上就是一条定长弦">沿线拖·保长度</button>
+        <button class="tool-btn plane-tool" data-plane="slidex" title="沿线拖（保 x 方向长度）：同上，但拖的时候保持两端点的 Δx 不变（在斜线、曲线轨道上，和「保长度」的结果不一样）">沿线拖·保x</button>
+        <button class="tool-btn plane-tool" data-plane="slidey" title="沿线拖（保 y 方向长度）：同上，但拖的时候保持两端点的 Δy 不变">沿线拖·保y</button>
+        <button class="tool-btn plane-tool" data-plane="delete" title="点一个对象把它删掉（依赖它的对象会一起删）">删除</button>
+        <button class="tool-btn" id="planeDone" title="多边形顶点点完了">完成</button>
+        <button class="tool-btn" id="planeToolUndo" title="撤掉最后一步">撤销</button>
+        <button class="tool-btn" id="planeClear" title="把平面上的对象全部删掉（依赖它们的对象会一起删）">清空</button>
+        <span class="plane-hint" id="planeHint">选择工具后，在画布上点</span>
+      </div>
+      <div class="plane-canvas" id="planeCanvas"></div>
+      <div class="plane-side" id="planeSide">
+        <div class="plane-side-head">
+          <span>代数区</span>
+          <span id="planeCount"></span>
+        </div>
+        <div class="plane-list" id="planeList"></div>
+      </div>
+    </div>
+      <!-- 写方程就画出来：手画工具画不出椭圆双曲线，这条是必须的。
+           原来放在左边那根 66px 宽的竖排工具条里，被挤成 66px 宽 = 看不见，所以挪到画布下面整行。
+           圆锥曲线用隐式方程 x^2/4 + y^2/9 = 1；函数写 y = x^2 或 sin(x)；点写 A=(1,2)。 -->
+      <div class="plane-input-bar">
+        <input id="planeInput" type="text" spellcheck="false"
+               placeholder="写方程，回车就画：x^2/4 + y^2/9 = 1（椭圆）、y = x^2、y &gt; x^2、A=(1,2)">
+        <button class="tool-btn" id="planeDraw" title="把上面写的方程画出来">画出来</button>
+      </div>
+    <div class="plane-info" id="planeInfo"></div>
+    <div class="plane-status hidden" id="planeStatus">
+      <span class="dot"></span><span id="planeStatusText"></span>
+    </div>
+  </div>
+</div>
+
+<dialog id="pickerDialog">
+  <div class="dialog-head">
+    <h2 id="pickerTitle">选择文件</h2>
+    <button class="btn" id="pickerCancelTop" data-close="pickerDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="picker-crumbs" id="pickerCrumbs"></div>
+    <div class="picker-shortcuts" id="pickerShortcuts"></div>
+    <div class="picker-tools">
+      <button class="btn" id="pickerUp"><span class="ico-slot" data-icon="up"></span>上一级</button>
+      <button class="btn" id="pickerRefresh" title="重新读取这个文件夹"><span class="ico-slot" data-icon="refresh"></span>刷新</button>
+      <div class="chips" id="pickerFilters"></div>
+      <input id="pickerSearch" type="search" class="side-search" placeholder="在这个文件夹里找…（输入即筛选）">
+      <button class="btn" id="pickerUpload"><span class="ico-slot" data-icon="download"></span>从电脑选择文件</button>
+      <input type="file" id="pickerUploadInput" class="hidden-input">
+    </div>
+    <div class="picker-list" id="pickerList"></div>
+  </div>
+  <div class="dialog-foot">
+    <span class="muted" id="pickerHint" style="font-size:12px"></span>
+    <span class="picker-chosen" id="pickerChosen"></span>
+    <button class="btn" id="pickerCancel">取消</button>
+    <button class="btn primary" id="pickerPick">确定</button>
+  </div>
+</dialog>
+
+<dialog id="skillsDialog">
+  <div class="dialog-head">
+    <h2>技能（Skills）</h2>
+    <button class="btn" data-close="skillsDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <p class="muted" style="margin-top:0">
+      技能是写在 <code>skills</code> 目录里的说明文件（SKILL.md）。勾选后，本会话每次提问都会带上它，
+      用来固定「课件的页序与字号」「出题的难度比例」「教案的固定栏目」这类要求。
+    </p>
+    <div class="skills" id="skillsList"></div>
+    <h3 class="panel-sub">新建 / 修改技能</h3>
+    <div class="field">
+      <label for="skillName">技能名称（例如：三年级数学）</label>
+      <input id="skillName" placeholder="三年级数学">
+    </div>
+    <div class="field">
+      <label for="skillDesc">一句话说明（用于自动匹配，例如：三年级数学课件与练习要求）</label>
+      <input id="skillDesc" placeholder="三年级数学课件与练习要求">
+    </div>
+    <div class="field">
+      <label for="skillContent">具体规则</label>
+      <textarea id="skillContent" spellcheck="false"
+        placeholder="例如：&#10;- 课件每页字少、字号大；&#10;- 练习难度按 6:3:1 分布；&#10;- 每份练习都要有答案与解析。"></textarea>
+    </div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn" id="skillNew" style="margin-right:auto">清空表单</button>
+    <button class="btn primary" id="skillSave">保存技能</button>
+  </div>
+</dialog>
+
+<dialog id="wsCreateDialog">
+  <div class="dialog-head">
+    <h2>工作区</h2>
+    <button class="btn" data-close="wsCreateDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <p class="muted" style="margin-top:0">
+      工作区就是一个文件夹：AI 生成的文件放在里面，它的对话也挂在侧栏这个工作区下面。
+    </p>
+
+    <h3 class="panel-sub">切换工作区（点一行就切过去）</h3>
+    <div class="ws-list" id="wsExistingList"></div>
+
+    <h3 class="panel-sub">新建工作区</h3>
+    <div class="field">
+      <label for="wsName">名称（就是文件夹名，例如：高一数学）</label>
+      <input id="wsName" placeholder="高一数学" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="wsParent">建在哪个位置（点「换个位置…」可以选到 D 盘、桌面、共享盘）</label>
+      <input id="wsParent" readonly>
+    </div>
+    <div class="ws-preview" id="wsPreview"></div>
+    <div class="picker-bar">
+      <button class="btn" id="wsPickParent"><span class="ico-slot" data-icon="folder"></span>换个位置…</button>
+      <button class="btn" id="wsAddExisting"><span class="ico-slot" data-icon="folderPlus"></span>添加已有文件夹…</button>
+    </div>
+    <div class="notice" id="wsCreateNote" style="display:none"></div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn" data-close="wsCreateDialog">取消</button>
+    <button class="btn primary" id="wsCreateGo"><span class="ico-slot" data-icon="plus"></span>新建并进入</button>
+  </div>
+</dialog>
+
+<dialog id="translateDialog">
+  <div class="dialog-head">
+    <h2>翻译查词</h2>
+    <button class="btn" data-close="translateDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="chips">
+      <button class="chip active" id="trModeTranslate">翻译</button>
+      <button class="chip" id="trModeWord">词典</button>
+    </div>
+    <div class="field">
+      <label for="trInput">要翻译 / 要查的内容</label>
+      <textarea id="trInput" spellcheck="false"
+        placeholder="例如：把这句话译成英文——今天讲分数的意义"></textarea>
+      <span class="hint-inline" id="trHint"></span>
+    </div>
+    <div class="picker-bar">
+      <button class="btn primary" id="trGo">翻译</button>
+      <span class="muted">老师自己的词句只发到本机服务，不进对话记录。</span>
+    </div>
+    <div class="tr-result" id="trResult"></div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn primary" data-close="translateDialog">完成</button>
+  </div>
+</dialog>
+
+<dialog id="memoDialog">
+  <div class="dialog-head">
+    <h2>备忘录</h2>
+    <button class="btn" data-close="memoDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="memo-add">
+      <input id="memoInput" placeholder="随手记一条，按 Enter 就存下来…" autocomplete="off">
+      <button class="btn primary" id="memoAdd">记下来</button>
+    </div>
+    <div class="memo-tools">
+      <span class="muted" id="memoCount"></span>
+      <div class="chips">
+        <button class="chip" id="memoRefresh">刷新</button>
+        <button class="chip" id="memoClearDone">清除已完成</button>
+      </div>
+    </div>
+    <div class="memo-list" id="memoList"></div>
+  </div>
+  <div class="dialog-foot">
+    <span class="muted" style="margin-right:auto;font-size:12px">记下来的东西存在程序的 <code>config\memo.json</code> 里：关网页、关电脑都还在，升级也不会丢（这个文件不进发布包）。</span>
+    <button class="btn primary" data-close="memoDialog">完成</button>
+  </div>
+</dialog>
+
+<dialog id="calendarDialog">
+  <div class="dialog-head">
+    <h2>日历</h2>
+    <button class="btn" data-close="calendarDialog">关闭</button>
+  </div>
+  <div class="dialog-body">
+    <div class="cal-bar">
+      <button class="btn" id="calPrev">上一月</button>
+      <span class="cal-title" id="calTitle"></span>
+      <button class="btn" id="calNext">下一月</button>
+      <button class="btn" id="calToday">回到本月</button>
+      <span class="muted cal-source" id="calSource"></span>
+    </div>
+    <div class="cal-week">
+      <span>周一</span><span>周二</span><span>周三</span><span>周四</span>
+      <span>周五</span><span>周六</span><span>周日</span>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+    <div class="cal-legend">
+      <span class="cal-badge rest">休</span><span class="cal-legend-text">放假</span>
+      <span class="cal-badge work">班</span><span class="cal-legend-text">调休上班</span>
+      <span class="cal-legend-text muted">红框是今天；小字是农历，绿色是节气，蓝色是节日。节假日与农历每月联网取一次，取不到就用上次的缓存。</span>
+    </div>
+    <div class="notice warn" id="calNote" style="display:none"></div>
+  </div>
+  <div class="dialog-foot">
+    <button class="btn primary" data-close="calendarDialog">完成</button>
+  </div>
+</dialog>
+
+<div id="overlayError" class="hidden">
+  <div class="box">
+    <h2 id="overlayTitle">无法连接本地服务</h2>
+    <p class="muted" id="overlayHint">请确认 webui\server.py 仍在运行，然后刷新页面。</p>
+    <pre id="overlayDetail"></pre>
+  </div>
+</div>
+
+<div id="bioPanel" class="sandbox-panel hidden">
+  <div class="sandbox-inner">
+    <div class="sandbox-bar">
+      <b>生物过程动画</b>
+      <span class="muted" id="bioNote" style="display:none"></span>
+      <span class="muted">50 多个课本过程：动画一直在放，左右方向键可以翻到下一步</span>
+      <button class="btn lab-mini" id="bioAnim">动画：开</button>
+      <button class="btn lab-mini" id="bioPhet">PhET 生物仿真</button>
+      <button class="btn lab-mini" id="bioClose">关闭（Esc）</button>
+    </div>
+    <div class="sandbox-bar">
+      <label>章节</label>
+      <select id="bioChapter" class="lab-num" style="width:110px"></select>
+      <label>过程</label>
+      <select id="bioPick" class="lab-num" style="width:330px"></select>
+      <button class="btn lab-mini" id="bioPrev">上一步</button>
+      <button class="btn primary" id="bioPlay">播放</button>
+      <button class="btn lab-mini" id="bioNext">下一步</button>
+      <span class="muted" id="bioStepLabel">第 1 步</span>
+    </div>
+    <div class="sandbox-main">
+      <div class="sandbox-canvas">
+        <div id="bioStage" class="bio-stage"></div>
+      </div>
+      <div class="sandbox-side">
+        <div class="sb-side-head">这一步在讲什么</div>
+        <div id="bioText" class="bio-text"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="icons.js"></script>
+<script src="compat.js"></script>
+<script src="md.js"></script>
+<script src="panels.js"></script>
+<script src="chartui.js"></script>
+<script src="phet.js"></script>
+<script src="app.js"></script>
+<script src="plane.js"></script>
+<script src="extras.js"></script>
+<script src="chem.js"></script>
+<script src="sandbox.js"></script>
+<script src="bio.js"></script>
+<script src="practice.js"></script>
+<script src="circuit.js"></script>
+<script src="complete.js"></script>
+</body>
+</html>

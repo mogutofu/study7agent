@@ -1,0 +1,28 @@
+# 运行时产物 / 本机状态：绝不进仓库
+dist/
+build/
+logs/
+sessions/
+webui/data/
+.webui-uploads/
+kernel-profile/
+/python/
+/vendor/
+
+# 密钥与本机配置（config/agent.example.json 是模板，要进仓库）
+config/agent.json
+config/webui.json
+config/release-key.txt
+config/installed.txt
+config/float.json
+config/memo.json
+config/holiday-*.json
+
+# 缓存与系统杂项
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+._*
+Thumbs.db
+desktop.ini

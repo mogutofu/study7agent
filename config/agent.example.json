@@ -1,0 +1,69 @@
+{
+  "base_url": "https://api.deepseek.com",
+  "model": "deepseek-flash",
+  "active_model": "",
+  "models": {
+    "flash": {
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-flash",
+      "api_key": "",
+      "stream": true,
+      "headers": {}
+    },
+    "pro": {
+      "base_url": "https://api.deepseek.com",
+      "model": "deepseek-v4-pro",
+      "api_key": "",
+      "stream": true,
+      "headers": {}
+    }
+  },
+  "api_key": "",
+  "stream": true,
+  "timeout_seconds": 300,
+  "ca_file": "",
+  "insecure_skip_verify": false,
+  "headers": {},
+  "auth_profiles": {
+    "example-portal": {
+      "match": "intranet.example.local",
+      "headers": {
+        "Cookie": "SESSION=replace-me"
+      },
+      "cookie": "",
+      "basic_username": "",
+      "basic_password": ""
+    }
+  },
+  "command": {
+    "enabled": true,
+    "confirm_prefixes": [
+      "del",
+      "erase",
+      "format",
+      "reg",
+      "net",
+      "netsh",
+      "powershell",
+      "wmic",
+      "shutdown",
+      "sc",
+      "takeown",
+      "icacls",
+      "diskpart",
+      "cipher"
+    ],
+    "blocked_prefixes": [],
+    "always_confirm": false,
+    "audit_log": "logs/commands.log",
+    "max_output_bytes": 65536,
+    "max_tool_rounds": 8
+  },
+  "memory": {
+    "enabled": true,
+    "session_file": "sessions/default.json",
+    "max_messages": 40,
+    "max_context_items": 12
+  },
+  "max_content_chars": 120000
+}

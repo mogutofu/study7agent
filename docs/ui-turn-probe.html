@@ -1,0 +1,85 @@
+<!doctype html>
+<html data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>一轮过程折叠探针</title>
+<link rel="stylesheet" href="../webui/ui/style.css">
+<style>
+  .probe { outline: 1px dashed #d33; }
+  .probe-tag { color: #d33; font-size: 11px; margin: 12px 0 2px; }
+</style>
+</head>
+<body>
+<div id="messages" style="padding:14px; max-width:700px">
+
+  <div class="probe-tag">1 = 跑完的轮（折起来：只剩「已完成，用时 4分47秒」一行 + 最终答复）</div>
+  <div class="msg assistant probe">
+    <div class="avatar">AI</div>
+    <div class="bubble">
+      <div class="msg-head">Study7Agent</div>
+      <button type="button" class="turn-process" aria-expanded="false">
+        <span class="tp-label">已完成，用时 <span class="tp-num">4分47秒</span></span>
+        <span class="tp-chevron"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5l5.5 5.5 5.5-5.5"/></svg></span>
+      </button>
+      <div class="stream">
+        <div class="content"><p>三条都发出去了，会话里现在是三条绿色气泡「你好」，时间分别是 16:44、17:00、17:11。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="probe-tag">2 = 点开这一行（过程按当时顺序建出来：思考 / 工具 / 截图 / 中间正文）</div>
+  <div class="msg assistant probe">
+    <div class="avatar">AI</div>
+    <div class="bubble">
+      <div class="msg-head">Study7Agent</div>
+      <button type="button" class="turn-process open" aria-expanded="true">
+        <span class="tp-label">已完成，用时 <span class="tp-num">4分47秒</span></span>
+        <span class="tp-chevron"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 9.5l5.5 5.5 5.5-5.5"/></svg></span>
+      </button>
+      <div class="stream">
+        <div class="step think">
+          <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5V16h8v-2.5A6 6 0 0 0 12 3z"/></svg>思考 ·</span>
+          <span class="think-line">"你好" appears in the input box (bottom, at scaled (541, 571)). Send button is now green (highlighted). Click send at (13…</span>
+        </div>
+        <div class="tool ok"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l7 7-7 7M13 18h7"/></svg>鼠标 · click (1345, 1033)</div>
+        <div class="content"><p>输入框里已出现「你好」，发送按钮已亮起，点它。</p></div>
+        <div class="tool ok"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l7 7-7 7M13 18h7"/></svg>截屏 · 整屏</div>
+        <div class="image-chip">
+          <img src="ui-think-probe-after.png" alt="截图">
+          <div class="i-meta"><div class="i-name">截图-20261006-171117.png</div><div class="i-size">已提供给模型</div></div>
+        </div>
+        <div class="content"><p>第三条也发出去了。</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="probe-tag">3 = 还在跑的轮（不折，过程平铺，正文带光标）</div>
+  <div class="msg assistant probe">
+    <div class="avatar">AI</div>
+    <div class="bubble">
+      <div class="msg-head">Study7Agent</div>
+      <div class="stream">
+        <div class="step think live">
+          <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5V16h8v-2.5A6 6 0 0 0 12 3z"/></svg>思考 ·</span>
+          <span class="think-line">先看清题目给的条件，这是一个二次函数的最值问题，我需要先…</span>
+        </div>
+        <div class="tool run"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l7 7-7 7M13 18h7"/></svg>读取 · docs/roadmap-1.1.0.md</div>
+        <div class="content caret"><p>正在写第二条…</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="probe-tag">4 = 只有正文的轮（没有过程行，和以前一样）</div>
+  <div class="msg assistant probe">
+    <div class="avatar">AI</div>
+    <div class="bubble">
+      <div class="msg-head">Study7Agent</div>
+      <div class="stream">
+        <div class="content"><p>就一句：已经改好了。</p></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

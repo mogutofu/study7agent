@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400" version="1.1">
+  <path d="m18.55 30.793 6.1372-16.69 6.1372 16.69c-3.6234-2.6663-8.5808-2.6509-12.274 0z" stroke-linejoin="round"/>
+  <path d="m571.66 356.25 17.146 6.3049-17.146 6.3049c2.7392-3.7224 2.7234-8.8154 0-12.61z" stroke-linejoin="round"/>
+  <path d="m24.69 22.448v356.2" fill="none" stroke="#000"/>
+  <path d="m8.59 362.55h571.65" fill="none" stroke="#000"/>
+  <path d="m24.69 345.74c4.9855 1.6604 9.9721 3.3211 16.393 1.0856s14.278-8.3663 22.73-14.664c8.4526-6.2973 17.5-12.761 25.804-13.712 8.3042-0.95198 15.863 3.6065 25.149 9.1002 9.2859 5.4937 20.297 11.922 30.922 7.9038s20.862-18.482 32.767-37.619 25.476-42.946 38.542-44.344c13.066-1.3984 25.625 19.613 36.28 38.661s19.404 36.13 28.377 40.687 18.168-3.4126 26.264-17.162c8.0952-13.75 15.09-33.28 25.028-60.642 9.9382-27.362 22.82-62.554 36.189-63.961s27.223 30.972 40.068 65.533 24.68 71.302 37.323 85.09c12.644 13.787 26.096 4.621 37.545-4.5253s20.894-18.272 32.556-18.642c11.662-0.37029 25.537 8.0133 39.413 16.398v27.628h-531.35z" fill="#ff9b9b" fill-opacity=".5" stroke="#f00"/>
+  <path d="m556.04 362.55v-88.689c-3.8552 7.4112-7.7105 14.823-11.857 21.173-4.1469 6.35-8.5853 11.639-14.814 10.357-6.2288-1.2818-14.249-9.135-22.676-18.016-8.4274-8.8806-17.262-18.788-25.789-16.481-8.5275 2.3074-16.746 16.83-27.653 33.62s-24.501 35.847-37.272 14.683-24.717-82.548-37.677-153.48c-12.96-70.931-26.933-151.4-41.834-149.13s-30.726 87.292-44.279 155.9c-13.553 68.607-24.833 120.8-36.449 126.6s-23.57-34.765-35.439-75.845-23.654-82.663-35.945-82.579c-12.291 0.0839-25.086 41.836-36.955 79.549s-22.812 71.383-34.062 82.01-22.807-1.7924-32.364-12.187c-9.5576-10.394-17.115-18.763-24.023-19.298-6.9085-0.53533-13.166 6.7633-18.435 13.381-5.2688 6.6179-9.5476 12.554-13.827 18.491v59.936z" fill="#b5dd7a" fill-opacity=".5" stroke="#84ac5a"/>
+  <g font-family="DejaVu Sans" font-size="20">
+    <switch transform="translate(41,29)">
+      <text systemLanguage="de" id="trsvg36"><tspan id="trsvg1">Populationsgröße</tspan></text>
+      <text systemLanguage="en" id="trsvg37"><tspan id="trsvg2">Population</tspan></text>
+      <text systemLanguage="gu" id="trsvg38"><tspan id="trsvg3">વસ્તી</tspan></text>
+      <text systemLanguage="ru" id="trsvg39"><tspan id="trsvg4">Популяция</tspan></text>
+      <text systemLanguage="kn" id="trsvg40"><tspan id="trsvg5">ಜನಸಂಖ್ಯೆ</tspan></text>
+      <text systemLanguage="ml" id="trsvg41"><tspan id="trsvg6">ജനസംഖ്യ</tspan></text>
+      <text systemLanguage="te" id="trsvg42"><tspan id="trsvg7">జనాభా</tspan></text>
+      
+    <text id="trsvg43-id" systemLanguage="id"><tspan id="trsvg8-id">Populasi</tspan></text><text id="trsvg43"><tspan id="trsvg8">Population</tspan></text></switch>
+    <switch transform="translate(576,390)" text-anchor="end">
+      <text systemLanguage="de" id="trsvg44"><tspan id="trsvg9">Zeit</tspan></text>
+      <text systemLanguage="en" id="trsvg45"><tspan id="trsvg10">Time</tspan></text>
+      <text systemLanguage="fr" id="trsvg46"><tspan id="trsvg11">Temps</tspan></text>
+      <text systemLanguage="gu" id="trsvg47"><tspan id="trsvg12">સમય</tspan></text>
+      <text systemLanguage="ru" id="trsvg48"><tspan id="trsvg13">Время</tspan></text>
+      <text systemLanguage="kn" id="trsvg49"><tspan id="trsvg14">ಸಮಯ</tspan></text>
+      <text systemLanguage="ml" id="trsvg50"><tspan id="trsvg15">സമയം</tspan></text>
+      <text systemLanguage="te" id="trsvg51"><tspan id="trsvg16">సమయం</tspan></text>
+      
+    <text id="trsvg52-id" systemLanguage="id"><tspan id="trsvg17-id">Waktu</tspan></text><text id="trsvg52"><tspan id="trsvg17">Time</tspan></text></switch>
+    <switch transform="translate(390,179)" fill="#ff0000">
+      <text systemLanguage="de" id="trsvg53"><tspan id="trsvg18">Räuberpopulation</tspan></text>
+      <text systemLanguage="en" id="trsvg54"><tspan id="trsvg19">Predator</tspan></text>
+      <text systemLanguage="fr" id="trsvg55"><tspan id="trsvg20">Prédateur</tspan></text>
+      <text systemLanguage="gu" id="trsvg56"><tspan id="trsvg21">શિકારી</tspan></text>
+      <text systemLanguage="ru" id="trsvg57"><tspan id="trsvg22">Хищник</tspan></text>
+      <text systemLanguage="kn" id="trsvg58"><tspan id="trsvg23">ಪರಭಕ್ಷಕ</tspan></text>
+      <text systemLanguage="ml" id="trsvg59"><tspan id="trsvg24">പ്രിഡേറ്റർ</tspan></text>
+      <text systemLanguage="te" id="trsvg60"><tspan id="trsvg25">పరభక్షకాలు</tspan></text>
+      
+    <text id="trsvg61-id" systemLanguage="id"><tspan id="trsvg26-id">Pemangsa</tspan></text><text id="trsvg61"><tspan id="trsvg26">Predator</tspan></text></switch>
+    <switch transform="translate(184,126)" fill="#84ac5a" text-anchor="middle">
+      <text systemLanguage="de" id="trsvg62"><tspan id="trsvg27">Beutepopulation</tspan></text>
+      <text systemLanguage="en" id="trsvg63"><tspan id="trsvg28">Prey</tspan></text>
+      <text systemLanguage="fr" id="trsvg64"><tspan id="trsvg29">Proie</tspan></text>
+      <text systemLanguage="gu" id="trsvg65"><tspan id="trsvg30">શિકાર</tspan></text>
+      <text systemLanguage="ru" id="trsvg66"><tspan id="trsvg31">Жертва</tspan></text>
+      <text systemLanguage="kn" id="trsvg67"><tspan id="trsvg32">ಎರೆ</tspan></text>
+      <text systemLanguage="ml" id="trsvg68"><tspan id="trsvg33">ഇര</tspan></text>
+      <text systemLanguage="te" id="trsvg69"><tspan id="trsvg34">ఆహారం</tspan></text>
+      
+    <text id="trsvg70-id" systemLanguage="id"><tspan id="trsvg35-id">xxx</tspan></text><text id="trsvg70"><tspan id="trsvg35">xxx</tspan></text></switch>
+  </g>
+</svg>

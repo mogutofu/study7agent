@@ -1,0 +1,82 @@
+<!doctype html>
+<html data-theme="light">
+<head>
+<meta charset="utf-8">
+<title>思考行折行探针</title>
+<link rel="stylesheet" href="../webui/ui/style.css">
+<style>
+  /* 只给探针用的框线，方便肉眼数行数 */
+  .probe { outline: 1px dashed #d33; outline-offset: 0; }
+  .probe-tag { color: #d33; font-size: 11px; margin: 6px 0 2px; }
+  /* 变体 B / C 的补丁：B=保持 wrap 但 flex-basis 0（摘要不把自己挤下去），C=头行 + 正文兄弟块（dsh 的真实结构） */
+  .v-b .step.think { flex-wrap: wrap; }
+  .v-b .step.think .think-line { flex: 1 1 0; }
+  .v-b .step.think .think-body { flex: 0 0 100%; }
+  .v-c .step.think { display: block; }
+  .v-c .think-head { display: flex; align-items: baseline; min-width: 0; overflow: hidden; }
+  .v-c .think-head .think-line { flex: 1 1 auto; }
+  .v-c .step.think .think-body { display: block; }
+</style>
+</head>
+<body>
+<div id="messages" style="padding:14px; max-width:700px">
+  <div class="msg assistant">
+    <div class="avatar">AI</div>
+    <div class="bubble">
+      <div class="stream">
+
+        <div class="probe-tag">A = 现在的代码（flex-wrap:wrap + flex:1 1 auto）</div>
+        <div class="step think probe">
+          <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>思考 ·</span>
+          <span class="think-line">先看题目给的条件，这是一个二次函数的最值问题，我需要先把解析式整理成顶点式，然后判断对称轴落在不在给定区间里，落到区间外就要看端点值，这一步要特别小心因为顶点不在区间内的时候单调性就决定了最值取在端点</span>
+        </div>
+
+        <div class="probe-tag">A2 = 现在的代码 + 展开（正文块）</div>
+        <div class="step think expanded probe">
+          <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>思考 ·</span>
+          <span class="think-line">先看题目给的条件，这是一个二次函数的最值问题，我需要先把解析式整理成顶点式，然后判断对称轴落在不在给定区间里</span>
+          <div class="think-body"><p>第一段：把 y = x² - 4x + 3 配方成 y = (x-2)² - 1。</p><p>第二段：对称轴 x = 2，区间是 [0, 3]，顶点在区间内，所以最小值是 -1。</p></div>
+        </div>
+
+        <div class="probe-tag">B = 修法一：保持 wrap + flex-basis 0</div>
+        <div class="v-b">
+          <div class="step think probe">
+            <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>思考 ·</span>
+            <span class="think-line">先看题目给的条件，这是一个二次函数的最值问题，我需要先把解析式整理成顶点式，然后判断对称轴落在不在给定区间里，落到区间外就要看端点值，这一步要特别小心因为顶点不在区间内的时候单调性就决定了最值取在端点</span>
+          </div>
+          <div class="step think expanded probe">
+            <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>思考 ·</span>
+            <span class="think-line">先看题目给的条件，这是一个二次函数的最值问题，我需要先把解析式整理成顶点式，然后判断对称轴落在不在给定区间里</span>
+            <div class="think-body"><p>第一段：把 y = x² - 4x + 3 配方成 y = (x-2)² - 1。</p><p>第二段：对称轴 x = 2，区间是 [0, 3]，顶点在区间内，所以最小值是 -1。</p></div>
+          </div>
+        </div>
+
+        <div class="probe-tag">C = 修法二：头行 + 正文兄弟块（dsh 的结构）</div>
+        <div class="v-c">
+          <div class="step think probe">
+            <div class="think-head">
+              <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>思考 ·</span>
+              <span class="think-line">先看题目给的条件，这是一个二次函数的最值问题，我需要先把解析式整理成顶点式，然后判断对称轴落在不在给定区间里，落到区间外就要看端点值，这一步要特别小心因为顶点不在区间内的时候单调性就决定了最值取在端点</span>
+            </div>
+          </div>
+          <div class="step think expanded probe">
+            <div class="think-head">
+              <span class="think-tag"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>思考 ·</span>
+              <span class="think-line">先看题目给的条件，这是一个二次函数的最值问题，我需要先把解析式整理成顶点式，然后判断对称轴落在不在给定区间里</span>
+            </div>
+            <div class="think-body"><p>第一段：把 y = x² - 4x + 3 配方成 y = (x-2)² - 1。</p><p>第二段：对称轴 x = 2，区间是 [0, 3]，顶点在区间内，所以最小值是 -1。</p></div>
+          </div>
+        </div>
+
+        <div class="probe-tag">T = 工具行（折叠 / 展开）</div>
+        <div class="tool ok probe"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>读取 · docs\roadmap-1.1.0.md</div>
+        <div class="tool ok expanded probe"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle></svg>读取 · docs\roadmap-1.1.0.md<div class="tool-io"><div class="io-section"><span class="io-label">输入</span><span class="io-text">{
+  "path": "docs/roadmap-1.1.0.md"
+}</span></div><div class="io-divider"></div><div class="io-section"><span class="io-label">输出</span><span class="io-text">第一行正文。第二行正文。</span></div></div></div>
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
